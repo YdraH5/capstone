@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+h1{
+    color: white;
+    font-size: 100px;
+}
+.delete-button{
+    color: red;
+    padding-right: 10%;
+}
+.edit-button{
+    color: green;
+}
+
+.btn-group{
+    flex-wrap: wrap;
+}
+    
+th,tr{
+    background-color:transparent;
+    color: white;
+}
+
+

@@ -1,0 +1,1 @@
+<input type="button" onclick="hideFunction();" value="Add" class="add-button"/>
