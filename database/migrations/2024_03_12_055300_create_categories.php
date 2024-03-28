@@ -17,6 +17,13 @@ return new class extends Migration
             $table->text('description');
             $table->timestamps();
         });
+        Schema::create('category_images', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('category_id');
+            $table->string('image');            $table->timestamps();
+    
+            $table->foreign('category_id')->references('id')->on('categories');
+        });
     }
 
     /**

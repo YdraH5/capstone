@@ -2,13 +2,18 @@
 @section('content')
 <x-app-layout>
     <x-slot name="header">
-        <div class="header">
-        <h2 class="font-semibold text-xl text-green-800 dark:text-black-200 leading-tight">
-            {{ __('Manage Appartment') }}
+        <div class="flex h-8">
+        <h2 class="font-semibold text-xl text-black-800 dark:text-black-200 leading-tight">
+            {{ __('Manage Apartment') }}
         </h2>
-        @include('buttons.add')
-        </div>
+        @section('search'){{-- to add search button for apartment --}}
+        <form action="/search" class="max-w-[480px] w-full px-4">
+            @csrf
+            @include('buttons.search')
+        </form>
+        @endsection {{--to end the section for search box--}}
     </x-slot>
+    @include('buttons.add')
 
 <div id="hide-div"class="">
     <form action="{{route('categories.index')}}"method="post">
@@ -18,8 +23,8 @@
         <div>
             <select name="building"class="lg:w-80 sm:w-40 lg:h-10 sm:h-10">
                 <option value="" disabled selected hidden>Building</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
+                <option value="1">A</option>
+                <option value="2">B</option>
             </select>
             <x-input-error :messages="$errors->get('building')" class="mt-2" />
         </div>
@@ -27,7 +32,7 @@
             <select name="category"placeholder="Category"class="lg:w-80 sm:w-40 md:w-20 lg:h-10 sm:h-10">
                 <option value="" disabled selected hidden>Category</option>
         @foreach ($categories as $category)
-                <option value="{{$category->name}}">{{$category->name}}</option>
+                <option value="{{$category->id}}">{{$category->name}}</option>
         @endforeach
             </select>
             <x-input-error :messages="$errors->get('category')" class="mt-2" />
@@ -53,10 +58,10 @@
     </form>
 </div> 
 
-        <div class="h-screen">
-            <div class="container mx-auto center">
+        {{-- <div class="h-screen">
+            <div class="container mx-auto center"> --}}
                 {{-- xs:grid-cols-1 sm:grid-cols-2 lg: --}}
-                <div class="grid gap-2 grid-cols-4">
+                {{-- <div class="grid gap-2 grid-cols-4">
                     <div class="flip-card">
                         <div class="flip-card-inner">
                             <div class="flip-card-front">
@@ -68,9 +73,9 @@
                             <p>We love that guy</p>
                         </div>
                     </div>
-                </div> 
+                </div>  --}}
                     
-                <div class="flip-card">
+                {{-- <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-card-front">
                 <img src="{{asset('images/lock.png')}}"style="width:300px;height:300px;"> 
@@ -79,7 +84,7 @@
                         <button>click</button>
                     </div>
                 </div>
-            </div> 
+            </div>  --}}
 
                 </div>
                 

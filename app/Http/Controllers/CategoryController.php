@@ -7,6 +7,10 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
+    public function index(){
+        $categories = Category::all();
+        return view("categories.index", ['categories'=>$categories]);
+    }
     public function create(Request $request){
         $data = $request->validate([
             'name' => ['required', 'string', 'max:50', 'unique:'.Category::class],
@@ -29,8 +33,23 @@ class CategoryController extends Controller
         return redirect(route('categories.index'))->with('success','Category updated successfully');
     }
 
+    // soft delete the data 
     public function delete(Category $categories){
-        $categories->delete();
-        return redirect(route('categories.index'))->with('success','Category deleted successfully');
+       $categories->delete();
+       return redirect(route('categories.index'))->with('success','Category deleted successfully');
     }
+
+    // show trash data or deleted data 
+    // NOTE: this is not yet shown in the frontend
+    public function trash(){
+        $Category = Category::onlyTrashed()->latest()->get();
+    }
+
+    // to restore all the deleted data
+    // NOTE: not yet shown in the frontend but working
+    public function restore(){
+        Category::whereNotNull('deleted_at')->restore();
+        return redirect(route('categories.index'))->with('success','Category restored successfully');
+    }
+   
 }

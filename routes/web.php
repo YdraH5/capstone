@@ -4,8 +4,15 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AppartmentController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\ReportController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Images;
+use App\Models\Report;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,35 +25,32 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+// specify landing page 
+Route::middleware(['auth','verified','isAdmin'])->group( function(){
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::post('/categories/index', [CategoryController::class, 'create'])->name('categories.create');
+
+    Route::post('/reports/index', [ReportController::class, 'create'])->name('reports.create');
+
+    Route::get('/appartment', [AppartmentController::class, 'index'])->name('appartment.index');
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+});
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard'); // to assure that user is loggedin
 
-// route to users index page and display all users
-Route::get('/users/index', function () {
-    $users = User::all();//to get users data from database
-    return view("users.index", ['users'=>$users]);//to pass the data to the index page
-})->middleware(['auth', 'verified'])->name('users.index');
-
-// route to appartment index page
-Route::get('/appartment/index', function () {
-    $categories = Category::all('id','name', 'description');
-    return view("appartment.index",['categories'=>$categories]);
-})->middleware(['auth', 'verified'])->name('appartment.index');
-
-// route to categories index page
-Route::get('/categories/index', function () {
-    $categories = Category::all();//to get categories data from database
-    return view("categories.index", ['categories'=>$categories]);//to pass the data to the index page
-})->middleware(['auth', 'verified'])->name('categories.index');
+Route::get('/available', function () {
+    return view('available');
+})->name('available');
 
 // route to create new category
-Route::post('/categories/index', [CategoryController::class, 'create'])->name('categories.create');
 
 // route to edit category
 Route::get('/categories/{categories}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
@@ -54,8 +58,10 @@ Route::get('/categories/{categories}/edit', [CategoryController::class, 'edit'])
 // route to update to category
 Route::put('/categories/{categories}/update', [CategoryController::class, 'update'])->name('categories.update');
 
-Route::delete('/categories/{categories}/delete', [CategoryController::class, 'delete'])->name('categories.delete');
+// Route::delete('/categories/{categories}/delete', [CategoryController::class, 'delete'])->name('categories.delete');
 
+Route::delete('/categories/{categories}/delete',[CategoryController::class, 'delete'])->name('categories.delete');
+Route::get('/categories/restore',[CategoryController::class, 'restore'])->name('categories.restore');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

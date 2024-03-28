@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appartment', function (Blueprint $table) {
+        Schema::create('apartment', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->references('id')->on('categories');
             $table->integer('price');
-            $table->char('status');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

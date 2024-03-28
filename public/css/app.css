@@ -1,20 +1,13 @@
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
-
 
 
 h1,h2{
     color:black;
     font-size:clamp(40px,8vw,105px);
 }
-.header{
-  /*  */
-}
-.add-button{
+.add{
   width: 50px;
-  color: blue;
   border-radius: 20px;
+  color: blue;
 }
 .delete-button{
     color: red;
@@ -23,11 +16,7 @@ h1,h2{
 .edit-button{
     color: green;
 }
-.btn-group{
-    flex-wrap: wrap;
-    display: flex;
-    padding: 10px;
-}
+
 .alert {
     color: green;
 }
@@ -81,4 +70,4 @@ h1,h2{
     color: white;
     transform: rotateY(180deg);
   }
-
+  
