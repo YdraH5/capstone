@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminMiddleware
+class RenterMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,13 +15,12 @@ class AdminMiddleware
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
-    {   
-        if (Auth::check() && Auth::user()->role == 'admin') {
+    {
+        if (Auth::check() && Auth::user()->role == 'renter') {
             
             return $next($request);
             
         }
-          return redirect()->route('renters.index')->with('success','Reports added successfully');
+        abort(401);
     }
     }
-

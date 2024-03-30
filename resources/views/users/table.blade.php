@@ -1,9 +1,9 @@
-<table class="table-auto w-full border-seperate border-2 ">
+<table class="table-auto w-full border-seperate ">
   <thead>
       <tr>
-          <th class="text-center w-24 border border-black-900">Name</th>
-          <th class="text-center w-20 border border-black-900">email</th>
-          <th class="text-center w-20 border border-black-900">Roles</th>
+          <th class="text-center border border-black-900">Name</th>
+          <th class="text-center border border-black-900">email</th>
+          <th class="text-center border border-black-900">Roles</th>
       </tr>
   </thead>
   <tbody>

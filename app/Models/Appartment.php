@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Appartment extends Model
 {
+    public $table = 'apartment';
     use HasFactory;
     protected $fillable = [
         'category_id',
         'price',
+        'room_number',
         'status'
     ];
 }

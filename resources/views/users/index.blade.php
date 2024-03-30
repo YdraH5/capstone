@@ -1,18 +1,11 @@
 @section('title', 'Users Management')
+@section('navs')
+<a href="{{ route('users.index') }}" class = "inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+  {{ __('Manage User') }}
+</a>
+@stop
 @section('content')
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex h-8">
-        <h2 class="font-semibold text-xl">
-            {{ __('Manage User') }}
-        </h2>
-        @section('search'){{-- to add search button for users --}}
-        <form action="/search" class="max-w-[480px] w-full px-4">
-            @csrf
-            @include('buttons.search')
-        </form>
-        @endsection {{--to end the section for search box--}}
-    </x-slot>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">

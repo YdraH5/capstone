@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AppartmentController;
@@ -26,44 +27,44 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // specify landing page 
-Route::middleware(['auth','verified','isAdmin'])->group( function(){
+Route::middleware(['auth','isAdmin','verified'])->group( function(){
+    // Route::get('/users', [AdminDashboardController::class, 'index'])->name('dashboard');
+
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::post('/categories/index', [CategoryController::class, 'create'])->name('categories.create');
+    Route::get('/categories/{categories}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('/categories/{categories}/update', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{categories}/delete',[CategoryController::class, 'delete'])->name('categories.delete');
+    Route::get('/categories/restore',[CategoryController::class, 'restore'])->name('categories.restore');
 
     Route::post('/reports/index', [ReportController::class, 'create'])->name('reports.create');
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
     Route::get('/appartment', [AppartmentController::class, 'index'])->name('appartment.index');
-    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-});
+    Route::post('/appartment/index', [AppartmentController::class, 'create'])->name('appartment.create');
 
+});
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/dashboard', function () {
+Route::middleware(['auth','verified','isAdmin'])->get('dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard'); // to assure that user is loggedin
+})->name('dashboard');
 
 Route::get('/available', function () {
     return view('available');
 })->name('available');
 
-// route to create new category
+Route::middleware(['auth','isRenter'])->get('renters/index', function () {
+    return view('renters.index');
+})->name('renters.index');
 
-// route to edit category
-Route::get('/categories/{categories}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
 
-// route to update to category
-Route::put('/categories/{categories}/update', [CategoryController::class, 'update'])->name('categories.update');
 
-// Route::delete('/categories/{categories}/delete', [CategoryController::class, 'delete'])->name('categories.delete');
-
-Route::delete('/categories/{categories}/delete',[CategoryController::class, 'delete'])->name('categories.delete');
-Route::get('/categories/restore',[CategoryController::class, 'restore'])->name('categories.restore');
-
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth','verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

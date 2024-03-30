@@ -1,6 +1,6 @@
 <div>
 <div class="overflow-x-auto ">
-<table class="table-auto w-full border-seperate  ">
+<table class="table-auto w-full border-seperate content-center">
   <thead> 
     @if (session('success'))
     <div class="alert alert-success">
@@ -8,9 +8,9 @@
     </div>    
     @endif
       <tr>
-          <th class="text-center w-25 border border-black-900 border-2">Category Name</th>
-          <th class="text-center w-45 border border-black-900 border-2">Description</th>
-          <th class="text-center w-30 border border-black-900 border-2">Actions</th>
+          <th class="text-center border border-black-900 border-2">Category Name</th>
+          <th class="text-center border border-black-900 border-2">Description</th>
+          <th class="text-center border border-black-900 border-2">Actions</th>
       </tr>
   </thead>
   <tbody>
@@ -19,7 +19,7 @@
           <td class="text-center border border-black-900 border-2">{{$category->name}}</td>
           <td class="text-center border border-black-900 border-2">{{$category->description}}</td>
           <td class="text-center border border-black-900 border-2">
-              <div class="btn-group flex content-center">
+              <div class="btn-group flex">
                   <a href="{{route('categories.edit',['categories'=>$category])}}">
                     @include('buttons.edit')
                   </a>

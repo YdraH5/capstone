@@ -1,5 +1,7 @@
 
-
+body{
+  background-color: rgba(255, 255, 255, 0.877);
+}
 h1,h2{
     color:black;
     font-size:clamp(40px,8vw,105px);
@@ -15,6 +17,8 @@ h1,h2{
 }
 .edit-button{
     color: green;
+}div:hover > span {
+  display: block;
 }
 
 .alert {

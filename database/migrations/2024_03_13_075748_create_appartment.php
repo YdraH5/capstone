@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('apartment', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->references('id')->on('categories');
+            $table->integer('room_number');
+            $table->unsignedBigInteger('renter_id')->nullable();
+            $table->foreign('renter_id')->references('id')->on('users');
             $table->integer('price');
-            $table->boolean('status')->default(true);
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('appartment');
+        Schema::dropIfExists('apartment');
     }
 };

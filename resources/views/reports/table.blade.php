@@ -28,14 +28,7 @@
             <td class="text-center border border-black-900 border-2">{{$report->date}}</td>
             <td class="text-center border border-black-900 border-2">
                 <div class="btn-group flex content-center">
-                    {{-- <a href="{{route('categories.edit',['categories'=>$report])}}"> --}}
-                      @include('buttons.edit')
-                    </a>
-                {{-- <form action="{{route('categories.delete',['categories'=>$report])}}"method="post">
-                    @csrf 
-                    @method('delete')
-                    @include('buttons.delete')
-                </form> --}}
+                 <input type="button" value="Take Action"class="cursor-pointer">
         @endforeach          
             </td>           
         </tr>

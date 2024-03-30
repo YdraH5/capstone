@@ -1,16 +1,14 @@
 @section('title', 'Report Mangement')
+@section('navs')
+<a href="{{ route('reports.index') }}" class = "inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+  {{ __('Manage Report') }}
+</a>
+@stop
 @section('content')
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-black-800 dark:text-black-200 leading-tight">
-            {{ __('Reports Management') }}
-        </h2>
-        @section('search'){{-- to add search button for categories --}}
-        <form action="/search" class="max-w-[480px] w-full px-4">
-            @csrf
-            @include('buttons.search')
-        </form>
-        @endsection {{--to end the section for search box--}}
+        
+        @include('buttons.add')
+        {{-- not final will make it modal later  --}}
         <div id="hide-div"class="">
             <form action="{{route('reports.create')}}"method="post">
                 @csrf
@@ -38,10 +36,6 @@
                 </div>
             </form>
         </div>
-    </x-slot>
-        @include('buttons.add')
-        {{-- not final will make it modal later  --}}
-
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}

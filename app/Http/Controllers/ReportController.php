@@ -7,7 +7,11 @@ use App\Models\Report;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 class ReportController extends Controller
-{
+{public function __construct()
+    {
+        $this->middleware('isAdmin');
+    }
+    
     public function index(Request $request){
         do {
             $ticket = Str::random(10);
