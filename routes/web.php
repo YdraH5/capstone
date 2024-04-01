@@ -32,18 +32,33 @@ Route::middleware(['auth','isAdmin','verified'])->group( function(){
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
-    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-    Route::post('/categories/index', [CategoryController::class, 'create'])->name('categories.create');
-    Route::get('/categories/{categories}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
-    Route::put('/categories/{categories}/update', [CategoryController::class, 'update'])->name('categories.update');
-    Route::delete('/categories/{categories}/delete',[CategoryController::class, 'delete'])->name('categories.delete');
-    Route::get('/categories/restore',[CategoryController::class, 'restore'])->name('categories.restore');
-
-    Route::post('/reports/index', [ReportController::class, 'create'])->name('reports.create');
-    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-
-    Route::get('/appartment', [AppartmentController::class, 'index'])->name('appartment.index');
-    Route::post('/appartment/index', [AppartmentController::class, 'create'])->name('appartment.create');
+    // controller group for category
+    Route::controller(CategoryController::class)->group(function() {
+        Route::get('/categories/index', 'index')->name('categories.index');
+        Route::post('/categories/index', 'create')->name('categories.create');
+        Route::get('/categories/{categories}/edit', 'edit')->name('categories.edit');
+        Route::put('/categories/{categories}/update', 'update')->name('categories.update');
+        Route::delete('/categories/{categories}/delete', 'delete')->name('categories.delete');
+        Route::get('/categories/restore','restore')->name('categories.restore');
+    });
+    // controller group for report
+    Route::controller(ReportController::class)->group(function() {
+        Route::post('/reports/create','create')->name('reports.create');
+        Route::get('/reports', 'index')->name('reports.index');
+    });
+    // controller group for category
+    Route::controller(AppartmentController::class)->group(function() {
+        Route::get('/appartment', 'index')->name('appartment.index');
+        Route::post('/appartment/create', 'create')->name('appartment.create');
+        Route::get('/appartment/{apartment}/edit', 'edit')->name('appartment.edit');
+        Route::put('/appartment/{apartment}/update', 'update')->name('appartment.update');
+        Route::delete('/appartment/{apartment}/delete', 'delete')->name('appartment.delete');
+    });
+    Route::controller(ImageController::class)->group(function() {
+        Route::get('/categories/{categoryId}/upload', 'index');
+        Route::post('/categories/{categoryId}/upload', 'store');
+        Route::get('/category-image/{categoryImageId}/delete', 'delete');
+    });
 
 });
 Route::get('/', function () {

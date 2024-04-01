@@ -69,3 +69,68 @@ function hideFunction() {
           }
 
       }
+      document.addEventListener("DOMContentLoaded", function() {
+        const modal = document.getElementById('crud-modal');
+        const modalToggle = document.querySelector('[data-modal-toggle="crud-modal"]');
+        const closeModalButtons = modal.querySelectorAll('[data-modal-toggle="crud-modal"]');
+
+        modalToggle.addEventListener('click', function() {
+            modal.classList.toggle('hidden');
+        });
+
+        closeModalButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                modal.classList.add('hidden');
+            });
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        const modal = document.getElementById('crud-modal-apartment');
+        const modalToggle = document.querySelector('[data-modal-toggle="crud-modal-apartment"]');
+        const closeModalButtons = modal.querySelectorAll('[data-modal-toggle="crud-modal-apartment"]');
+
+        modalToggle.addEventListener('click', function() {
+            modal.classList.toggle('hidden');
+        });
+
+        closeModalButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                modal.classList.add('hidden');
+            });
+        });
+    });
+
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const modalToggleButtons = document.querySelectorAll('[data-modal-toggle]');
+
+      modalToggleButtons.forEach(function(button) {
+          button.addEventListener('click', function() {
+              const targetModalId = this.getAttribute('data-modal-target');
+              const targetModal = document.getElementById(targetModalId);
+              targetModal.classList.toggle('hidden');
+          });
+      });
+  });
+  document.getElementById('showFormButton').addEventListener('click', function() {
+      document.getElementById('uploadForm').classList.toggle('hidden');
+    });
+
+    
+// function expandImage(img, overlayId, expandedImageId) {
+//   var overlay = document.getElementById(overlayId);
+//   var expandedImgContainer = document.getElementById(expandedImageId);
+//   var fullImg = img.cloneNode(true);
+//   expandedImgContainer.innerHTML = ''; // Clear any previous content
+//   expandedImgContainer.appendChild(fullImg);
+//   overlay.style.display = "block";
+//   expandedImgContainer.style.display = "block";
+// }
+
+// function closeImage(overlayId, expandedImageId) {
+//   var overlay = document.getElementById(overlayId);
+//   var expandedImgContainer = document.getElementById(expandedImageId);
+//   overlay.style.display = "none";
+//   expandedImgContainer.style.display = "none";
+// }

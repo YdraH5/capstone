@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Images;
 
 class CategoryController extends Controller
 {
@@ -42,15 +43,9 @@ class CategoryController extends Controller
        $categories->delete();
        return redirect(route('categories.index'))->with('success','Category deleted successfully');
     }
-
-    // show trash data or deleted data 
-    // NOTE: this is not yet shown in the frontend
     public function trash(){
         $Category = Category::onlyTrashed()->latest()->get();
     }
-
-    // to restore all the deleted data
-    // NOTE: not yet shown in the frontend but working
     public function restore(){
         Category::whereNotNull('deleted_at')->restore();
         return redirect(route('categories.index'))->with('success','Category restored successfully');
