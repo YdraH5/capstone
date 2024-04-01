@@ -14,7 +14,7 @@ class AppartmentController extends Controller
         $apartment = DB::table('apartment')
         ->join('categories', 'categories.id', '=', 'apartment.category_id')
         ->leftjoin('users', 'users.id', '=', 'apartment.renter_id')
-        ->select('categories.name as categ_name','users.name as renters_name','apartment.room_number','apartment.price','apartment.status')
+        ->select('categories.name as categ_name','users.name as renters_name','apartment.id','apartment.room_number','apartment.price','apartment.status')
         ->get();
         return view('appartment.index',['categories'=>$categories,'apartment'=>$apartment]);
     }
@@ -28,4 +28,23 @@ class AppartmentController extends Controller
         $newApartment = Appartment::create($data);
         return redirect()->route('appartment.index')->with('success','Apartment added successfully');
     }
+    public function edit(Appartment $apartment){
+        $categories = Category::all();
+        return view('appartment.edit',['apartment' => $apartment,'categories'=>$categories]);
+    }
+
+    public function update(Appartment $apartment, Request $request){
+        $data = $request->validate([
+            'category_id' => 'required',
+            'room_number'=>'required|numeric',
+            'price'=>'required|numeric',
+            'status'=>'required|string|max:50'
+        ]);
+        $apartment->update($data);
+        return redirect(route('appartment.index'))->with('success','Apartment updated successfully');
+    }
+    public function delete(Appartment $apartment){
+        $apartment->delete();
+        return redirect(route('appartment.index'))->with('success','Apartment deleted successfully');
+     }
 }

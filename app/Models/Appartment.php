@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Appartment extends Model
 {
-    public $table = 'apartment';
+        public $table = 'apartment';
     use HasFactory;
     protected $fillable = [
         'category_id',

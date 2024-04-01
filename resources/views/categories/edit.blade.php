@@ -1,22 +1,23 @@
 @section('title', 'Edit Category')
+@section('navs')
+<a href="{{ route('categories.index') }}" class = "inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+  {{ __('Manage Category') }}
+</a>
+@stop
+
 @section('content')
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Edit Category') }}
-        </h2>
-    </x-slot>
-    <form action="{{route('categories.update',['categories' => $categories])}}"method="post">
+    <form action="{{route('categories.update',['categories' => $categories])}}"method="post"class="">
         @csrf
         @method('put')
-        <div>
+        <div class="h-20">
             <label for="name">Category Name</label>
-            <input type="text" name="name" placeholder="Name"value="{{$categories->name}}">
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <input type="text" name="name" placeholder="Name"value="{{$categories->name}}"class="w-full space-y-1">
+            <x-input-error :messages="$errors->get('name')" class="mt-2 mb-5" />
         </div>
-        <div>
-            <label for="description">Description</label>
-            <input type="text" name="description" placeholder="Description"value="{{$categories->description}}">
+        <div class="h-20">
+            <label for="description" class="mt-2">Description</label>
+            <input type="text" name="description" placeholder="Description"value="{{$categories->description}}" class="w-full ">
             <x-input-error :messages="$errors->get('description')" class="mt-2" />
         </div>
         <div>
@@ -25,3 +26,4 @@
     </form>
     @stop           
 </x-app-layout>
+

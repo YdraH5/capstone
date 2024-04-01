@@ -1,7 +1,6 @@
-<div>
 <div class="overflow-x-auto ">
-<table class="table-auto w-full border-seperate content-center">
-  <thead> 
+  <table class="container mx-auto mt-2">
+    <thead> 
     @if (session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
@@ -10,26 +9,41 @@
       <tr>
           <th class="text-center border border-black-900 border-2">Category Name</th>
           <th class="text-center border border-black-900 border-2">Description</th>
+          <th class="text-center border border-black-900 border-2">Images</th>
           <th class="text-center border border-black-900 border-2">Actions</th>
       </tr>
   </thead>
   <tbody>
       @foreach($categories as $category)
       <tr>
-          <td class="text-center border border-black-900 border-2">{{$category->name}}</td>
-          <td class="text-center border border-black-900 border-2">{{$category->description}}</td>
           <td class="text-center border border-black-900 border-2">
-              <div class="btn-group flex">
-                  <a href="{{route('categories.edit',['categories'=>$category])}}">
-                    @include('buttons.edit')
-                  </a>
-              <form action="{{route('categories.delete',['categories'=>$category])}}"method="post">
-                  @csrf 
-                  @method('delete')
-                  @include('buttons.delete')
+            {{$category->name}}
+          </td>
+          <td class="text-center border border-black-900 border-2">
+            {{$category->description}}
+          </td>
+          <td class="text-center border border-black-900 border-2">
+            <div class="flex justify-center items-center">
+              <a href="{{url('categories/'.$category->id.'/upload')}}" class="text-blue-500">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>              
+              </a>
+            </div>
+          </td>
+          <td class="text-center border border-black-900 border-2">
+            <div class="flex justify-center items-center">
+              <a href="{{route('categories.edit',['categories'=>$category])}}" class="mr-2">
+                @include('buttons.edit')
+              </a>
+              <form action="{{route('categories.delete',['categories'=>$category])}}" method="post">
+                @csrf 
+                @method('delete')
+                @include('buttons.delete')
               </form>
-      @endforeach          
-          </td>           
+            </div>
+          </td>
+          @endforeach        
       </tr>
   </tbody>
 </div>

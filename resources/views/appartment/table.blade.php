@@ -34,18 +34,18 @@
             <td class="text-center border border-black-900 border-2">{{$apartments->price}}/month</td>
             <td class="text-center border border-black-900 border-2">{{$apartments->status}}</td>
             <td class="text-center border border-black-900 border-2">
-                {{-- <div class="btn-group flex">
-                    <a href="{{route('categories.edit',['categories'=>$apartments])}}">
-                      @include('buttons.edit')
-                    </a>
-                <form action="{{route('categories.delete',['categories'=>$apartments])}}"method="post">
-                    @csrf 
-                    @method('delete')
-                    @include('buttons.delete')
-                </form> --}}
-        @endforeach  
-        
-            </td>           
+                <div class="flex justify-center items-center">
+                    <a href="{{route('appartment.edit',['apartment'=>$apartments->id])}}" class="mr-2">
+                        @include('buttons.edit')
+                     </a>
+                    <form action="{{route('appartment.delete',['apartment'=>$apartments->id])}}" method="post">
+                        @csrf 
+                        @method('delete')
+                        @include('buttons.delete')
+                    </form>
+                </div>
+                  </td>
+                  @endforeach  
         </tr>
     </tbody>
   </div>

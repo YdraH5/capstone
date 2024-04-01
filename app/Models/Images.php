@@ -7,13 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Images extends Model
 {
+    protected $table = 'category_images';
+
     use HasFactory;
 
-    protected $fillable = ['url','category_id'];
+    protected $fillable = [
+        'category_id',
+        'image'
+];
 
-    public function categoryImage()
-    {
-        return $this->belongsTo(Category::class);
-    }
+    // public function categoryImage()
+    // {
+    //     return $this->belongsTo(Category::class);
+    // }
 
 }
