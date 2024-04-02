@@ -1,21 +1,63 @@
-// function to hide adding form for categories and show when click
+// Get modal element
+const modal = document.getElementById('modal');
+// Get open modal button
+const openModalButton = document.getElementById('openModalButton');
+// Get close modal button
+const closeModalButton = document.getElementById('closeModalButton');
+// Get modal form
+const modalForm = document.getElementById('modalForm');
 
-function hideFunction() {
-    var x = document.getElementById("hide-div");
-    if (x.style.display == "none" || x.style.display == "") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
-    }
+// Function to open modal
+function openModal() {
+  modal.classList.remove('hidden');
+}
+
+// Function to close modal
+function closeModal() {
+  modal.classList.add('hidden');
+}
+
+// Event listener for open modal button
+openModalButton.addEventListener('click', openModal);
+// Event listener for close modal button
+closeModalButton.addEventListener('click', closeModal);
+// Event listener to close modal when clicking outside modal
+window.addEventListener('click', (event) => {
+  if (event.target === modal) {
+    closeModal();
   }
-  function hideTable() {
-    var y = document.getElementById("hide-table");
-    if (y.style.display == "none" || y.style.display == "") {
-      y.style.display = "block";
-    } else {
-      y.style.display = "none";
-    }
+});
+
+// Event listener for modal form submit
+modalForm.addEventListener('submit', (event) => {
+  // No need to prevent default behavior
+  // Here you can handle form submission
+  // For simplicity, let's just log the form data
+  const formData = new FormData(modalForm);
+  for (const [name, value] of formData.entries()) {
+    console.log(`${name}: ${value}`);
   }
+  // You can also perform further actions here like making an AJAX request
+  // Close modal after form submission if needed
+  // closeModal();
+});
+
+// function hideFunction() {
+//     var x = document.getElementById("hide-div");
+//     if (x.style.display == "none" || x.style.display == "") {
+//       x.style.display = "block";
+//     } else {
+//       x.style.display = "none";
+//     }
+//   }
+//   function hideTable() {
+//     var y = document.getElementById("hide-table");
+//     if (y.style.display == "none" || y.style.display == "") {
+//       y.style.display = "block";
+//     } else {
+//       y.style.display = "none";
+//     }
+//   }
       const sidebar = document.querySelector("aside");
       const maxSidebar = document.querySelector(".max")
       const miniSidebar = document.querySelector(".mini")
@@ -162,7 +204,14 @@ function hideFunction() {
     // Show the initial slide
     showSlide(currentIndex);
 });
+tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {}
+    }
+  }
 
+  
 // function expandImage(img, overlayId, expandedImageId) {
 //   var overlay = document.getElementById(overlayId);
 //   var expandedImgContainer = document.getElementById(expandedImageId);

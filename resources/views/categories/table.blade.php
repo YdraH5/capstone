@@ -1,5 +1,5 @@
 <div class="overflow-x-auto ">
-  <table class="container mx-auto mt-2">
+  <table class="table-auto h-full w-full border-seperate">
     <thead> 
     @if (session('success'))
     <div class="alert alert-success">

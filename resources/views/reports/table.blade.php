@@ -1,11 +1,13 @@
 <div>
   <div class="overflow-x-auto ">
-  <table class="table-auto w-full border-seperate">
+  <table class="table-auto h-full w-full border-seperate">
     <thead> 
       @if (session('success'))
       <div class="alert alert-success">
           {{ session('success') }}
-      </div>    
+      </div>
+
+  
       @endif
         <tr>
             <th class="text-center border border-black-900 border-2">Reporters</th>

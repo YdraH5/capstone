@@ -1,5 +1,4 @@
-
-<table class="container mx-auto mt-2">
+<table class="table-auto h-full w-full border-seperate">
     <thead>
         <tr>
             <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">

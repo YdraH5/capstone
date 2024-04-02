@@ -1,51 +1,53 @@
 @section('title', 'Report Mangement')
-@section('navs')
-<a href="{{ route('reports.index') }}" class = "inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-  {{ __('Manage Report') }}
-</a>
-@stop
+
 @section('content')
 <x-app-layout>
-        
+  <x-slot name="header">
+    <h2 class="font-semibold text-xl text-black-800 dark:text-black-200 leading-tight">
+        {{ __('REPORTS') }}
+    </h2>
+    <div class="flex justify-end px-10 h-5"> 
+      <button id="openModalButton"class="">
         @include('buttons.add')
-        {{-- not final will make it modal later  --}}
-        <div id="hide-div">
-            <form action="{{route('reports.create')}}"method="post">
+      </button> 
+</x-slot>
+         <div id="modal" class="hidden fixed inset-0 z-50 overflow-auto bg-gray-500 bg-opacity-75 flex justify-center items-center h-screen">
+            <div class="bg-white p-4 rounded-lg shadow-lg sm:w-96 w-full">
+                <h1 class="text-2xl font-bold mb-4 text-center">Report</h1>
+                <!-- Form -->
+              <form id="modalForm" class="space-y-4"action="{{route('reports.create')}}"method="post">
                 @csrf
                 @method('post')
-                <div class="grid gap-0 sm,md:grid-cols-1 lg:grid-cols-3">
-                    <input type="number" name="user_id"value="{{Auth::user()->id;}}"hidden> 
-                    <input type="text" name="ticket"value="{{$ticket}}"hidden>     
-    
+                <input type="number" name="user_id"value="{{Auth::user()->id;}}"hidden> 
+                <input type="text" name="ticket"value="{{$ticket}}"hidden>  
                 <div>
-                  <select name="report_category" id="cars" class="h-10 block mt-1 w-full space-x-8 sm:-my-px sm:ms-10">
-                    <option value="">Report Category</option>
-                    <option value="maintenance">maintenance</option>
-                    <option value="Room service">Room service</option>
-                    <option value="loud">loud</option>
-                  </select>
-                    <x-input-error :messages="$errors->get('report_category')" class="mt-2" />
+                  <label for="name" class="block font-medium opacity-70">Report Category</label>
+                    <select name="report_category" id="cars" class="w-full h-10 rounded-lg opacity-50">
+                        <option value="">Report Category</option>
+                        <option value="maintenance">maintenance</option>
+                        <option value="Room service">Room service</option>
+                        <option value="loud">loud</option>
+                    </select>
                 </div>
                 <div>
-                  <input type="text" name="description" placeholder="Description"class="h-10 block mt-1 w-full space-x-8 sm:-my-px sm:ms-10">
-                  <x-input-error :messages="$errors->get('description')" class="mt-2" />
+                  <label for="email" class="block font-medium opacity-70">Description</label>
+                  <textarea id="description" rows="4" class="w-full rounded-lg " name="description" placeholder="Write product description here"></textarea>   
                 </div>
-                <div class="space-x-8 sm:-my-px sm:ms-10">
-                    <input type="submit" value="Add to Report">
+                <div class="flex justify-end">
+                    <div>
+                  <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
                 </div>
+                  <button id="closeModalButton" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded ml-2">Close</button>
                 </div>
-            </form>
+              </form>
+            </div>
+          </div>
         </div>
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>    
-    @endif
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="flex flex-col ">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg ">
+                <div class="flex flex-col">
                     
                           @include('reports.table')     
                 </div>

@@ -70,7 +70,7 @@ Route::middleware(['auth','isAdmin','verified'])->group( function(){
  });
 Route::get('/', function () {
     $apartment = DB::table('apartment')
-        ->rightjoin('categories', 'categories.id', '=', 'apartment.category_id')
+        ->leftjoin('categories', 'categories.id', '=', 'apartment.category_id')
         ->leftjoin('users', 'users.id', '=', 'apartment.renter_id')
         ->select('apartment.id','categories.id','categories.name as categ_name','categories.description','apartment.price','apartment.status')
         ->get();

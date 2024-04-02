@@ -1,6 +1,6 @@
 <div>
   <div class="overflow-x-auto ">
-  <table class="table-auto w-full border-seperate content-center">
+  <table class="table-auto h-full w-full border-seperate">
     <thead> 
       @if (session('success'))
       <div class="alert alert-success">

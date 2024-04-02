@@ -1,11 +1,19 @@
 @section('title', 'Users Management')
-@section('navs')
-<a href="{{ route('users.index') }}" class = "inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-  {{ __('Manage User') }}
-</a>
-@stop
+
 @section('content')
 <x-app-layout>
+    <x-slot name="header">
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-black-800 dark:text-black-200 leading-tight">
+                {{ __('USERS') }}
+            </h2>
+            <div class="flex items-center">
+                <button id="openModalButton" class="px-4 py-2 text-white rounded-md">
+                    @include('buttons.add')
+                </button>
+            </div>
+        </div>
+    </x-slot>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">

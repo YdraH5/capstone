@@ -2,7 +2,7 @@
 <!-- https://github.com/neurolinker/popice -->
 
 <body class = "body bg-white dark:bg-[#0F172A]">
-  <div class = "fixed w-full z-30 flex bg-white dark:bg-[#0F172A] p-2 items-center justify-center h-16 px-10">
+  <div class = "fixed w-full z-30 flex bg-white dark:bg-[#0F172A] p-2 items-center justify-center h-20 px-10">
       <div class = "logo ml-12 dark:text-white  transform ease-in-out duration-500 flex-none h-full flex items-center justify-center">
           <div class="shrink-0 flex items-center">
             <a href="{{ route('dashboard') }}">
@@ -144,23 +144,8 @@
   </aside>
   <!-- CONTENT -->
   <div class = "content ml-12 transform ease-in-out duration-500 pt-20 px-2 md:px-5 pb-4 ">
-      <nav class = "flex px-5 py-3 text-gray-700  rounded-lg bg-gray-50 dark:bg-[#1E293B] " aria-label="Breadcrumb">
-          <ol class = "inline-flex items-center space-x-1 md:space-x-3">
-              <li class = "inline-flex items-center">
-                  
-                  @yield('navs')
-              </li>
-              <li>
-                  <div class = "flex items-center">
-                      <svg class = "w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path></svg>
-                      @yield('navs2')
-                  </div>
-                  
-              </li>
-              
-          </ol>
-      </nav>
-<div class = "flex flex-wrap my-5 -mx-2">
+      
+    <div class = "flex flex-wrap my-5 -mx-2">
           
           
      

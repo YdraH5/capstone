@@ -1,4 +1,4 @@
-<table class="table-auto w-full border-seperate ">
+<table class="table-auto w-full border-seperate max-w-7xl">
   <thead>
       <tr>
           <th class="text-center border border-black-900">Name</th>
