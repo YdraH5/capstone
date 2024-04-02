@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>NRN Building</title>
-  <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
 
-      <!-- Scripts -->
-      <script src="https://cdn.tailwindcss.com"></script>
-      @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body>
   
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-300">
   <!-- Primary Navigation Menu -->
@@ -36,17 +20,12 @@
               </div>
               {{--container for login and register  --}}
           <div class="inline-flex absolute top-4 right-2 space-x-reverse space-y-0 ">
-            
-                <div class="hidden space-x-1 sm:-my-px sm:ms-10 sm:flex">
-                  {{-- for search box --}}
-                  <form action="/search" class="max-w-[480px] w-full px-4">
-                      @csrf
-                      @include('buttons.search')
-                  </form>
-                </div>
                 <div class="hidden space-x-1 sm:-my-px sm:ms-10 sm:flex ">
                   <x-nav-link  :href="route('login')" :active="request()->routeIs('login')">
-                    {{ __('Login') }}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>                    
+                    {{ __('Log in') }}
                   </x-nav-link>
                 </div>
             </div>
@@ -79,9 +58,4 @@
 
     </div>
   </div>
-
-
 </nav>
-
-</body>
-</html>

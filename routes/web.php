@@ -6,7 +6,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AppartmentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\VisitorPageController;
 use App\Http\Controllers\ReportController;
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\User;
@@ -58,12 +61,30 @@ Route::middleware(['auth','isAdmin','verified'])->group( function(){
         Route::get('/categories/{categoryId}/upload', 'index');
         Route::post('/categories/{categoryId}/upload', 'store');
         Route::get('/category-image/{categoryImageId}/delete', 'delete');
+
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
-});
+ });
 Route::get('/', function () {
-    return view('welcome');
+    $apartment = DB::table('apartment')
+        ->rightjoin('categories', 'categories.id', '=', 'apartment.category_id')
+        ->leftjoin('users', 'users.id', '=', 'apartment.renter_id')
+        ->select('apartment.id','categories.id','categories.name as categ_name','categories.description','apartment.price','apartment.status')
+        ->get();
+    $images=[];
+        foreach ($apartment as $category){
+            $category_id = $category->id;
+            $categoryImages = DB::table('category_images')
+                        ->where('category_id', $category_id)
+                        ->get();
+        $images[$category->id] = $categoryImages;
+        }
+    return view('visitors/index',compact('apartment', 'images'));
 })->name('welcome');
+// Route::get('/visitors/index',[VisitorPageController::class,'display'])->name('visit.index');
 
 Route::middleware(['auth','verified','isAdmin'])->get('dashboard', function () {
     return view('dashboard');
@@ -77,12 +98,5 @@ Route::middleware(['auth','isRenter'])->get('renters/index', function () {
     return view('renters.index');
 })->name('renters.index');
 
-
-
-Route::middleware(['auth','verified'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__.'/auth.php';

@@ -99,9 +99,6 @@ function hideFunction() {
             });
         });
     });
-
-
-
     document.addEventListener("DOMContentLoaded", function() {
       const modalToggleButtons = document.querySelectorAll('[data-modal-toggle]');
 
@@ -116,8 +113,56 @@ function hideFunction() {
   document.getElementById('showFormButton').addEventListener('click', function() {
       document.getElementById('uploadForm').classList.toggle('hidden');
     });
+    $(document).ready(function(){
+        $(".owl-carousel").owlCarousel({
+            loop:true,
+            margin:10,
+            nav:true,
+            responsive:{
+                0:{
+                    items:1
+                },
+                600:{
+                    items:3
+                },
+                1000:{
+                    items:5
+                }
+            }
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+    const carousel = document.getElementById('default-carousel');
+    const carouselItems = carousel.querySelectorAll('[data-carousel-item]');
+    let currentIndex = 0;
 
-    
+    function showSlide(index) {
+        carouselItems.forEach(function(item, i) {
+            item.classList.toggle('active', i === index);
+        });
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % carouselItems.length;
+        showSlide(currentIndex);
+    }
+
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
+        showSlide(currentIndex);
+    }
+
+    // Attach event listeners to next and previous buttons
+    const prevButton = carousel.querySelector('[data-carousel-prev]');
+    const nextButton = carousel.querySelector('[data-carousel-next]');
+
+    prevButton.addEventListener('click', prevSlide);
+    nextButton.addEventListener('click', nextSlide);
+
+    // Show the initial slide
+    showSlide(currentIndex);
+});
+
 // function expandImage(img, overlayId, expandedImageId) {
 //   var overlay = document.getElementById(overlayId);
 //   var expandedImgContainer = document.getElementById(expandedImageId);

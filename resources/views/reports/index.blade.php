@@ -9,7 +9,7 @@
         
         @include('buttons.add')
         {{-- not final will make it modal later  --}}
-        <div id="hide-div"class="">
+        <div id="hide-div">
             <form action="{{route('reports.create')}}"method="post">
                 @csrf
                 @method('post')
