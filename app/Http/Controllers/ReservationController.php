@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Appartment;
-use App\Models\Category;
 use Illuminate\Support\Facades\DB;
-class VisitorPageController extends Controller
+
+use Illuminate\Http\Request;
+
+class ReservationController extends Controller
 {
-    public function display(Appartment $apartment){
+    public function index(Appartment $apartment){
         $apartments = DB::table('apartment')
         ->join('categories', 'categories.id', '=', 'apartment.category_id')
         ->leftjoin('users', 'users.id', '=', 'apartment.renter_id')
@@ -17,14 +18,7 @@ class VisitorPageController extends Controller
         ->where('apartment.id',$apartment->id)
         ->limit(1)
         ->get();
-        $images=[];
-        foreach ($apartments as $category){
-            $category_id = $category->id;
-            $categoryImages = DB::table('category_images')
-                        ->where('category_id', $category_id)
-                        ->get();
-        $images[$category->id] = $categoryImages;
-        }
-        return view('/visitors/detail',['apartment'=>$apartments,'images'=>$images]);
+        return view('reserve.form',['apartment'=>$apartments]);
     }
+    
 }

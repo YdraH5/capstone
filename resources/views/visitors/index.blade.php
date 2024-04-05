@@ -97,10 +97,11 @@
           <span class="text-gray-700 font-medium">Price:</span>
           <span class="text-gray-700">{{$apartments->price}}</span>
       </div>
-      
-      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mt-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          View Details
-      </button>
+      <a href="{{route('visitors.display',['apartment'=>$apartments->id])}}">
+        <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mt-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            View Details
+        </button>
+        </a>
   </div>
 </div>
 @endforeach

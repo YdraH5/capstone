@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\VisitorPageController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Auth;
@@ -82,9 +83,16 @@ Route::get('/', function () {
                         ->get();
         $images[$category->id] = $categoryImages;
         }
-    return view('visitors/index',compact('apartment', 'images'));
+    return view('/visitors/index',compact('apartment', 'images'));
 })->name('welcome');
-// Route::get('/visitors/index',[VisitorPageController::class,'display'])->name('visit.index');
+
+Route::get('visitors/{apartment}/detail',[VisitorPageController::class,'display'])->name('visitors.display');
+
+Route::get('/renters/{apartment}/index',[ReservationController::class,'index'])->name('reserve.form');
+
+Route::get('/reserve/index', function () {
+    return view('/reserve/index');
+});
 
 Route::middleware(['auth','verified','isAdmin'])->get('dashboard', function () {
     return view('dashboard');

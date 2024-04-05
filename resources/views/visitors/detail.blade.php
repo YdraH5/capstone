@@ -45,7 +45,7 @@
     <div class="max-w-2xl w-full">
       <div class="relative text-center">
         <h1 class="text-red-500">SENTENCE NOT CONSTRUCT YET!!!</h1>
-        <a href="{{route('reserve',['apartment'=>$detail->id])}}">
+        <a href="{{route('reserve.form',['apartment'=>$detail->id])}}">
           <input type="button" value="Reserve"class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mt-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
         </a>
       </div>

@@ -41,7 +41,7 @@
                 
                       <h2 class="title-font font-medium text-3xl text-gray-900">
                                         {{\Illuminate\Support\Facades\DB::table('apartment')
-                                        ->whereNull('status')
+                                        ->whereNull('renter_id')
                                         ->count()}}</h2>
                 <p class="leading-relaxed">Vacant Room</p>
               </div>
