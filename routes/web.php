@@ -88,10 +88,9 @@ Route::get('/', function () {
 
 Route::get('visitors/{apartment}/detail',[VisitorPageController::class,'display'])->name('visitors.display');
 
-Route::get('/renters/{apartment}/index',[ReservationController::class,'index'])->name('reserve.form');
-
-Route::get('/reserve/index', function () {
-    return view('/reserve/index');
+// Route::get('/renters/{apartment}/index',[ReservationController::class,'index'])->name('reserve.form');
+Route::middleware(['auth'])->group( function(){
+    Route::get('/reserve/{apartment}/index',[ReservationController::class,'index'])->name('reserve.index');
 });
 
 Route::middleware(['auth','verified','isAdmin'])->get('dashboard', function () {

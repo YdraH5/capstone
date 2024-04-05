@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appartment;
+use App\Models\user;
+
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
@@ -10,7 +12,7 @@ use Illuminate\Http\Request;
 class ReservationController extends Controller
 {
     public function index(Appartment $apartment){
-        $apartments = DB::table('apartment')
+        $apartment = DB::table('apartment')
         ->join('categories', 'categories.id', '=', 'apartment.category_id')
         ->leftjoin('users', 'users.id', '=', 'apartment.renter_id')
         ->leftjoin('category_images', 'category_images.category_id','=','categories.id')
@@ -18,7 +20,9 @@ class ReservationController extends Controller
         ->where('apartment.id',$apartment->id)
         ->limit(1)
         ->get();
-        return view('reserve.form',['apartment'=>$apartments]);
+        return view('reserve.index',['apartment'=>$apartment]);
     }
-    
+    public function form(User $user){
+
+    }
 }

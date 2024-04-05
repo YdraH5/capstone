@@ -1,5 +1,7 @@
 @section('title', '')
 @include('layouts-renter.app')
+
+@foreach($apartment as $reserve)
 <div class="container mx-auto p-4">
   <div class="bg-white shadow-md rounded px-8 py-6">
       <div class="mb-4">
@@ -10,13 +12,13 @@
           <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
               Full Name
           </label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Enter your full name">
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text"value="{{Auth::user()->name}}"readonly>
       </div>
       <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
               Email Address
           </label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Enter your email address">
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email"value="{{Auth::user()->email}}"readonly >
       </div>
       <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="apartment">
@@ -28,6 +30,12 @@
               <option value="Studio">Studio</option>
               <option value="Penthouse">Penthouse</option>
           </select>
+      </div>
+      <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="pricePerNight">
+              Price Per Month ($)
+          </label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="pricePerNight" type="number" min="0" step="0.01"value="{{$reserve->price}}" readonly>
       </div>
       <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="checkin">
@@ -57,11 +65,12 @@
       </div>
   </div>
 </div>
-
+@endforeach
 <script>
   document.getElementById('checkin').addEventListener('change', calculateTotalPrice);
   document.getElementById('checkout').addEventListener('change', calculateTotalPrice);
   document.getElementById('apartment').addEventListener('change', calculateTotalPrice);
+  document.getElementById('pricePerNight').addEventListener('input', calculateTotalPrice);
 
   function calculateTotalPrice() {
       // Calculate total price based on reservation details
@@ -69,6 +78,13 @@
       const apartmentType = document.getElementById('apartment').value;
       const checkinDate = new Date(document.getElementById('checkin').value);
       const checkoutDate = new Date(document.getElementById('checkout').value);
+      const pricePerNight = parseFloat(document.getElementById('pricePerNight').value);
+
+      // Ensure price per night is valid
+      if (isNaN(pricePerNight) || pricePerNight <= 0) {
+          alert("Please enter a valid price per night.");
+          return;
+      }
 
       // Ensure minimum reservation period of 1 month
       const minReservationPeriod = new Date(checkinDate);
@@ -80,26 +96,6 @@
       }
 
       const numberOfNights = Math.ceil((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24)); // Calculate number of nights
-
-      let pricePerNight;
-
-      // Set price per night based on apartment type
-      switch (apartmentType) {
-          case '1 Bedroom':
-              pricePerNight = 100; // Example price for 1 Bedroom
-              break;
-          case '2 Bedroom':
-              pricePerNight = 150; // Example price for 2 Bedroom
-              break;
-          case 'Studio':
-              pricePerNight = 80; // Example price for Studio
-              break;
-          case 'Penthouse':
-              pricePerNight = 250; // Example price for Penthouse
-              break;
-          default:
-              pricePerNight = 0;
-      }
 
       const totalPrice = pricePerNight * numberOfNights;
 

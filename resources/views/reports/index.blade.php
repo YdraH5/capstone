@@ -18,7 +18,7 @@
               <form id="modalForm" class="space-y-4"action="{{route('reports.create')}}"method="post">
                 @csrf
                 @method('post')
-                <input type="number" name="user_id"value="{{Auth::user()->id;}}"hidden> 
+                <input type="number" name="user_id"value="{{Auth::user()->id}}"hidden> 
                 <input type="text" name="ticket"value="{{$ticket}}"hidden>  
                 <div>
                   <label for="name" class="block font-medium opacity-70">Report Category</label>
