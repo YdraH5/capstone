@@ -6,12 +6,13 @@ use App\Models\Appartment;
 use App\Models\user;
 
 use Illuminate\Support\Facades\DB;
-
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ReservationController extends Controller
 {
     public function index(Appartment $apartment){
+       
         $apartment = DB::table('apartment')
         ->join('categories', 'categories.id', '=', 'apartment.category_id')
         ->leftjoin('users', 'users.id', '=', 'apartment.renter_id')
@@ -20,7 +21,9 @@ class ReservationController extends Controller
         ->where('apartment.id',$apartment->id)
         ->limit(1)
         ->get();
-        return view('reserve.index',['apartment'=>$apartment]);
+        foreach ($apartment as $categ_id)
+        $categories = Category::all()->where('id',$categ_id->categ_id);
+        return view('reserve.index',['apartment'=>$apartment,'category'=>$categories]);
     }
     public function form(User $user){
 
