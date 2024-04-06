@@ -69,7 +69,7 @@ Route::middleware(['auth','isAdmin','verified'])->group( function(){
     });
 
  });
-Route::get('/', function () {
+ Route::get('/', function () {
     $apartment = DB::table('apartment')
         ->leftjoin('categories', 'categories.id', '=', 'apartment.category_id')
         ->leftjoin('users', 'users.id', '=', 'apartment.renter_id')
@@ -88,9 +88,12 @@ Route::get('/', function () {
 
 Route::get('visitors/{apartment}/detail',[VisitorPageController::class,'display'])->name('visitors.display');
 
-// Route::get('/renters/{apartment}/index',[ReservationController::class,'index'])->name('reserve.form');
-Route::middleware(['auth'])->group( function(){
+Route::middleware(['auth','verified'])->group( function(){
     Route::get('/reserve/{apartment}/index',[ReservationController::class,'index'])->name('reserve.index');
+    Route::post('/reserve/create',[ReservationController::class,'create'])->name('reserve.create');
+    Route::get('/reserve/wait',[ReservationController::class,'waiting'])->name('reserve.wait');
+
+    
 });
 
 Route::middleware(['auth','verified','isAdmin'])->get('dashboard', function () {
@@ -101,9 +104,9 @@ Route::get('/available', function () {
     return view('available');
 })->name('available');
 
-Route::middleware(['auth','isRenter'])->get('renters/index', function () {
-    return view('renters.index');
-})->name('renters.index');
+// Route::middleware(['auth','isRenter'])->get('renters/index', function () {
+//     return view('renters.index');
+// })->name('renters.index');
 
 
 require __DIR__.'/auth.php';

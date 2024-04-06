@@ -30,6 +30,15 @@
                         </select>
                     </div>
                     <div>
+                        <label class="block font-medium opacity-70">Status</label>
+                        <select name="building"class="w-full h-10 rounded-lg">
+                            <option value="" disabled selected hidden>Building</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                        </select>
+                        <x-input-error :messages="$errors->get('building')" class="mt-2" />
+                    </div>
+                    <div>
                         <label class="block font-medium opacity-70">Room Number</label>
                         <input type="number" name="room_number" placeholder="Room #" class="w-full h-10 rounded-lg">
                         <x-input-error :messages="$errors->get('room_number')" class="mt-2" />  

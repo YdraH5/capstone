@@ -1,3 +1,4 @@
+
 // Get modal element
 const modal = document.getElementById('modal');
 // Get open modal button

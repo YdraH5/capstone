@@ -21,6 +21,7 @@ class AppartmentController extends Controller
     public function create(Request $request){
         $data = $request->validate([
             'category_id' => 'required',
+            'building' => 'required',
             'room_number'=>'required|numeric',
             'price'=>'required|numeric',
             'status'=>'required|string|max:50'
@@ -36,6 +37,7 @@ class AppartmentController extends Controller
     public function update(Appartment $apartment, Request $request){
         $data = $request->validate([
             'category_id' => 'required',
+            'building' => 'required',
             'room_number'=>'required|numeric',
             'price'=>'required|numeric',
             'status'=>'required|string|max:50'
