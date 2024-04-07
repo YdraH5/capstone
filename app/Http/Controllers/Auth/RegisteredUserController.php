@@ -45,6 +45,6 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        return redirect($this->redirectTo);
+        return redirect($this->redirectTo)->with('success','Registered success fully');
     }
 }

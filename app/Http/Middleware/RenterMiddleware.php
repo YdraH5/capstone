@@ -14,13 +14,13 @@ class RenterMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle($request, Closure $next, ...$roles)
     {
         if (Auth::check() && Auth::user()->role == 'renter') {
-            
             return $next($request);
-            
         }
+
+        // Redirect to a different page or return an error response
         abort(401);
     }
-    }
+}

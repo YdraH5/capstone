@@ -14,7 +14,7 @@
                 
                 {{-- @if( Auth::user('apartment_id')->whereNull) --}}
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('reserve.index',['apartment'])" :active="request()->routeIs('reserve.index')">
+                    <x-nav-link :href="route('reserve.edit')" :active="request()->routeIs('reserve.edit')">
                         {{ __('Reservation') }}
                     </x-nav-link>
                 </div>

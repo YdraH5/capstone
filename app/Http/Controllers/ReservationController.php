@@ -23,31 +23,48 @@ class ReservationController extends Controller
         ->get();
         foreach ($apartment as $id)
         $categories = Category::all()->where('id',$id->categ_id);
-        DB::table('users')
-        ->where('id', $id->user_id)
-        ->update(['apartment_id' => $id->id]);
+        // DB::table('users')
+        // ->where('id', $id->user_id)
+        // ->update(['apartment_id' => $id->id]);
         // User::where('id',$id)
         // ->update(['apartment_id'=>$id->user_id]);
         return view('reserve.index',['apartment'=>$apartment,'category'=>$categories]);
     }
     public function create(Request $request){
         $data = $request->validate([
-            'apartment_id' => 'required|numeric',
-            'user_id' => 'required|numeric|unique:reservations,user_id',
+            'apartment_id' => 'required|numeric',//I have to add |unique:reservations,user_id here for final code
+            'user_id' => 'required|numeric',
             'check_in'=>'required|date_format:Y-m-d',
             'check_out'=>'required|date_format:Y-m-d',
             'total_price'=>'required|numeric',
             'payment_status'=>'required'
         ]);
-    
-        // Dumping the validated data for debugging
+        // get the user id inside rerservation where the user_id is match to the current users logged in
+        foreach($data as $user_id)
+        // update the users role to reserve so the the user could access reserve page
+        DB::table('users')
+        ->where('id', $user_id)
+        ->update(['role' => 'reserve']);
+
+        //store the data to database
         Reservation::create($data);
+
         return redirect(route('reserve.wait'));
 
     }
     public function waiting(){
         $user = auth()->user();
         $reserve_date = Reservation::select('check_in')->where('user_id', '=', $user->id)->limit(1)->get();
-        return view('reserve.wait',['reserveDate'=>$reserve_date]);
+        return view('reserve.wait',['reservations'=>$reserve_date]);
+    }
+    public function edit(){
+        return view('reserve.edit');
+    }
+    public function update(int $user_id){
+        // to update the user role to renter when button is clicked
+        DB::table('users')
+        ->where('id', $user_id)
+        ->update(['role' => 'renter']);
+    return redirect(route('renters.index'));
     }
 }
