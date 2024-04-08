@@ -1,11 +1,11 @@
 @section('title', 'Upload Images')
 @section('navs')
-<a href="{{ route('categories.index') }}" class = "inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+<a href="{{ route('admin.categories.index') }}" class = "inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
   {{ __('Manage Category') }}
 </a>
 @stop
 @section('navs2')
-<a href="{{ route('appartment.index') }}" class = "inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+<a href="{{ route('admin.apartment.index') }}" class = "inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
   {{ $category->name }} Images
 </a>
 @stop

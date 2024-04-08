@@ -13,7 +13,7 @@ class UserController extends Controller
     }
     public function index(){
         $users = User::all();//to get users data from database
-        return view("users.index", ['users'=>$users]);
+        return view('admin.users.index', ['users'=>$users]);
     }
     
 }

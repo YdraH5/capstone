@@ -19,7 +19,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="flex flex-col ">
                     <div class="overflow-x-auto">
-                        @include('users.table')
+                        @include('admin.users.table')
                     </div>
                 </div>
             </div>

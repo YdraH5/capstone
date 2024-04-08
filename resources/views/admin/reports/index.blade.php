@@ -10,7 +10,7 @@
       <button id="openModalButton"class="">
         @include('buttons.add')
       </button> 
-</x-slot>
+  </x-slot>
          <div id="modal" class="hidden fixed inset-0 z-50 overflow-auto bg-gray-500 bg-opacity-75 flex justify-center items-center h-screen">
             <div class="bg-white p-4 rounded-lg shadow-lg sm:w-96 w-full">
                 <h1 class="text-2xl font-bold mb-4 text-center">Report</h1>
@@ -42,14 +42,12 @@
               </form>
             </div>
           </div>
-        </div>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg ">
                 <div class="flex flex-col">
-                    
-                          @include('reports.table')     
+                    @include('admin.reports.table')     
                 </div>
             </div>
         </div>

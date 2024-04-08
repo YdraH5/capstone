@@ -8,6 +8,8 @@ use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 class VisitorPageController extends Controller
 {
+
+    // for viewing full details
     public function display(Category $apartment){
         $apartments = DB::table('apartment')
             ->join('categories', 'categories.id', '=', 'apartment.category_id')

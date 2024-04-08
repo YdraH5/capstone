@@ -38,7 +38,7 @@ class AuthenticatedSessionController extends Controller
         return redirect()->route('dashboard');
     } elseif ($user->role === 'renter') {
         // Redirect customers to customer dashboard
-        return redirect()->route('renters.index');
+        return redirect()->route('renters.home');
     }
     elseif ($user->role === 'reserve') {
         // Redirect customers to customer dashboard

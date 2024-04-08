@@ -14,7 +14,7 @@ class CategoryController extends Controller
     }
     public function index(){
         $categories = Category::all();
-        return view("categories.index", ['categories'=>$categories]);
+        return view("admin.categories.index", ['categories'=>$categories]);
     }
     public function create(Request $request){
         $data = $request->validate([
@@ -23,7 +23,7 @@ class CategoryController extends Controller
         ]);
 
         $newCategory = Category::create($data);
-        return redirect()->route('categories.index')->with('success','Category added successfully');
+        return redirect()->route('admin.categories.index')->with('success','Category added successfully');
     }
     public function edit(Category $categories){
         return view('categories.edit',['categories' => $categories]);
@@ -35,20 +35,20 @@ class CategoryController extends Controller
             'description'=>'required|max:250'
         ]);
         $categories->update($data);
-        return redirect(route('categories.index'))->with('success','Category updated successfully');
+        return redirect(route('admin.categories.index'))->with('success','Category updated successfully');
     }
 
     // soft delete the data 
     public function delete(Category $categories){
        $categories->delete();
-       return redirect(route('categories.index'))->with('success','Category deleted successfully');
+       return redirect(route('admin.categories.index'))->with('success','Category deleted successfully');
     }
     public function trash(){
         $Category = Category::onlyTrashed()->latest()->get();
     }
     public function restore(){
         Category::whereNotNull('deleted_at')->restore();
-        return redirect(route('categories.index'))->with('success','Category restored successfully');
+        return redirect(route('admin.categories.index'))->with('success','Category restored successfully');
     }
    
 }

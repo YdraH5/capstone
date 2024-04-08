@@ -90,25 +90,25 @@
           </div>
           <div class =  "hover:ml-4 w-full text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300 flex flex-row items-center space-x-3">
               @include('components.users-icon')                    
-              <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+              <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
                 {{ __('Users') }}
             </x-nav-link>
           </div>
           <div class =  "hover:ml-4 w-full text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300 flex flex-row items-center space-x-3">
             @include('components.apartment-icon')                                         
-                <x-nav-link :href="route('appartment.index')" :active="request()->routeIs('appartment.index')">
+                <x-nav-link :href="route('admin.apartment.index')" :active="request()->routeIs('admin.apartment.index')">
                     {{ __('Appartment') }}
                 </x-nav-link>
           </div>
           <div class =  "hover:ml-4 w-full text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300 flex flex-row items-center space-x-3">
             @include('components.category-icon')                                         
-            <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.index')">
+            <x-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.index')">
                 {{ __('Categories') }}
             </x-nav-link>
           </div>
           <div class =  "hover:ml-4 w-full text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300 flex flex-row items-center space-x-3">
             @include('components.report-icon')                                         
-            <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')">
+            <x-nav-link :href="route('admin.reports.index')" :active="request()->routeIs('admin.reports.index')">
                 {{ __('Reports') }}
             </x-nav-link>
           </div>
@@ -121,22 +121,22 @@
             </x-nav-link>
           </div>
           <div class= "hover:ml-4 justify-end pr-5 text-white hover:text-purple-500 dark:hover:text-blue-500 w-full bg-[#1E293B] p-3 rounded-full transform ease-in-out duration-300 flex">
-            <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+            <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
                 @include('components.users-icon')                                         
             </x-nav-link>
           </div>
           <div class= "hover:ml-4 justify-end pr-5 text-white hover:text-purple-500 dark:hover:text-blue-500 w-full bg-[#1E293B] p-3 rounded-full transform ease-in-out duration-300 flex">
-            <x-nav-link :href="route('appartment.index')" :active="request()->routeIs('appartment.index')">
+            <x-nav-link :href="route('admin.apartment.index')" :active="request()->routeIs('admin.apartment.index')">
                 @include('components.apartment-icon')   
             </x-nav-link>                                      
           </div>
           <div class= "hover:ml-4 justify-end pr-5 text-white hover:text-purple-500 dark:hover:text-blue-500 w-full bg-[#1E293B] p-3 rounded-full transform ease-in-out duration-300 flex">
-            <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.index')">
+            <x-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.index')">
                 @include('components.category-icon')  
             </x-nav-link>                                       
           </div>
           <div class= "hover:ml-4 justify-end pr-5 text-white hover:text-purple-500 dark:hover:text-blue-500 w-full bg-[#1E293B] p-3 rounded-full transform ease-in-out duration-300 flex">
-            <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')">
+            <x-nav-link :href="route('admin.reports.index')" :active="request()->routeIs('admin.reports.index')">
                 @include('components.report-icon')                                         
             </x-nav-link>
           </div>

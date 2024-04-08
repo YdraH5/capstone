@@ -1,4 +1,3 @@
-<div>
   <div class="overflow-x-auto ">
   <table class="table-auto h-full w-full border-seperate">
     <thead> 

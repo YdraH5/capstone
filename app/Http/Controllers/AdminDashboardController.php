@@ -11,7 +11,7 @@ class AdminDashboardController extends Controller
     }
     public function index() {
         
-        return view('dashboard');
+        return view('admin/dashboard');
     }
     public function home(){
         
