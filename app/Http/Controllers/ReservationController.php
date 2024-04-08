@@ -54,17 +54,28 @@ class ReservationController extends Controller
     }
     public function waiting(){
         $user = auth()->user();
-        $reserve_date = Reservation::select('check_in')->where('user_id', '=', $user->id)->limit(1)->get();
+        $reserve_date = Reservation::select('check_in','apartment_id','id')->where('user_id', '=', $user->id)->limit(1)->get();
         return view('reserve.wait',['reservations'=>$reserve_date]);
     }
     public function edit(){
         return view('reserve.edit');
     }
-    public function update(int $user_id){
+    public function update(int $user_id,int $apartment_id,int $reservation){
         // to update the user role to renter when button is clicked
-        DB::table('users')
-        ->where('id', $user_id)
-        ->update(['role' => 'renter']);
-    return redirect(route('renters.index'));
+        $update_user = DB::table('users')
+                    ->where('id', $user_id)
+                    ->update(['role' => 'renter']);
+        $update_apartment = DB::table('apartment')
+                    ->where('id', $apartment_id)
+                    ->update(['renter_id' => $user_id]);
+        $delete_reservation = DB::table('reservations')
+                    ->where('id',$reservation)
+                    ->delete();
+         if ($update_user && $update_apartment && $delete_reservation === false) {
+            // Handle the error here, for example:
+            return response()->json(['error' => 'Failed to update user role'], 500);
+            } else {
+            return redirect(route('renters.index'))->with('success','Hi!, Welcome to renters dashboard. Please enjoy your stay here in NRN Building please let us know if there is a problem');
+        }
     }
 }

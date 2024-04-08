@@ -74,7 +74,7 @@ Route::middleware(['auth','verified'])->group( function(){
     Route::group(['middleware' => ['auth','isReserve']], function () {
         Route::get('/reserve/wait',[ReservationController::class,'waiting'])->name('reserve.wait');
         Route::get('/reserve/edit',[ReservationController::class,'edit'])->name('reserve.edit');
-        Route::get('/reserve/{id}/update',[ReservationController::class,'update'])->name('reserve.update');
+        Route::get('/reserve/{id}/{apartment}/{reservation}/update',[ReservationController::class,'update'])->name('reserve.update');
     });
     Route::group(['middleware' => ['auth','isRenter']], function () {
         Route::get('/renters/index',[RenterController::class,'index'])->name('renters.index');
