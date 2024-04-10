@@ -22,7 +22,7 @@
             <!-- Page Heading -->
             @if (isset($header))
                 <header class="bg-slate-200 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-2 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
@@ -30,6 +30,7 @@
 
             <!-- Page Content -->
             @yield('renters')
-        <script src="{{ asset('js/app.js') }}"></script>
+            <script src="{{ asset('js/app.js') }}"></script>
+
     </body>
 </html>

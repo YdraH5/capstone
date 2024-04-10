@@ -147,6 +147,5 @@
       
     <div class = "flex flex-wrap my-5 -mx-2">
           
-          
-     
   </div>
+  <script src="{{ asset('js/navigation.js') }}"></script>

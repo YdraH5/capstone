@@ -23,11 +23,7 @@ class ReservationController extends Controller
         ->get();
         foreach ($apartment as $id)
         $categories = Category::all()->where('id',$id->categ_id);
-        // DB::table('users')
-        // ->where('id', $id->user_id)
-        // ->update(['apartment_id' => $id->id]);
-        // User::where('id',$id)
-        // ->update(['apartment_id'=>$id->user_id]);
+
         return view('reserve.index',['apartment'=>$apartment,'category'=>$categories]);
     }
     public function create(Request $request){

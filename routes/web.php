@@ -49,7 +49,6 @@ Route::middleware(['auth','verified'])->group( function(){
         });
         // controller group for report
         Route::controller(ReportController::class)->group(function() {
-            Route::post('/admin/reports/create','create')->name('reports.create');
             Route::get('/admin/reports', 'index')->name('admin.reports.index');
         });
         // controller group for category
@@ -78,6 +77,8 @@ Route::middleware(['auth','verified'])->group( function(){
         Route::controller(SubmitReportController::class)->group(function() {
             Route::get('/renters/home','home')->name('renters.home');
             Route::get('/renters/report/index','index')->name('renters.report.index');
+            Route::get('/renters/report/{report_id}/view','view')->name('renters.report.view');
+            Route::post('/renters/report/create','create')->name('renters.report.create');
         });
     });
 

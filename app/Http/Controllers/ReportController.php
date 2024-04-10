@@ -21,17 +21,7 @@ class ReportController extends Controller
         ->join('users', 'users.id', '=', 'reports.user_id')
         ->select('users.name', 'reports.report_category', 'reports.description','reports.status','reports.ticket',(DB::raw('DATE_FORMAT(reports.created_at, "%b-%d-%Y") as date')))
         ->get();
-        return view('admin.reports.index',['reports'=>$reports,'ticket'=>$ticket]);
+        return view('admin.reports.index',['reports'=>$reports]);
     }
-    public function create(Request $request){
-        $data = $request->validate([
-            'report_category' => 'required', 'string', 'max:50', 
-            'description'=>'required|max:250',
-            'user_id'=> 'required','numeric',
-            'ticket'=> 'required'
-        ]);
-        
-        $newReport = Report::create($data);
-        return redirect()->route('admin.reports.index')->with('success','Reports added successfully');
-    }
+    
 }
