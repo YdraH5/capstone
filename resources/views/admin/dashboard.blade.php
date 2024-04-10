@@ -1,10 +1,8 @@
 <x-app-layout>
     @section('title','Dashboard')
-    @section('navs')
       <a href="{{ route('dashboard') }}" class = "inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
         {{ __('Dashboard') }}
       </a>
-      @stop
     @section('content')
     <section class="text-gray-700 body-font">
         <div class="container px-5 py-1 mx-auto">

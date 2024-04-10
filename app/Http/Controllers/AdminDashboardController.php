@@ -10,8 +10,7 @@ class AdminDashboardController extends Controller
         $this->middleware('auth');
     }
     public function index() {
-        
-        return view('admin/dashboard');
+        return view('admin/dashboard', ['navigate' => true]);
     }
     public function home(){
         

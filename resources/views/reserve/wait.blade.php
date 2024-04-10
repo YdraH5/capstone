@@ -1,6 +1,7 @@
 @section('title', 'Waiting')
-
 <x-reserve-layout>
+    @section('waiting')
+
 <div class="min-h-screen flex flex-col justify-center items-center">
     <h1 class="text-3xl font-bold mb-6">Welcome to the Reservation Waiting Page</h1>
     <div class="bg-white p-8 rounded-lg shadow-lg">
@@ -17,8 +18,9 @@
     </div>
     @endforeach
 </div>
-</x-reserve-layout>
+@stop
 
+</x-reserve-layout>
 <script src="">
     window.onload = function () {
         const reservedDateInput = document.getElementById('reservedDate');

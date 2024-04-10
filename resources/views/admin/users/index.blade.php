@@ -1,17 +1,16 @@
 @section('title', 'Users Management')
 
-@section('content')
 <x-app-layout>
+    @section('content')
+
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-black-800 dark:text-black-200 leading-tight">
-                {{ __('USERS') }}
-            </h2>
-            <div class="flex items-center">
-                <button id="openModalButton" class="px-4 py-2 text-white rounded-md">
-                    @include('buttons.add')
-                </button>
-            </div>
+        <h2 class="font-semibold text-xl text-black-800 dark:text-black-200 leading-tight">
+            {{ __('Manage Apartment') }}
+        </h2>
+        <div class="flex justify-end px-10 h-5"> 
+            <button id="openModalButton"class="">
+                @include('buttons.add')
+            </button> 
         </div>
     </x-slot>
     <div class="py-12">

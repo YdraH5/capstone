@@ -5,7 +5,7 @@
   <div class = "fixed w-full z-30 flex bg-white dark:bg-[#0F172A] p-2 items-center justify-center h-20 px-10">
       <div class = "logo ml-12 dark:text-white  transform ease-in-out duration-500 flex-none h-full flex items-center justify-center">
           <div class="shrink-0 flex items-center">
-            <a href="{{ route('dashboard') }}">
+            <a href="{{ route('dashboard') }}"wire:navigate>
                 NRN Building
             </a>
         </div>
