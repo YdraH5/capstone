@@ -10,12 +10,14 @@
 
         <!-- Scripts -->
         <script src="https://cdn.tailwindcss.com"></script>
-        
+        @livewireStyles
     </head>
     <body>
+       
+           
         @livewire('navigation')
         <!-- Page Heading -->
-        
+      
         @if (isset($header))
             <header class="bg-white shadow">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-2 lg:px-8">
@@ -25,7 +27,8 @@
         @endif
 
         <!-- Page Content -->
-    <script src="{{ asset('js/app.js') }}"></script>
             @yield('content')
+            
+    <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Appartment extends Model
 {
@@ -16,5 +17,32 @@ class Appartment extends Model
         'room_number',
         'status'
     ];
+
+    // to set a search function for livewire
+    public function search($keyword)
+    {
+        // show all data when search box is null
+        $query = DB::table('apartment')
+            ->join('categories', 'categories.id', '=', 'apartment.category_id')
+            ->leftJoin('users', 'users.id', '=', 'apartment.renter_id')
+            ->select(
+                'categories.name as categ_name',
+                'users.name as renters_name',
+                'apartment.id',
+                'apartment.room_number',
+                'apartment.price',
+                'apartment.status'
+            );
+        // this statement will show the data that is %like% the search input
+        if (!empty($keyword)) {
+            $query->where('users.name', 'like', '%' . $keyword . '%')
+            ->orWhere('categories.name', 'like', '%' . $keyword . '%')
+            ->orWhere( 'apartment.status', 'like', '%' . $keyword . '%')
+            ->orWhere( 'apartment.room_number', 'like', '%' . $keyword . '%')
+            ->orWhere('apartment.price', 'like', '%' . $keyword . '%');
+        }
+        return $query->get();
+    }
+  
 }
 

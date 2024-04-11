@@ -1,4 +1,4 @@
-@section('title', '')
+@section('title', 'Reservation Form')
 @include('layouts-waiting.app')
 
 @foreach ($apartment as $data)

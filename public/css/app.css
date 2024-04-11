@@ -1,4 +1,13 @@
+@media (max-width: 768px) {
+    #sidebar {
+        display: none;
+    }
+}
 
+/* Show the sidebar when it's not hidden */
+#sidebar:not(.hidden) {
+    display: block;
+}
 body{
   background-color: rgba(255, 255, 255, 0.877);
 }

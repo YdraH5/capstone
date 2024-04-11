@@ -6,13 +6,14 @@
 
 <!-- Modal toggle -->
 <x-slot name="header">
-    <h2 class="font-semibold text-xl text-black-800 dark:text-black-200 leading-tight">
-        {{ __('CATEGORIES') }}
-    </h2>
-    <div class="flex justify-end px-10 h-5"> 
-        <button id="openModalButton"class="">
+    <div class="flex justify-between items-center px-10">
+        <h2 class="font-semibold text-xl text-black-800 dark:text-black-200 leading-tight">
+            {{ __('CATEGORIES') }}
+        </h2>
+        <button id="openModalButton" class="text-black-800 dark:text-black-200">
             @include('buttons.add')
-        </button> 
+        </button>
+    </div>
 </x-slot>
   <!-- Main modal -->
     <div id="modal" class="hidden fixed inset-0 z-50 overflow-auto bg-gray-500 bg-opacity-75 flex justify-center items-center h-screen">

@@ -5,7 +5,7 @@
   <x-slot name="header">
     <div class="flex justify-between items-center">
         <h2 class="font-semibold text-xl text-black-800 dark:text-black-200 leading-tight">
-            {{ __('USERS') }}
+            {{ __('REPORTS') }}
         </h2>
     </div>
   </x-slot>

@@ -71,7 +71,7 @@ class ReservationController extends Controller
             // Handle the error here, for example:
             return response()->json(['error' => 'Failed to update user role'], 500);
             } else {
-            return redirect(route('renters.index'))->with('success','Hi!, Welcome to renters dashboard. Please enjoy your stay here in NRN Building please let us know if there is a problem');
+            return redirect(route('renters.home'))->with('success','Hi!, Welcome to renters dashboard. Please enjoy your stay here in NRN Building please let us know if there is a problem');
         }
     }
 }

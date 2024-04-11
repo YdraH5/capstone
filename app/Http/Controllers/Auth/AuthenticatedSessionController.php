@@ -47,7 +47,8 @@ class AuthenticatedSessionController extends Controller
     elseif ($user->role === '') {
         // Redirect customers to customer dashboard
         return redirect()->route('reserve.index');
-    } else {
+    } 
+    else {
         // Redirect others to default home route
         return redirect()->intended(RouteServiceProvider::HOME);
     }

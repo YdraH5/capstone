@@ -42,7 +42,7 @@ Route::middleware(['auth','verified'])->group( function(){
         Route::controller(CategoryController::class)->group(function() {
             Route::get('/admin/categories/index', 'index')->name('admin.categories.index');
             Route::post('/admin/categories/index', 'create')->name('categories.create');
-            Route::get('/admin/categories/{categories}/edit', 'edit')->name('categories.edit');
+            Route::get('/admin/categories/{categories}/edit', 'edit')->name('admin.categories.edit');
             Route::put('/admin/categories/{categories}/update', 'update')->name('categories.update');
             Route::delete('/admin/categories/{categories}/delete', 'delete')->name('categories.delete');
             Route::get('/admin/categories/restore','restore')->name('categories.restore');
