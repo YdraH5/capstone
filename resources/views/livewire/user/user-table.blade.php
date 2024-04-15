@@ -13,7 +13,7 @@
         </thead>
         <tbody>
             @foreach($users as $user)
-            <tr>
+            <tr class="bg-white hover:bg-gray-300 odd:bg-white even:bg-slate-50">
                 <td class="text-center border border-black-900">{{$user->name}}</td>
                 <td class="text-center border border-black-900">{{$user->email}}</td>
                 <td class="text-center border border-black-900">{{$user->role}}</td>

@@ -8,8 +8,6 @@
           <div class="alert alert-success">
               {{ session('success') }}
           </div>
-    
-      
           @endif
             <tr>
                 <th class="text-center border border-black-900 border-2">Reporters</th>
@@ -24,7 +22,7 @@
         </thead>
         <tbody>
             @foreach($reports as $report)
-            <tr>
+            <tr class="bg-white hover:bg-gray-300 odd:bg-white even:bg-slate-50">
                 <td class="text-center border border-black-900 border-2">{{$report->name}}</td>
                 <td class="text-center border border-black-900 border-2">{{$report->building}}-{{$report->room_number}}</td>
                 <td class="text-center border border-black-900 border-2">{{$report->report_category}}</td>

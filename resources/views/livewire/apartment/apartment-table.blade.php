@@ -1,55 +1,51 @@
 <div> 
-  <div>
-    <input wire:model.debounce.100ms.live="search" type="search"placeholder="Search...." class="mb-5 mt-2 text-black-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-1/3 h-8 flex items-center pl-3 text-sm border-black rounded border">
-  </div>
-  <div class="overflow-x-auto">
+    <div>
+        <input wire:model.debounce.100ms.live="search" type="search"placeholder="Search...." class="mb-5 mt-2 text-black-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-1/3 h-8 flex items-center pl-3 text-sm border-black rounded border">
+    </div>
     <table class="table-auto w-full border-seperate max-w-7xl">
-        <thead> 
+    <thead> 
         @if (session('success'))
         <div class="alert alert-success text-green-700">
             {{ session('success') }}
         </div>    
         @endif
-          <tr class="bg-gray-300 rounded">
+            <tr class="bg-gray-300 rounded">
               <th class="text-center border border-black-900 border-2">Category Name</th>
               <th class="text-center border border-black-900 border-2">Renter</th>
+              <th class="text-center border border-black-900 border-2">Building</th>
               <th class="text-center border border-black-900 border-2">Room Number</th>
               <th class="text-center border border-black-900 border-2">Price</th>
-              <th class="text-center border border-black-900 border-2">Building</th>
               <th class="text-center border border-black-900 border-2">Status</th>
               <th class="text-center border border-black-900 border-2">Actions</th>
           </tr>
-      </thead>
-      <tbody>
-          @foreach($apartment as $apartments)
-          <tr>
-              <td class="text-center border border-black-900 border-2">{{$apartments->categ_name}}</td>
-                  @if($apartments->renters_name == NULL)
-                  <td class="text-center border border-black-900 border-2 text-red-500">
-                      Vacant
-                  </td>
-                  @else
-                  <td class="text-center border border-black-900 border-2">
+    </thead>
+    <tbody>
+        @foreach($apartment as $apartments)
+            <tr class="bg-white hover:bg-gray-300 odd:bg-white even:bg-slate-50">
+                <td class="text-center border border-black-900 border-2">{{$apartments->categ_name}}</td>
+            @if($apartments->renters_name == NULL)
+                <td class="text-center border border-black-900 border-2 text-red-500">Vacant</td>
+            @else
+                <td class="text-center border border-black-900 border-2">
                       {{$apartments->renters_name}}
-                  </td>
-                  @endif
-              <td class="text-center border border-black-900 border-2">{{$apartments->room_number}}</td>
-              <td class="text-center border border-black-900 border-2">{{$apartments->price}}/month</td>
-              <td class="text-center border border-black-900 border-2">{{$apartments->building}}</td>
-              <td class="text-center border border-black-900 border-2">{{$apartments->status}}</td>
-              <td class=" border border-black-900 border-2">
-                <div class="flex justify-center">
-                  
+            @endif
+                </td>
+                <td class="text-center border border-black-900 border-2">{{$apartments->building}}</td>
+                <td class="text-center border border-black-900 border-2">{{$apartments->room_number}}</td>
+                <td class="text-center border border-black-900 border-2">{{$apartments->price}}/month</td>
+                <td class="text-center border border-black-900 border-2">{{$apartments->status}}</td>
+                <td class=" border border-black-900 border-2">
+                <div class="flex justify-center"> 
                     <button
                         x-data="{ id: {{$apartments->id}} }"
                         x-on:click="$wire.set('id', id); $dispatch('open-modal', { name: 'edit-apartment' })"
                         wire:click="edit(id)"
                         type="button"
                         class="my-2">
-                        @include('buttons.edit')
-                        </button>
-                        @if ($isEditing)
-                          <x-modal name="edit-apartment" title="Edit Apartment">
+                    @include('buttons.edit')
+                    </button>
+                    @if ($isEditing)
+                        <x-modal name="edit-apartment" title="Edit Apartment">
                             <x-slot:body>
                               <form id="modalForm" class="space-y-4 "wire:submit.prevent="update">
                                 <div class="lg:columns-2 xl:columns-2">
@@ -98,22 +94,35 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                            </form>
+                              </form>
                             </x-slot:body>
-                          </x-modal>
-                        @endif
-                      <form action="{{route('admin.apartment.delete',['apartment'=>$apartments->id])}}" method="post">
-                          @csrf 
-                          @method('delete')
-                            <button class="my-2">
-                              @include('buttons.delete')
-                            </button>
+                        </x-modal>
+                    @endif
+                    <button
+                        x-data="{ id: {{$apartments->id}} }"
+                        x-on:click="$wire.set('id', id); $dispatch('open-modal', { name: 'delete-apartment' })"
+                        wire:click="delete(id)"
+                        type="button"
+                        class="my-2">
+                          @include('buttons.delete')
+                    </button>
+                    <x-modal name="delete-apartment" title="Delete Apartment">
+                        <x-slot name="body">
+                            <div class="p-4">
+                                <p class="text-lg font-semibold mb-4">Are you sure you want to delete this apartment?</p>
+                                <p class="text-gray-600 mb-8">This action cannot be undone. Please confirm.</p>
+                                
+                                <div class="flex justify-end">
+                                    <button type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mr-4" x-on:click="$dispatch('close-modal',{name:'delete-apartment'})">Cancel</button>
+                                    <button type="submit" class="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded" wire:click="deleted">Delete</button>
+                                </div>
+                            </div>
+                        </x-slot>
+                    </x-modal>
                 </div>
-                      </form>
               </td>
           </tr>
-          @endforeach  
+        @endforeach  
       </tbody>
 
     </table>

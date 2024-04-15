@@ -5,10 +5,16 @@
     x-on:open-modal.window="show = ($event.detail.name === name)"
     x-on:close-modal.window="show = false"
     x-on:keydown.escape.window = "show = false"
+    class="fixed z-50 inset-0 overflow-y-auto"
     style="display:none;"
-    class="fixed z-50 inset-0">
+    x-transition:enter="ease-out duration-100"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="ease-in duration-500"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0">
 
-
+    
     <div class="fixed inset-0 backdrop-blur-sm">
 
     {{-- modal body --}}

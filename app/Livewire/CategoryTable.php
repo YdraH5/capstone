@@ -5,7 +5,8 @@ use App\Models\Category;
 use Livewire\Component;
 use Livewire\Attributes\Validate; 
 class CategoryTable extends Component
-{
+{   
+    public $deleteId;
     public $isEditing= false;// to only run the form when the user clicked the edit icon
     public $id; // to save the id that the user want to edit
     public $editCategory;// to save data that use is going to edit
@@ -37,6 +38,16 @@ class CategoryTable extends Component
             $this->reset();
             // Reset the component state
             session()->flash('success', 'Category updated successfully.');
+    }
+    public function delete($id){
+        $this->deleteId = $id;
+    }
+    public function deleted(){
+        $delete = Category::find($this->deleteId)->delete();
+        if($delete){
+            session()->flash('success', 'Category deleted successfully.');
+            $this->reset();
+        }
     }
     public function render()
     {

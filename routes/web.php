@@ -31,33 +31,36 @@ Route::middleware(['auth','verified'])->group( function(){
     Route::group(['middleware' => ['isAdmin']], function () {
         Route::get('/dashboard',[AdminDashboardController::class, 'index'])->name('dashboard');
         Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
-
-        // controller group for category
-        Route::controller(CategoryController::class)->group(function() {
-            Route::get('/admin/categories/index', 'index')->name('admin.categories.index');
-            Route::post('/admin/categories/index', 'create')->name('admin.categories.create');
-            Route::get('/admin/categories/{categories}/edit', 'edit')->name('admin.categories.edit');
-            Route::put('/admin/categories/{categories}/update', 'update')->name('admin.categories.update');
-            Route::delete('/admin/categories/{categories}/delete', 'delete')->name('admin.categories.delete');
-            Route::get('/admin/categories/restore','restore')->name('admin.categories.restore');
-        });
-        // controller group for report
-        Route::controller(ReportController::class)->group(function() {
-            Route::get('/admin/reports', 'index')->name('admin.reports.index');
-        });
-        // controller group for category
-        Route::controller(AppartmentController::class)->group(function() {
-            Route::get('/admin/apartment', 'index')->name('admin.apartment.index');
-            Route::post('/admin/apartment/create', 'create')->name('admin.apartment.create');
-            Route::get('/admin/apartment/{apartment}/edit', 'edit')->name('admin.apartment.edit');
-            Route::put('/admin/apartment/{apartment}/update', 'update')->name('admin.apartment.update');
-            Route::delete('/admin/apartment/{apartment}/delete', 'delete')->name('admin.apartment.delete');
-        });
+  
         Route::controller(ImageController::class)->group(function() {
             Route::get('/admin/categories/{categoryId}/upload', 'index');
             Route::post('/admin/categories/{categoryId}/upload', 'store');
             Route::get('/admin/category-image/{categoryImageId}/delete', 'delete');
         });
+        // ROUTE TO USERS DATA TABLE
+        Route::get('/admin/users/index', function () {
+            return view('/admin/users/index');
+        })->name('admin.users.index');
+
+        // ROUTE TO MANAGING APARTMENT CATEGORIES
+        Route::get('/admin/categories/index', function () {
+            return view('/admin/categories/index');
+        })->name('admin.categories.index');
+
+        // ROUTE TO REPORTS INDEX PAGE FOR ADMIN
+        Route::get('/admin/reports/index', function () {
+            return view('/admin/reports/index');
+        })->name('admin.reports.index');
+
+        // ROUTE TO APARTMENT CONTROL PAGE FOR ADMIN
+        Route::get('/admin/apartment/index', function () {
+            return view('/admin/apartment/index');
+        })->name('admin.apartment.index');
+
+        // ROUTE TO RESERVATION MANAGEMENT FOR ADMIN
+        Route::get('/admin/reserves/index', function () {
+            return view('/admin/reserves/index');
+        })->name('admin.reserve.index');
     });
 });
     

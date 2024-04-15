@@ -13,7 +13,7 @@ class ApartmentTable extends Component
     public $isEditing= false;// to only run the form when the user clicked the edit icon
     public $id; // to save the id that the user want to edit
     public $search = ""; // to set an empty string for search
-
+    public $deleteId;
 
     #[Validate('required')] 
     public $category_id;
@@ -60,6 +60,16 @@ class ApartmentTable extends Component
         $this->reset();
         // Reset the component state
         session()->flash('success', 'Apartment updated successfully.');
+    }
+    public function delete($id){
+        $this->deleteId = $id;
+    }
+    public function deleted(){
+        $delete = Appartment::find($this->deleteId)->delete();
+        if($delete){
+            session()->flash('success', 'Apartment deleted successfully.');
+            $this->reset();
+        }
     }
     public function render()
     {

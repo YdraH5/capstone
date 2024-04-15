@@ -15,16 +15,22 @@ class CategoryForm extends Component
 
     #[Validate('require')] 
     public $id;
-    public function saveCategory()
+    public function save()
     {
-        $this->validate(); 
+        $this->validate([
+            'name' => 'required|max:50',
+            'description' => 'required|max:190'
+        ]); 
  
         Category::create(
             $this->only(['name', 'description'])
         );
+        $this->reset();
         return redirect()->route('admin.categories.index')->with('success','Adding category success');
     }
-
+    public function update(){
+        dd($this->id);
+    }
     public function render()
     {
         return view('livewire.category.category-form');

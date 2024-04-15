@@ -16,8 +16,8 @@
         </thead>
         <tbody>
             @foreach($categories as $category)
-            <tr>
-                <td class="text-center border border-black-900 border-2">
+            <tr class="bg-white hover:bg-gray-300 odd:bg-white even:bg-slate-50">
+              <td class="text-center border border-black-900 border-2">
                   {{$category->name}}
                 </td>
                 <td class="text-center border border-black-900 border-2">
@@ -64,11 +64,27 @@
                             </x-slot:body>
                         </x-modal>
                         @endif
-                    <form action="{{route('admin.categories.delete',['categories'=>$category])}}" method="post">
-                      @csrf 
-                      @method('delete')
-                      @include('buttons.delete')
-                    </form>
+                        <button
+                        x-data="{ id: {{$category->id}} }"
+                        x-on:click="$wire.set('id', id); $dispatch('open-modal', { name: 'delete-category' })"
+                        wire:click="delete(id)"
+                        type="button"
+                        class="my-2">
+                          @include('buttons.delete')
+                    </button>
+                    <x-modal name="delete-category" title="Delete Category">
+                        <x-slot name="body">
+                            <div class="p-4">
+                                <p class="text-lg font-semibold mb-4">Are you sure you want to delete this category?</p>
+                                <p class="text-gray-600 mb-8">This action cannot be undone. Please confirm.</p>
+                                
+                                <div class="flex justify-end">
+                                    <button type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mr-4" x-on:click="$dispatch('close-modal',{name:'delete-category'})">Cancel</button>
+                                    <button type="submit" class="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded" wire:click="deleted">Delete</button>
+                                </div>
+                            </div>
+                        </x-slot>
+                    </x-modal>
                   </div>
                 </td>
                 @endforeach        

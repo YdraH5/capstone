@@ -59,22 +59,31 @@ function calculateTotalPrice() {
         return;
     }
 
-    // Calculate total price based on payment status
     let totalPrice;
+    let totalBalance;
     if (paymentStatus === 'Balance') {
-        // Calculate 20% downpayment
-        totalPrice = +(pricePerMonth * 0.2).toFixed(2);
-    } else {
-        // Calculate full payment
+        // Calculate total price without applying the downpayment
         totalPrice = +(pricePerMonth * diffMonths).toFixed(2);
+        
+        // Calculate downpayment (20%)
+        const downpayment = +(totalPrice * 0.2).toFixed(2);
+        
+        // Calculate total balance after deducting downpayment
+        totalBalance = totalPrice - downpayment;
+    } else {
+        // Calculate total price with full payment
+        totalPrice = +(pricePerMonth * diffMonths).toFixed(2);
+        totalBalance = 0; // No balance if paid in full
     }
 
     // Display total price
     document.getElementById('totalPrice').value = totalPrice;
 
-    // Calculate and display balance
-    const balance = ( (pricePerMonth * diffMonths)-totalPrice ).toFixed(2);
-    document.getElementById('balanceMessage').textContent = `You'll have a Balance of: ₱${balance}`;
+    // Display total balance
+    document.getElementById('totalBalanceInput').value = totalBalance;
+
+    // Display balance message
+    document.getElementById('balanceMessage').textContent = `Total Balance: $${totalBalance}`;
 
     // Ensure minimum reservation period of 1 month
     if (diffMonths < 1) {
@@ -83,4 +92,6 @@ function calculateTotalPrice() {
         document.getElementById('chargeMessage').textContent = "";
     }
 }
+
+
  

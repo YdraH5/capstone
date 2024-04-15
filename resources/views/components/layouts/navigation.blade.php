@@ -80,6 +80,12 @@
               @include('components.report-icon')  
           </x-nav-link>
       </div>
+      <div class="group hover:ml-16 relative justify-end pr-5 text-white dark:hover:text-blue-500 w-full dark:bg-[#0F172A] p-3 rounded-full transform ease-in-out duration-300 flex">
+        <x-nav-link href="{{ route('admin.reserve.index') }}" active="{{ request()->routeIs('admin.reserve.*') }}">
+            <span class="opacity-0 group-hover:opacity-100 transition-opacity">Reserve</span>
+            @include('components.calendar-icon')  
+        </x-nav-link>
+    </div>
   </div>
 </aside>
 <!-- CONTENT -->

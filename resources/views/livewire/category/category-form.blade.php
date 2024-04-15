@@ -1,7 +1,7 @@
 <div>
     <x-modal name="add-category" title="Add Category">
         <x-slot:body>
-            <form id="modalForm" class="space-y-4 "wire:submit.prevent="saveCategory">
+            <form id="modalForm" class="space-y-4 "wire:submit.prevent="save">
                 <div class="">
                         <div>
                             <label class="block font-medium opacity-70">Category Name</label>

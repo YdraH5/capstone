@@ -26,8 +26,8 @@
             <tbody>
                 @foreach($reports as $report)
                     @if($report->status !== 'Solved')
-                        <tr>
-                            <td class="text-center border border-black-900">{{$report->ticket}}</td>
+                    <tr class="bg-white hover:bg-gray-300 odd:bg-white even:bg-slate-50">
+                        <td class="text-center border border-black-900">{{$report->ticket}}</td>
                             <td class="border border-black-900 flex justify-center">
                                 <button
                                     x-data="{ id: {{$report->id}} }"
@@ -81,8 +81,8 @@
             @foreach($reports as $report)
             @if($report->status === 'Solved')
             <tbody>
-                <tr>
-                  <td class="text-center border border-black-900">{{$report->ticket}}</td>
+                <tr class="bg-white hover:bg-gray-300 odd:bg-white even:bg-slate-50">
+                    <td class="text-center border border-black-900">{{$report->ticket}}</td>
                   <td class="border border-black-900 flex justify-center">
                     <button class="" x-data x-on:click="$dispatch('open-modal',{name:'view-solve-report'})">
                         @include('components.view-icon')
