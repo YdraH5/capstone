@@ -7,49 +7,45 @@
                 {{ __('USERS') }}
             </h2>
             <div class="flex items-center">
-              <button id="openModalButton"class="">
+              <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-report'})">
                 @include('buttons.add')
-              </button> 
+            </button> 
             </div>
         </div>
     </x-slot>
-             <div id="modal" class="hidden fixed inset-0 z-50 overflow-auto bg-gray-500 bg-opacity-75 flex justify-center items-center h-screen">
-                <div class="bg-white p-4 rounded-lg shadow-lg sm:w-96 w-full">
-                    <h1 class="text-2xl font-bold mb-4 text-center">Report</h1>
-                    <!-- Form -->
-                  <form id="modalForm" class="space-y-4"action="{{route('renters.report.create')}}"method="post">
-                    @csrf
-                    @method('post')
-                    <input type="number" name="user_id"value="{{Auth::user()->id}}"hidden> 
-                    <input type="text" name="ticket"value="{{$ticket}}"hidden>  
-                    <div>
-                      <label for="name" class="block font-medium opacity-70">Report Category</label>
-                        <select name="report_category" id="cars" class="w-full h-10 rounded-lg opacity-50">
-                            <option value="">Report Category</option>
-                            <option value="maintenance">maintenance</option>
-                            <option value="Room service">Room service</option>
-                            <option value="loud">loud</option>
-                        </select>
-                    </div>
-                    <div>
-                      <label for="email" class="block font-medium opacity-70">Description</label>
+      <x-modal name="add-report" title="Submit Report">
+        <x-slot:body>
+          <form id="modalForm" class="space-y-4"action="{{route('renters.report.create')}}"method="post">
+              @csrf
+              @method('post')
+                <input type="number" name="user_id"value="{{Auth::user()->id}}"hidden> 
+                <input type="text" name="ticket"value="{{$ticket}}"hidden>  
+                  <div>
+                    <label for="name" class="block font-medium opacity-70">Report Category</label>
+                      <select name="report_category" id="cars" class="w-full h-10 rounded-lg opacity-50">
+                        <option value="">Report Category</option>
+                        <option value="maintenance">maintenance</option>
+                        <option value="Room service">Room service</option>
+                        <option value="loud">loud</option>
+                      </select>
+                  </div>
+                  <div>
+                    <label for="email" class="block font-medium opacity-70">Description</label>
                       <textarea id="description" rows="4" class="w-full rounded-lg " name="description" placeholder="Write product description here"></textarea>   
                     </div>
-                    <div class="flex justify-end">
-                        <div>
+                    
+                  <div class="flex justify-end">
                       <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-                    </div>
-                      <button id="closeModalButton" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded ml-2">Close</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-
+                      <button  x-on:click="$dispatch('close-modal',{name:'add-apartment'})" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Close</button>
+                  </div>
+            </form>
+          </x-slot:body>
+        </x-modal>
             <div class="py-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="flex flex-col">
-                            @include('renters.report.table')
+                          @livewire('view-report')
                         </div>
                     </div>
                 </div>

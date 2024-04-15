@@ -26,12 +26,14 @@ class Appartment extends Model
             ->join('categories', 'categories.id', '=', 'apartment.category_id')
             ->leftJoin('users', 'users.id', '=', 'apartment.renter_id')
             ->select(
+                'categories.id as categ_id',
                 'categories.name as categ_name',
                 'users.name as renters_name',
                 'apartment.id',
                 'apartment.room_number',
                 'apartment.price',
-                'apartment.status'
+                'apartment.status',
+                'apartment.building'
             );
         // this statement will show the data that is %like% the search input
         if (!empty($keyword)) {
@@ -39,6 +41,7 @@ class Appartment extends Model
             ->orWhere('categories.name', 'like', '%' . $keyword . '%')
             ->orWhere( 'apartment.status', 'like', '%' . $keyword . '%')
             ->orWhere( 'apartment.room_number', 'like', '%' . $keyword . '%')
+            ->orWhere( 'apartment.building', 'like', '%' . $keyword . '%')
             ->orWhere('apartment.price', 'like', '%' . $keyword . '%');
         }
         return $query->get();

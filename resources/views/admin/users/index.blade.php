@@ -5,7 +5,7 @@
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black-800 dark:text-black-200 leading-tight">
-            {{ __('Manage Apartment') }}
+            {{ __('Users') }}
         </h2>
     </x-slot>
     <div class="py-12">
@@ -13,7 +13,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="flex flex-col ">
                     <div class="overflow-x-auto">
-                        @include('admin.users.table')
+                        @livewire('user-table')
                     </div>
                 </div>
             </div>

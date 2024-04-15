@@ -1,9 +1,8 @@
 <div>
+    
     <!-- Main modal -->
-    <div class="hidden fixed inset-y-24 duration-150 ease-in-out z-10 right-0 bottom-0 left-0 flex justify-center" id="modal">
-        <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-lg">
-            <div class="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
-            <h1 class="text-2xl font-bold mb-4 text-center">Apartment</h1>
+<x-modal name="add-apartment" title="Add Apartment">
+        <x-slot:body>
                 <!-- Form -->
             <form id="modalForm" class="space-y-4 "wire:submit.prevent="save">
                 <div class="lg:columns-2 xl:columns-2">
@@ -47,12 +46,15 @@
                         @error('status') <span class="error text-red-900">{{ $message }}</span> @enderror 
                         <div class="flex items-center justify-between py-8">
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-                            <button id="closeModalButton" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Close</button>
+                            <button  x-on:click="$dispatch('close-modal',{name:'add-apartment'})" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Close
+                            </button>
                         </div>
                     </div>
                 </div>
                 
             </form>
-        </div>
-    </div>
+        </x-slot:body>
+</x-modal>
+
+   
 </div>

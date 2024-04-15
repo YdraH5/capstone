@@ -14,7 +14,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg ">
                 <div class="flex flex-col">
-                    @include('admin.reports.table')     
+                   @livewire('report-table')   
                 </div>
             </div>
         </div>

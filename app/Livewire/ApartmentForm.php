@@ -24,9 +24,6 @@ class ApartmentForm extends Component
     #[Validate('required|numeric')] 
     public $room_number = '';
     
-    // public function updated($prop) {
-    //     $this->validateOnly($prop);
-    //  }
     public function save()
     {
         $this->validate(); 
@@ -36,9 +33,8 @@ class ApartmentForm extends Component
         );
         return redirect()->route('admin.apartment.index')->with('success','Adding apartment room success');
     }
- 
     public function render(){
-        return view('livewire.apartment-form')
+        return view('livewire.apartment.apartment-form')
             ->with([
             'categories' => Category::all()
               ]);

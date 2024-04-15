@@ -35,18 +35,18 @@ class ReservationController extends Controller
             'total_price'=>'required|numeric',
             'payment_status'=>'required'
         ]);
-        // get the user id inside rerservation where the user_id is match to the current users logged in
-        
-
         //store the data to database
         $reserve = Reservation::create($data);
-        foreach($data as $user_id)
+        $user_id = $data['user_id'];
+        if($reserve){
         // update the users role to reserve so the the user could access reserve page
-        $userRole = DB::table('users')
+        DB::table('users')
         ->where('id', $user_id)
         ->update(['role' => 'reserve']);
         return redirect(route('reserve.wait'));
-
+        }else{
+            return redirect(route('reserve.index'));
+        }
     }
     public function waiting(){
         $user = auth()->user();

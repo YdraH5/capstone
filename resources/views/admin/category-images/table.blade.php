@@ -22,7 +22,7 @@
             </td>
             <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
                 <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Actions</span>
-                <a href="{{ url('category-image/'.$image->id.'/delete') }}" class="mt-auto">@include('buttons.delete')</a>
+                <a href="{{ url('admin/category-image/'.$image->id.'/delete') }}" class="mt-auto">@include('buttons.delete')</a>
             </td>
         </tr>
         
