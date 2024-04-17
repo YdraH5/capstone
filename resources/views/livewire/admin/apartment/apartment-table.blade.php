@@ -21,7 +21,7 @@
     </thead>
     <tbody>
         @foreach($apartment as $apartments)
-            <tr class="bg-white hover:bg-gray-300 odd:bg-white even:bg-slate-50">
+            <tr class="bg-white hover:bg-gr`ay-300 odd:bg-white even:bg-slate-50">
                 <td class="text-center border border-black-900 border-2">{{$apartments->categ_name}}</td>
             @if($apartments->renters_name == NULL)
                 <td class="text-center border border-black-900 border-2 text-red-500">Vacant</td>

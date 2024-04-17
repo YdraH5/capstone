@@ -52,7 +52,7 @@ class CategoryTable extends Component
     public function render()
     {
         $categories = Category::all();
-        return view('livewire.category.category-table', [
+        return view('livewire.admin.category.category-table', [
             'categories' => $categories,
         ]);    }
 }

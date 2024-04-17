@@ -22,7 +22,7 @@
 </x-slot>
 <x-modal name="add-image" title="Add Image">
   <x-slot:body>
-          <form class="space-y-4"action="{{url('/admin/categories/'.$category->id.'/upload')}}"method="post"enctype="multipart/form-data" id="uploadForm"class="hidden">
+          <form class="space-y-4"action="{{url('/admin/categories/'.$category->id.'/upload')}}"method="post"enctype="multipart/form-data" class="hidden">
               @csrf
                   <div>
                       <label  class="block font-medium opacity-70">Insert Images</label>

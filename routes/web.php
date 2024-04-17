@@ -29,7 +29,9 @@ use Illuminate\Support\Facades\Route;
 // specify landing page 
 Route::middleware(['auth','verified'])->group( function(){
     Route::group(['middleware' => ['isAdmin']], function () {
-        Route::get('/dashboard',[AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/livewire/admin/dashboard', function () {
+            return view('/livewire/admin/dashboard');
+        })->name('dashboard');
         Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
   
         Route::controller(ImageController::class)->group(function() {
@@ -38,28 +40,28 @@ Route::middleware(['auth','verified'])->group( function(){
             Route::get('/admin/category-image/{categoryImageId}/delete', 'delete');
         });
         // ROUTE TO USERS DATA TABLE
-        Route::get('/admin/users/index', function () {
-            return view('/admin/users/index');
+        Route::get('/livewire/admin/user/index', function () {
+            return view('/livewire/admin/user/index');
         })->name('admin.users.index');
 
         // ROUTE TO MANAGING APARTMENT CATEGORIES
-        Route::get('/admin/categories/index', function () {
-            return view('/admin/categories/index');
+        Route::get('/livewire/admin/category/index', function () {
+            return view('/livewire/admin/category/index');
         })->name('admin.categories.index');
 
         // ROUTE TO REPORTS INDEX PAGE FOR ADMIN
-        Route::get('/admin/reports/index', function () {
-            return view('/admin/reports/index');
+        Route::get('/livewire/admin/report/index', function () {
+            return view('/livewire/admin/report/index');
         })->name('admin.reports.index');
 
         // ROUTE TO APARTMENT CONTROL PAGE FOR ADMIN
-        Route::get('/admin/apartment/index', function () {
-            return view('/admin/apartment/index');
+        Route::get('/livewire/admin/apartment/index', function () {
+            return view('/livewire/admin/apartment/index');
         })->name('admin.apartment.index');
 
         // ROUTE TO RESERVATION MANAGEMENT FOR ADMIN
-        Route::get('/admin/reserves/index', function () {
-            return view('/admin/reserves/index');
+        Route::get('/livewire/admin/reserve/index', function () {
+            return view('/livewire/admin/reserve/index');
         })->name('admin.reserve.index');
     });
 });
@@ -86,22 +88,11 @@ Route::post('/reserve/create',[ReservationController::class,'create'])->name('re
 
 
 // first page to see when url of the page is executed
- Route::get('/', function () {
-    $apartment = DB::table('apartment')
-        ->leftjoin('categories', 'categories.id', '=', 'apartment.category_id')
-        ->leftjoin('users', 'users.id', '=', 'apartment.renter_id')
-        ->select('apartment.id','categories.id','categories.name as categ_name','categories.description','apartment.price','apartment.status')
-        ->get();
-    $images=[];
-        foreach ($apartment as $category){
-            $category_id = $category->id;
-            $categoryImages = DB::table('category_images')
-                        ->where('category_id', $category_id)
-                        ->get();
-        $images[$category->id] = $categoryImages;
-        }
-    return view('/visitors/index',compact('apartment', 'images'));
+Route::get('/', function () {
+    return view('/visitors/index');
 })->name('welcome');
+
+
 
 // route to see the full details for a certain apartment
 Route::get('visitors/{apartment}/detail',[VisitorPageController::class,'display'])->name('visitors.display');
@@ -112,6 +103,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
+Route::post('/session','App\Http\Controllers\StripeController@session')->name('session');
 
 require __DIR__.'/auth.php';

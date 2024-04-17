@@ -43,7 +43,7 @@
                                                 <span class="font-semibold">Report Category:</span> {{$report->report_category}}
                                             </div>
                                             <div class="mb-4">
-                                                <span class="font-semibold">Report Date:</span> {{$report->date}}
+                                                <span class="font-semibold">Report Date:</span> {{ \Carbon\Carbon::parse($report->created_at)->diffForHumans() }}
                                             </div>
                                             <div class="mb-4">
                                                 <span class="font-semibold">Report Status:</span> {{$report->status}}

@@ -29,12 +29,6 @@ h1,h2{
 }div:hover > span {
   display: block;
 }
-#crud-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
 .alert {
     color: green;
 }

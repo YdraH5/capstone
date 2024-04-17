@@ -34,12 +34,11 @@ class Reservation extends Model
                 'apartment.room_number',
                 'apartment.building',
                 (DB::raw('DATE_FORMAT(reservations.check_in, "%b-%d-%Y") as check_in_date')),
-                (DB::raw('DATE_FORMAT(reservations.check_in, "%b-%d-%Y") as check_out_date')),
-
+                (DB::raw('DATE_FORMAT(reservations.check_out, "%b-%d-%Y") as check_out_date')),
                 'reservations.total_price',
                 'reservations.payment_status',
                 'apartment.building'
-            );
+            )->orderBy('reservations.created_at');
         // this statement will show the data that is %like% the search input
         if (!empty($keyword)) {
             $query->where('users.name', 'like', '%' . $keyword . '%')

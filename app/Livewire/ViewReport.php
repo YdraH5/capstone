@@ -34,14 +34,14 @@ class ViewReport extends Component
         $this->status = $this->viewReport->status;
         $this->ticket = $this->viewReport->ticket;
         $this->description = $this->viewReport->description;
-        $this->date = $this->viewReport->date;
+        $this->date = $this->viewReport->created_at;
     }
     public function render()
     {
         $user = Auth::user();
 
         $report =Report::where('user_id', $user->id)->get();
-        return view('livewire.view-report', [
+        return view('livewire.renter.view-report', [
             'reports' => $report,
         ]);
     }

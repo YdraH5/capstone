@@ -75,7 +75,7 @@ class ApartmentTable extends Component
     {
         $categories = Category::all();
         $apartment = new Appartment();
-        return view('livewire.apartment.apartment-table', [
+        return view('livewire.admin.apartment.apartment-table', [
             'apartment' => $apartment->search($this->search),
             'categories' => $categories,
         ]);

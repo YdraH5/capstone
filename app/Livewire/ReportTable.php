@@ -34,7 +34,7 @@ class ReportTable extends Component
     public function render()
     {
         $report = new Report();
-        return view('livewire.report.report-table', [
+        return view('livewire.admin.report.report-table', [
             'reports' => $report->search($this->search),
         ]);
     }

@@ -10,7 +10,7 @@ class ReserveTable extends Component
     public function render()
     {
         $reservations = new Reservation();
-        return view('livewire.reserve-table', [
+        return view('livewire.admin.reserve.reserve-table', [
             'reservations' => $reservations->search($this->search),
         ]);
     }

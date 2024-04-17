@@ -16,7 +16,7 @@
         <script src="https://cdn.tailwindcss.com"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased bg-slate-200">
+    <body class="not-italic antialiased bg-slate-200">
             @include('layouts-renter.navigation')
 
             <!-- Page Heading -->
