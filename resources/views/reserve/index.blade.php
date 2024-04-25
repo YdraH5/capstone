@@ -53,15 +53,14 @@
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="checkout" type="date"name="check_out">
             </div>
             <div class="mb-4">
-                <input type="text" id="totalBalanceInput" name="payment_status">
+                <input type="hidden" id="totalBalanceInput" name="payment_status">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="paymentStatus">Payment Status</label>
                 <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="paymentStatus" name="payment_method">
                     <option value="Paid">Pay in Full</option>
-                    <option value="Balance">Downpayment(20%)</option>
                 </select>
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="totalPrice">Total Price</label>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="totalPrice">Reservation Fee</label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="totalPrice" type="text" readonly name="total_price">
                 <span id="chargeMessage" class="text-red-500"></span>
                 <span id="balanceMessage" class="text-green-500"></span>

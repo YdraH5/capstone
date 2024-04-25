@@ -4,7 +4,7 @@
     @section('content')
 
     <x-slot name="header">
-        <div class="flex justify-between items-center px-10">
+        <div class="flex justify-between items-center px-2">
             <h2 class="font-semibold text-xl text-black-800 dark:text-black-200 leading-tight">
                 {{ __('Manage Apartment') }}
             </h2>

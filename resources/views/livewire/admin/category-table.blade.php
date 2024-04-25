@@ -64,7 +64,7 @@
                             </x-slot:body>
                         </x-modal>
                         @endif
-                        <button
+                    <button
                         x-data="{ id: {{$category->id}} }"
                         x-on:click="$wire.set('id', id); $dispatch('open-modal', { name: 'delete-category' })"
                         wire:click="delete(id)"
@@ -91,6 +91,8 @@
             </tr>
         </tbody>
       </table>
+      {{ $categories->links('components.pagination')}}
+
       </div>
       
 </div>

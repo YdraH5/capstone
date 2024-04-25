@@ -28,7 +28,6 @@ class ViewReport extends Component
     public function view($id){
         $this->isViewing= true;
         $this->id = $id;
-
         $this->viewReport = Report::find($id);
         $this->report_category = $this->viewReport->report_category;
         $this->status = $this->viewReport->status;

@@ -3,7 +3,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
     @if (session('success'))
-    <div class="alert alert-success text-green">
+    <div class="text-green-700">
         {{ session('success') }}
     </div>   
     @endif 

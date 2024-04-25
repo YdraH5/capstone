@@ -32,26 +32,52 @@ class ReservationController extends Controller
             'user_id' => 'required|numeric',
             'check_in'=>'required|date_format:Y-m-d',
             'check_out'=>'required|date_format:Y-m-d',
-            'total_price'=>'required|numeric',
+            'total_price'=>'required',
             'payment_status'=>'required'
         ]);
-        //store the data to database
-        $reserve = Reservation::create($data);
-        $user_id = $data['user_id'];
-        if($reserve){
-        // update the users role to reserve so the the user could access reserve page
-        DB::table('users')
-        ->where('id', $user_id)
-        ->update(['role' => 'reserve']);
-        return redirect(route('reserve.wait'));
-        }else{
-            return redirect(route('reserve.index'));
+        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
+        // to retrieve the category id inside apartment table
+        $categ = DB::table('apartment')
+            ->where('id', $data['apartment_id'])
+            ->select('category_id','id')
+            ->first();
+        // to get all the value in table category that match the id
+        $category = Category::find($categ->category_id);
+        $session = $stripe->checkout->sessions->create([
+            'line_items' => [[
+              'price_data' => [
+                'currency' => 'php',
+                'product_data' => [
+                  'name' => $category->name,
+                ],
+                'unit_amount' => $data['total_price']*100,
+              ],
+              'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('reserve.wait',[],true)."?session_id={CHECKOUT_SESSION_ID}",
+            'cancel_url' => route('reserve.index', ['apartment' => $categ->id], true),          ]);
+            $reserve = Reservation::create($data);
+            $user_id = $data['user_id'];
+            if ($reserve) {
+                DB::table('users')
+                    ->where('id', $user_id)
+                    ->update(['role' => 'reserve']);
+            }
+
+          return redirect($session->url);
         }
-    }
-    public function waiting(){
+  
+    public function waiting(Request $request){
+        // $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
+        // $sessionId = $request->get('session_id');
+
+        // $session = \Stripe\Checkout\Session::retrieve($sessionId);
+        // $customer = \Stripe\Customer::retrieve($session->customer);
+
         $user = auth()->user();
         $reserve_date = Reservation::select('check_in','apartment_id','id')->where('user_id', '=', $user->id)->limit(1)->get();
-        return view('reserve.wait',['reservations'=>$reserve_date]);
+        return view('reserve.wait',['reservations'=>$reserve_date])->with('success','Paymenthave been succesful');
     }
     public function edit(){
         return view('reserve.edit');
@@ -74,4 +100,5 @@ class ReservationController extends Controller
             return redirect(route('renters.home'))->with('success','Hi!, Welcome to renters dashboard. Please enjoy your stay here in NRN Building please let us know if there is a problem');
         }
     }
+    
 }

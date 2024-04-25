@@ -1,7 +1,9 @@
 <div> 
     <div>
-        <input wire:model.debounce.100ms.live="search" type="search"placeholder="Search...." class="mb-5 mt-2 text-black-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-1/3 h-8 flex items-center pl-3 text-sm border-black rounded border">
+        <input wire:model.debounce.100ms.live="search" type="search"placeholder="Search...." class="mb-5 mt-2 text-black-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-1/3 h-8 flex items-center pl-3 text-sm border-black rounded border w-full">
     </div>
+    <div class="overflow-x-auto ">
+
     <table class="table-auto w-full border-seperate max-w-7xl">
     <thead> 
         @if (session('success'))
@@ -126,6 +128,9 @@
       </tbody>
 
     </table>
+    
+    </div>
+    {{ $apartment->links('components.pagination')}}
   </div>
   
 </div>

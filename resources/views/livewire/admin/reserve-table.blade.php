@@ -37,7 +37,10 @@
                 @endforeach   
             </tbody>
           </table>       
-     
+    </div>
+    <div>
+        {{ $reservations->links('components.pagination')}}
+
     </div>
     
 </div>

@@ -91,7 +91,9 @@
             </div>
 
             <div class="mt-3 space-y-1">
-              
+                <x-responsive-nav-link :href="route('renters.report.index')" :active="request()->routeIs('renters.report.index')">
+                @include('components.report-icon') {{ __('Report') }}
+                </x-responsive-nav-link>
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">

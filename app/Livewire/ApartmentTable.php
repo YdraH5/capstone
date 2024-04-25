@@ -74,11 +74,32 @@ class ApartmentTable extends Component
     public function render()
     {
         $categories = Category::all();
-        $apartment = new Appartment();
-        return view('livewire.admin.apartment.apartment-table', [
-            'apartment' => $apartment->search($this->search),
+        $apartments = Appartment::query()
+            ->when($this->search, function ($query, $keyword) {
+                $query->where('users.name', 'like', '%' . $keyword . '%')
+                    ->orWhere('categories.name', 'like', '%' . $keyword . '%')
+                    ->orWhere('apartment.status', 'like', '%' . $keyword . '%')
+                    ->orWhere('apartment.room_number', 'like', '%' . $keyword . '%')
+                    ->orWhere('apartment.building', 'like', '%' . $keyword . '%')
+                    ->orWhere('apartment.price', 'like', '%' . $keyword . '%');
+            })
+            ->join('categories', 'categories.id', '=', 'apartment.category_id')
+            ->leftJoin('users', 'users.id', '=', 'apartment.renter_id')
+            ->select(
+                'categories.id as categ_id',
+                'categories.name as categ_name',
+                'users.name as renters_name',
+                'apartment.id',
+                'apartment.room_number',
+                'apartment.price',
+                'apartment.status',
+                'apartment.building'
+            )
+            ->cursorPaginate(10);
+
+        return view('livewire.admin.apartment-table', [
+            'apartment' => $apartments,
             'categories' => $categories,
         ]);
     }
-    
 }

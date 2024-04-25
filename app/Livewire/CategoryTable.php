@@ -51,8 +51,8 @@ class CategoryTable extends Component
     }
     public function render()
     {
-        $categories = Category::all();
-        return view('livewire.admin.category.category-table', [
+        $categories = Category::cursorPaginate(10);
+        return view('livewire.admin.category-table', [
             'categories' => $categories,
         ]);    }
 }

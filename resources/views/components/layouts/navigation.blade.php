@@ -1,5 +1,7 @@
 <div class="fixed w-full z-30 flex bg-white dark:bg-[#0F172A] p-2 items-center justify-center h-14 px-10">
-    <div class="logo ml-12 dark:text-white transform ease-in-out duration-500 flex-none h-full flex items-center justify-center">
+  {{-- border-b border-gray-100 --}}
+  {{-- i will change the color of navigation --}}
+    <div class="logo ml-0 transform ease-in-out duration-500 flex-none h-full flex items-center justify-center">
       <div class="logo shrink-0 flex items-center">
         <a href="{{ route('welcome') }}">
           <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
@@ -99,6 +101,15 @@
                     @include('components.calendar-icon') 
                     Reserves
                 </x-responsive-nav-link>
+                <form method="POST" action="{{ route('logout') }}">
+                  @csrf
+
+                  <x-responsive-nav-link :href="route('logout')"
+                          onclick="event.preventDefault();
+                                      this.closest('form').submit();">
+                      {{ __('Log Out') }}
+                  </x-responsive-nav-link>
+              </form>
             </ul>
         </div>
       </nav>
@@ -149,8 +160,9 @@
   </div>
 </aside>
 <!-- CONTENT -->
-
-<div class = "content ml-12 transform ease-in-out duration-500 pt-20 px-2 md:px-5 pb-4 ">
-<div class = "flex flex-wrap my-2 -mx-2">
+<div class="container mx-auto">
+  <div class="content ml-12 transform ease-in-out duration-500 pt-20 px-2 md:px-5 pb-4 ">
+    <div class="flex flex-wrap my-2 -mx-2">
+    </div>
 
 </div>

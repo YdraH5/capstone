@@ -10,7 +10,7 @@ class UserTable extends Component
     public function render()
     {
         $report = new User();
-        return view('livewire.admin.user.user-table', [
+        return view('livewire.admin.user-table', [
             'users' => $report->search($this->search),
         ]);
     }

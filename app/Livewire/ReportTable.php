@@ -26,16 +26,43 @@ class ReportTable extends Component
                     ->update(['status' => $this->status]);
             if ($update) {
                 $this->reset(); // Reset the component if the update was successful
-                 return redirect()->route('admin.reports.index')->with('success', 'Report Action submitted successfully');
+                 return redirect()->route('admin.reports')->with('success', 'Report Action submitted successfully');
                 } else {
                     return redirect()->back()->withInput()->withErrors(['status' => 'Failed to update status']); 
             }                
     }
     public function render()
     {
-        $report = new Report();
-        return view('livewire.admin.report.report-table', [
-            'reports' => $report->search($this->search),
-        ]);
+        $query = DB::table('reports')
+            ->leftJoin('users', 'users.id', '=', 'reports.user_id')
+            ->leftJoin('apartment', 'apartment.renter_id', '=', 'reports.user_id')
+            ->select(
+                'users.name',
+                'reports.id',
+                'reports.report_category',
+                'apartment.building',
+                'reports.description',
+                'reports.status',
+                'reports.ticket',
+                'apartment.room_number',
+                'reports.created_at as date'
+            )
+            ->orderByRaw("CASE WHEN reports.status = 'Solved' THEN 1 ELSE 0 END")
+            ->orderBy('reports.created_at');
+        // Filter based on the search search
+        if (!empty($this->search)) {
+            $query->where('users.name', 'like', '%' . $this->search . '%')
+                ->orWhere('reports.report_category', 'like', '%' . $this->search . '%')
+                ->orWhere('reports.description', 'like', '%' . $this->search . '%')
+                ->orWhere('reports.status', 'like', '%' . $this->search . '%')
+                ->orWhere('reports.ticket', 'like', '%' . $this->search . '%')
+                ->orWhere('reports.created_at', 'like', '%' . $this->search . '%')
+                ->orWhere('apartment.room_number', 'like', '%' . $this->search . '%');
+                
+        }
+
+        $reports = $query->cursorPaginate(10);
+
+        return view('livewire.admin.report-table', compact('reports'));
     }
 }

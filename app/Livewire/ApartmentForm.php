@@ -34,7 +34,7 @@ class ApartmentForm extends Component
         return redirect()->route('admin.apartment.index')->with('success','Adding apartment room success');
     }
     public function render(){
-        return view('livewire.admin.apartment.apartment-form')
+        return view('livewire.admin.apartment-form')
             ->with([
             'categories' => Category::all()
               ]);

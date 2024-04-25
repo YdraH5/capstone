@@ -1,9 +1,9 @@
 <div>
 <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4 bg-white shadow rounded-lg p-4">
   <!-- Filter options -->
-  <div class="w-full md:w-auto flex items-center space-x-2">
+  {{-- <div class="w-full md:w-auto flex items-center space-x-2">
       <label for="price" class="text-gray-700 font-medium">Price:</label>
-      <select id="price" name="price" class="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:border-blue-500 w-full md:w-40">
+      <select id="price" wire:model="priceFilter" class="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:border-blue-500 w-full md:w-40">
           <option value="0">Any</option>
           <option value="1">$</option>
           <option value="2">$$</option>
@@ -21,15 +21,13 @@
           <option value="4">4 Stars</option>
           <option value="5">5 Stars</option>
       </select>
-  </div>
+  </div> --}}
   
   <div class="w-full md:w-auto flex items-center space-x-2">
       <label for="type" class="text-gray-700 font-medium">Type:</label>
-      <select id="type" name="type" class="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:border-blue-500 w-full md:w-40">
+      <select id="type" wire:model.live="roomTypeFilter" class="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:border-blue-500 w-full md:w-40">
           <option value="0">Any</option>
-          <option value="1">Studio Type 1</option>
-          <option value="2">Studio Type 2</option>
-          <option value="3">Big Room</option>
+          <option value="Studio Type">Studio Type</option>
       </select>
   </div>
   
@@ -95,14 +93,11 @@
           <span class="text-gray-700 font-medium">Price:</span>
           <span class="text-gray-700">{{$apartments->price}}</span>
       </div>
-        <button 
-                x-data="{ id: {{$apartments->id}} }"
-                x-on:click="$wire.set('id', id); $dispatch('open-modal', { name: 'view-details' })"
-                wire:click="detail(id)"
-                type="button"
-                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mt-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <a href="{{route('visitors.display',['apartment'=>$apartments->id])}}">
+        <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mt-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
             View Details
         </button>
+        </a>
   </div>
 </div>
 @endforeach

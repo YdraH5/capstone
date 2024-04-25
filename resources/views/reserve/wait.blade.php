@@ -1,7 +1,11 @@
 @section('title', 'Waiting')
 <x-reserve-layout>
     @section('waiting')
-
+    @if (session('success'))
+    <div class="alert alert-success text-green-500">
+        {{ session('success') }}
+    </div>    
+    @endif
 <div class="min-h-screen flex flex-col justify-center items-center">
     <h1 class="text-3xl font-bold mb-6">Welcome to the Reservation Waiting Page</h1>
     <div class="bg-white p-8 rounded-lg shadow-lg">

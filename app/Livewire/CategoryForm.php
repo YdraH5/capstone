@@ -33,6 +33,6 @@ class CategoryForm extends Component
     }
     public function render()
     {
-        return view('livewire.admin.category.category-form');
+        return view('livewire.admin.category-form');
     }
 }
