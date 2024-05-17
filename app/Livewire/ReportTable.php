@@ -48,7 +48,7 @@ class ReportTable extends Component
                 'reports.created_at as date'
             )
             ->orderByRaw("CASE WHEN reports.status = 'Solved' THEN 1 ELSE 0 END")
-            ->orderBy('reports.created_at');
+            ->orderBy('date', 'asc');        
         // Filter based on the search search
         if (!empty($this->search)) {
             $query->where('users.name', 'like', '%' . $this->search . '%')

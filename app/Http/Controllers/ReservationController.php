@@ -30,8 +30,8 @@ class ReservationController extends Controller
         $data = $request->validate([
             'apartment_id' => 'required|numeric|unique:reservations,user_id',
             'user_id' => 'required|numeric',
-            'check_in'=>'required|date_format:Y-m-d',
-            'check_out'=>'required|date_format:Y-m-d',
+            'check_in'=>'required|date_format:Y-m-d|unique:reservations,check_in',
+            'check_out'=>'required|date_format:Y-m-d|unique:reservations,check_out',
             'total_price'=>'required',
             'payment_status'=>'required'
         ]);

@@ -42,8 +42,10 @@ class ApartmentTable extends Component
         $this->price = $this->editApartment->price;
         $this->status = $this->editApartment->status;
         $this->room_number = $this->editApartment->room_number;
-        $this->editApartment = Appartment::find($id);  
+        $this->editApartment = Appartment::find($id); 
+         
     }
+   
     public function update(){
         $this->validate();
          // Find the apartment record by its ID

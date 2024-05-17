@@ -18,7 +18,7 @@ class CategoryForm extends Component
     public function save()
     {
         $this->validate([
-            'name' => 'required|max:50',
+            'name' => 'required|max:50|unique:categories,name',
             'description' => 'required|max:190'
         ]); 
  

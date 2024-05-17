@@ -1,1 +1,1 @@
-<img src="{{ asset('images/NRN LOGO.png') }}" style="height: 20px; width:50px"class="lg:h-40 lg:w-60">
+<img src="{{ asset('images/NRN LOGO.png') }}" style="height: 20px; width:50px"class="sm:mx-1 lg:mx-4 lg:h-40 lg:w-60">

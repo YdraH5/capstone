@@ -11,7 +11,7 @@ class CategoryTable extends Component
     public $id; // to save the id that the user want to edit
     public $editCategory;// to save data that use is going to edit
 
-    #[Validate('required|min:5|max:50')] 
+    #[Validate('required|min:5|max:50|unique:categories,name')] 
     public $name = '';
  
     #[Validate('required|min:10|max:200')] 

@@ -1,9 +1,9 @@
 <div>
     <div>
-        <input wire:model.debounce.100ms.live="search" type="search"placeholder="Search...." class="mb-5 mt-2 text-black-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-1/3 h-8 flex items-center pl-3 text-sm border-black rounded border">
+        <input wire:model.debounce.500ms.live="search" type="search"placeholder="Search...." class="mb-5 mt-2 text-black-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-1/2 h-8 flex items-center pl-3 text-sm border-black rounded border">
     </div>
     <div class="overflow-x-auto ">
-    <table class="table-auto w-full border-seperate max-w-10xl">
+    <table class="table-auto w-full border-seperate">
         <thead>
             <tr class="bg-gray-300 rounded">
                 <th class="text-center border border-black-900">NAME</th>
@@ -23,6 +23,7 @@
             </tr>
             @endforeach   
         </tbody>
-      </table>       
+      </table>     
+      {{ $users->links('components.pagination')}}  
     </div>
 </div>

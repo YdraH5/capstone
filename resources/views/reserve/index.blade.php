@@ -45,13 +45,18 @@
                     Check-In Date
                 </label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="checkin" type="date"name="check_in">
+                <x-input-error :messages="$errors->get('check_in')" class="mt-2" />
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="checkout">
                     Check-Out Date
                 </label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="checkout" type="date"name="check_out">
+                <x-input-error :messages="$errors->get('check_out')" class="mt-2" />
             </div>
+                @if ($errors->has('reservation'))
+                    <div class="text-red-500">{{ $errors->first('reservation') }}</div>
+                @endif
             <div class="mb-4">
                 <input type="hidden" id="totalBalanceInput" name="payment_status">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="paymentStatus">Payment Status</label>

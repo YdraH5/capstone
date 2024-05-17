@@ -7,13 +7,10 @@ use Illuminate\Support\Facades\DB;
 class ReserveTable extends Component
 {
     public $search;
-    // public function render()
-    // {
-    //     $reservations = new Reservation();
-    //     return view('livewire.admin.reserve.reserve-table', [
-    //         'reservations' => $reservations->search($this->search),
-    //     ]);
-    // }
+   
+    public function reserve($id){
+        
+    }
     public function render()
     {
         $query = DB::table('users')

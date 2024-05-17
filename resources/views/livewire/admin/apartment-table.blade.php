@@ -91,7 +91,7 @@
                                         @error('status') <span class="error text-red-900">{{ $message }}</span> @enderror 
                                         <div class="flex items-center justify-between py-8">
                                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-                                            <button  x-on:click="$dispatch('close-modal',{name:'add-apartment'})" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Close
+                                            <button wire:click="closeModal" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Close
                                             </button>
                                         </div>
                                     </div>

@@ -83,7 +83,7 @@ Route::middleware(['auth','verified'])->group( function(){
     Route::group(['middleware' => ['auth','isRenter']], function () {
         Route::controller(SubmitReportController::class)->group(function() {
             Route::get('/renters/home','home')->name('renters.home');
-            Route::get('/renters/report/index','index')->name('renters.report.index');
+            Route::get('/renters/report','index')->name('renters.report.index');
             Route::get('/renters/report/{report_id}/view','view')->name('renters.report.view');
             Route::post('/renters/report/create','create')->name('renters.report.create');
         });

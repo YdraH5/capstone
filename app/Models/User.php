@@ -44,23 +44,5 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function search($keyword)
-    {
-        // show all data when search box is null
-        $query = DB::table('users')
-            ->select(
-                'name',
-                'email',
-                'role',
-                (DB::raw('DATE_FORMAT(created_at, "%b-%d-%Y") as date'))
-            );
-        // this statement will show the data that is %like% the search input
-        if (!empty($keyword)) {
-            $query->where('name', 'like', '%' . $keyword . '%')
-            ->orWhere('email', 'like', '%' . $keyword . '%')
-            ->orWhere( 'role', 'like', '%' . $keyword . '%')
-            ->orWhere( 'created_at', 'like', '%' . $keyword . '%');
-        }
-        return $query->get();
-    }
+    
 }

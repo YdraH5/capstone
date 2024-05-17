@@ -1,5 +1,5 @@
 <div class="relative inline-flex items-center justify-center p-2">
-<input type="search" placeholder="Search" class="border-b-2 w-full border-gray-200 py-3 px-7 h-7 rounded-md">
+<input type="search" placeholder="Search" class="border-b-2 w-1 border-gray-200 py-3 px-7 h-7 rounded-md">
                 <button type="submit">
               <svg class="text-teal-400 h-4 w-4 absolute top-3.5 right-3 fill-current"
                   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"

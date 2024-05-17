@@ -7,10 +7,6 @@
     x-on:keydown.escape.window = "show = false"
     class="fixed z-50 inset-0 overflow-y-auto"
     style="display:none;"
-    x-transition:enter="ease-out duration-100"
-    x-transition:enter-start="opacity-0"
-    x-transition:enter-end="opacity-100"
-    x-transition:leave="ease-in duration-500"
     x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0">
 
