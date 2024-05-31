@@ -19,12 +19,12 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('renters.home')" :active="request()->routeIs('renters.home')">
+                    <x-nav-link :href="route('renters.payment')" :active="request()->routeIs('renters.payment')">
                         @include('components.payment-icon'){{ __('Payment') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('renters.report.index')" :active="request()->routeIs('renters.report.index')">
+                    <x-nav-link :href="route('renters.report')" :active="request()->routeIs('renters.report')">
                        @include('components.report-icon') {{ __('Report') }}
                     </x-nav-link>
                 </div>
@@ -91,7 +91,7 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('renters.report.index')" :active="request()->routeIs('renters.report.index')">
+                <x-responsive-nav-link :href="route('renters.report')" :active="request()->routeIs('renters.report')">
                 @include('components.report-icon') {{ __('Report') }}
                 </x-responsive-nav-link>
 

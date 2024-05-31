@@ -1,4 +1,4 @@
-<div class="fixed w-full z-30 flex bg-white dark:bg-[#0F172A] p-2 items-center justify-center h-14 px-10">
+<div class="fixed w-full z-30 flex bg-[#0F172A] p-2 items-center justify-center h-14 px-10">
   {{-- border-b border-gray-100 --}}
   {{-- i will change the color of navigation --}}
     <div class="logo ml-0 transform ease-in-out duration-500 flex-none h-full flex items-center justify-center">
@@ -101,6 +101,12 @@
                     @include('components.calendar-icon') 
                     Reserves
                 </x-responsive-nav-link>
+                <x-responsive-nav-link  href="{{ route('admin.payments.index') }}" 
+                    :active="request()->routeIs('admin.payments.index')" 
+                    class="flex items-center px-4 py-2 text-white hover:bg-gray-700">
+                    @include('components.payment-icon') 
+                    Payments
+                </x-responsive-nav-link>
                 <form method="POST" action="{{ route('logout') }}">
                   @csrf
 
@@ -115,48 +121,54 @@
       </nav>
     </div>
   </div>
-  <aside class="hidden md:block w-60 -translate-x-48 fixed z-50 flex h-screen dark:bg-[#0F172A]">
+  <aside class="hidden md:block w-60 -translate-x-48 fixed z-50 flex h-screen bg-[#0F172A]">
     <!-- MINI SIDEBAR-->
     <div class="mini mt-20 flex flex-col space-y-2 w-full h-[calc(100vh)]">
-      <div class="group hover:ml-16 relative justify-end pr-5 text-white dark:hover:text-blue-500 w-full dark:bg-[#0F172A] p-3 rounded-full transform ease-in-out duration-300 flex">
+      <div class="group hover:ml-16 relative justify-end pr-5 text-white hover:text-blue-500 w-full bg-[#0F172A] p-3 rounded-full transform ease-in-out duration-300 flex">
         <x-nav-link href="{{ route('dashboard') }}" active="{{ request()->routeIs('dashboard') }}">
           <span class="opacity-0 group-hover:opacity-100 transition-opacity">Dashboard</span>
           @include('components.dashboard-icon')
         </x-nav-link>
       </div>
 
-      <div class="group hover:ml-16 relative justify-end pr-5 text-white dark:hover:text-blue-500 w-full dark:bg-[#0F172A] p-3 rounded-full transform ease-in-out duration-300 flex">
+      <div class="group hover:ml-16 relative justify-end pr-5 text-white hover:text-blue-500 w-full bg-[#0F172A] p-3 rounded-full transform ease-in-out duration-300 flex">
           <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
               <span class="opacity-0 group-hover:opacity-100 transition-opacity">Users</span>
               @include('components.users-icon')
           </x-nav-link>
       </div>
 
-      <div class="group hover:ml-16 relative justify-end pr-5 text-white dark:hover:text-blue-500 w-full dark:bg-[#0F172A] p-3 rounded-full transform ease-in-out duration-300 flex">
+      <div class="group hover:ml-16 relative justify-end pr-5 text-white hover:text-blue-500 w-full bg-[#0F172A] p-3 rounded-full transform ease-in-out duration-300 flex">
         <x-nav-link href="{{ route('admin.apartment.index') }}" :active="request()->routeIs('admin.apartment.*')">
             <span class="opacity-0 group-hover:opacity-100 transition-opacity">Aparment</span>
               @include('components.apartment-icon')   
           </x-nav-link>
       </div>
-      <div class="group hover:ml-16 relative justify-end pr-5 text-white dark:hover:text-blue-500 w-full dark:bg-[#0F172A] p-3 rounded-full transform ease-in-out duration-300 flex">
+      <div class="group hover:ml-16 relative justify-end pr-5 text-white hover:text-blue-500 w-full bg-[#0F172A] p-3 rounded-full transform ease-in-out duration-300 flex">
           <x-nav-link href="{{ route('admin.categories.index') }}" active="{{ request()->routeIs('admin.categories.*') }}">
               <span class="opacity-0 group-hover:opacity-100 transition-opacity">Category</span>
               @include('components.category-icon')   
           </x-nav-link>
       </div>
 
-      <div class="group hover:ml-16 relative justify-end pr-5 text-white dark:hover:text-blue-500 w-full dark:bg-[#0F172A] p-3 rounded-full transform ease-in-out duration-300 flex">
+      <div class="group hover:ml-16 relative justify-end pr-5 text-white hover:text-blue-500 w-full bg-[#0F172A] p-3 rounded-full transform ease-in-out duration-300 flex">
           <x-nav-link href="{{ route('admin.reports.index') }}" active="{{ request()->routeIs('admin.reports.*') }}">
               <span class="opacity-0 group-hover:opacity-100 transition-opacity">Report</span>
               @include('components.report-icon')  
           </x-nav-link>
       </div>
-      <div class="group hover:ml-16 relative justify-end pr-5 text-white dark:hover:text-blue-500 w-full dark:bg-[#0F172A] p-3 rounded-full transform ease-in-out duration-300 flex">
+      <div class="group hover:ml-16 relative justify-end pr-5 text-white hover:text-blue-500 w-full bg-[#0F172A] p-3 rounded-full transform ease-in-out duration-300 flex">
         <x-nav-link href="{{ route('admin.reserve.index') }}" active="{{ request()->routeIs('admin.reserve.*') }}">
             <span class="opacity-0 group-hover:opacity-100 transition-opacity">Reserve</span>
             @include('components.calendar-icon')  
         </x-nav-link>
-    </div>
+      </div>
+      <div class="group hover:ml-16 relative justify-end pr-5 text-white hover:text-blue-500 w-full bg-[#0F172A] p-3 rounded-full transform ease-in-out duration-300 flex">
+        <x-nav-link href="{{ route('admin.payments.index') }}" active="{{ request()->routeIs('admin.payments.*') }}">
+            <span class="opacity-0 group-hover:opacity-100 transition-opacity">Payments</span>
+            @include('components.payment-icon')  
+        </x-nav-link>
+      </div>
   </div>
 </aside>
 <!-- CONTENT -->

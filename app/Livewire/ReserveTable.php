@@ -6,7 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 class ReserveTable extends Component
 {
-    public $search;
+    public $search ='';
    
     public function reserve($id){
         

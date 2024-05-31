@@ -13,7 +13,7 @@ class SubmitReportController extends Controller
         $this->middleware('auth');
     }
     public function home(){
-        return view('renters.home');
+        return view('renters.payment');
     }
     public function index(Request $request){
         $userId = $request->user()->id;
@@ -26,7 +26,7 @@ class SubmitReportController extends Controller
         ->select('users.name','reports.id', 'reports.report_category', 'reports.description','reports.status','reports.ticket',(DB::raw('DATE_FORMAT(reports.created_at, "%b-%d-%Y") as date')))
         ->where('reports.user_id', $userId)
         ->get();
-        return view('renters.report.index',['reports'=>$reports,'ticket'=>$ticket]);
+        return view('renters.report',['reports'=>$reports,'ticket'=>$ticket]);
         }
     
 public function create(Request $request) {
@@ -44,7 +44,7 @@ public function create(Request $request) {
 
     if ($count < 3) {
         $newReport = Report::create($data);
-        return redirect()->route('renters.report.index')->with('success', 'Reports added successfully');
+        return redirect()->route('renters.report')->with('success', 'Reports added successfully');
     } else {
         return redirect()->route('renters.report.index')->with('failed', 'Sorry, you have reached the maximum number of reports. Please wait for other reports to be solved.');
     }

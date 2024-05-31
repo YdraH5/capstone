@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appartment;
-use App\Models\user;
+use App\Models\Payment;
 use App\Models\Category;
 use App\Models\Reservation;
 use Illuminate\Support\Facades\DB;
@@ -57,12 +57,23 @@ class ReservationController extends Controller
             'mode' => 'payment',
             'success_url' => route('reserve.wait',[],true)."?session_id={CHECKOUT_SESSION_ID}",
             'cancel_url' => route('reserve.index', ['apartment' => $categ->id], true),          ]);
+            
             $reserve = Reservation::create($data);
             $user_id = $data['user_id'];
             if ($reserve) {
                 DB::table('users')
                     ->where('id', $user_id)
                     ->update(['role' => 'reserve']);
+                
+                    Payment::create([
+                        'apartment_id' => $data['apartment_id'],
+                        'user_id' => $data['user_id'],
+                        'amount' => $data['total_price'],
+                        'category' => 'Reservation fee',
+                        'transaction_id' => $session->id,
+                        'payment_method' => 'stripe', 
+                        'status' => $data['payment_status']
+                    ]);
             }
 
           return redirect($session->url);

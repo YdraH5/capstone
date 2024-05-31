@@ -67,6 +67,11 @@ Route::middleware(['auth','verified'])->group( function(){
             return view('/admin/apartment');
         })->name('admin.apartment.index');
 
+        // ROUTE TO PAYMENT CONTROL PAGE FOR ADMIN
+        Route::get('/admin/payments', function () {
+            return view('/admin/payments');
+        })->name('admin.payments.index');
+
         // ROUTE TO RESERVATION MANAGEMENT FOR ADMIN
         Route::get('/admin/reservations', function () {
             return view('/admin/reservations');
@@ -82,11 +87,16 @@ Route::middleware(['auth','verified'])->group( function(){
     });
     Route::group(['middleware' => ['auth','isRenter']], function () {
         Route::controller(SubmitReportController::class)->group(function() {
-            Route::get('/renters/home','home')->name('renters.home');
-            Route::get('/renters/report','index')->name('renters.report.index');
-            Route::get('/renters/report/{report_id}/view','view')->name('renters.report.view');
-            Route::post('/renters/report/create','create')->name('renters.report.create');
+            Route::get('/renters/report','index')->name('renters.report');
+            Route::get('/renters/{report_id}/view','view')->name('renters.report.view');
+            Route::post('/renters/create','create')->name('renters.report.create');
         });
+        Route::get('/renters/payment', function () {
+            return view('/renters/payment');
+        })->name('renters.payment');
+        Route::get('/renters/home', function () {
+            return view('/renters/home');
+        })->name('renters.home');
     });
 
 

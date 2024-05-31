@@ -14,8 +14,8 @@ class ApartmentForm extends Component
  
     #[Validate('required')] 
     public $building = '';
- 
-    #[Validate('required|numeric')] 
+  
+    #[Validate('required|numeric')]
     public $price = '';
 
     #[Validate('required')] 
