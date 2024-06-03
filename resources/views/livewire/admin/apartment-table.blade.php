@@ -5,7 +5,7 @@
     </div>
     <div class="overflow-x-auto ">
 
-    <table class="table-auto w-full border-seperate max-w-7xl">
+    <table class="table-auto w-full border-seperate">
     <thead> 
         @if (session('success'))
         <div class="alert alert-success text-green-700">

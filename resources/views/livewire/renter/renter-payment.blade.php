@@ -3,7 +3,6 @@
         <select wire:model.live="page" class="w-32 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300">
             <option value="history">History</option>
             <option value="to pay">To pay</option>
-            <option value="upcoming">Upcoming</option>
         </select>
     </div>
     
