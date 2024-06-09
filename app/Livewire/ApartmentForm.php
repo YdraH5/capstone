@@ -4,6 +4,7 @@ namespace App\Livewire;
  
 use Livewire\Attributes\Validate; 
 use Livewire\Component;
+use Illuminate\Validation\Rule;
 use App\Models\Appartment;
 use App\Models\Category;
 use LivewireUI\Modal\ModalComponent;
@@ -26,12 +27,31 @@ class ApartmentForm extends Component
     
     public function save()
     {
-        $this->validate(); 
- 
-        Appartment::create(
-            $this->only(['category_id', 'building','price','status','room_number'])
-        );
-        return redirect()->route('admin.apartment.index')->with('success','Adding apartment room success');
+        $this->validate([
+            'category_id' => 'required',
+            'building' => 'required',
+            'price' => 'required|numeric',
+            'status' => 'required',
+            'room_number' => [
+                'required',
+                'numeric',
+                Rule::unique('apartment')->where(function ($query) {
+                    return $query->where('building', $this->building)
+                        ->where('room_number', $this->room_number);
+                }),
+    
+            ],
+        ]);
+    
+        Appartment::create([
+            'category_id' => $this->category_id,
+            'building' => $this->building,
+            'price' => $this->price,
+            'status' => $this->status,
+            'room_number' => $this->room_number,
+        ]);
+    
+        return redirect()->route('admin.apartment.index')->with('success', 'Adding apartment room success');
     }
     public function render(){
         return view('livewire.admin.apartment-form')

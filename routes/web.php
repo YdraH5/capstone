@@ -1,21 +1,13 @@
 <?php
 
-use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\AppartmentController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\VisitorPageController;
-use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SubmitReportController;
-use App\Http\Controllers\RenterController;
 use App\Http\Controllers\PaymentController;
 
-use Illuminate\Support\Facades\DB;
 
-use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Route;
 
@@ -30,16 +22,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // specify landing page 
+Route::group(['middleware' => ['auth', 'sessionTimeout']], function () {
 
 Route::get('pay',[PaymentController::class,'pay']);
 Route::get('success',[PaymentController::class,'success']);
 
-
-
-Route::middleware(['auth','verified'])->group( function(){
     Route::group(['middleware' => ['isAdmin']], function () {
-        Route::get('/livewire/admin/dashboard', function () {
-            return view('/livewire/admin/dashboard');
+        Route::get('/dashboard', function () {
+            return view('/dashboard');
         })->name('dashboard');
   
         Route::controller(ImageController::class)->group(function() {
@@ -77,15 +67,14 @@ Route::middleware(['auth','verified'])->group( function(){
             return view('/admin/reservations');
         })->name('admin.reserve.index');
     });
-});
     
     // ROUTING group for reserved users only users who have pending reservation have access here
-    Route::group(['middleware' => ['auth','isReserve']], function () {
+    Route::group(['middleware' => ['isReserve']], function () {
         Route::get('/reserve/wait',[ReservationController::class,'waiting'])->name('reserve.wait');
         Route::get('/reserve/edit',[ReservationController::class,'edit'])->name('reserve.edit');
         Route::get('/reserve/{id}/{apartment}/{reservation}/update',[ReservationController::class,'update'])->name('reserve.update');
     });
-    Route::group(['middleware' => ['auth','isRenter']], function () {
+    Route::group(['middleware' => ['isRenter']], function () {
         Route::controller(SubmitReportController::class)->group(function() {
             Route::get('/renters/report','index')->name('renters.report');
             Route::get('/renters/{report_id}/view','view')->name('renters.report.view');
@@ -103,6 +92,7 @@ Route::middleware(['auth','verified'])->group( function(){
 Route::get('/reserve/{apartment}/index',[ReservationController::class,'index'])->name('reserve.index')->middleware('auth');
 Route::post('/reserve/create',[ReservationController::class,'create'])->name('reserve.create');
 
+});
 
 
 // first page to see when url of the page is executed
@@ -121,6 +111,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-Route::post('/session','App\Http\Controllers\StripeController@session')->name('session');
 
 require __DIR__.'/auth.php';

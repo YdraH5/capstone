@@ -100,7 +100,7 @@ class ReservationController extends Controller
                     ->update(['role' => 'renter']);
         $update_apartment = DB::table('apartment')
                     ->where('id', $apartment_id)
-                    ->update(['renter_id' => $user_id]);
+                    ->update(['renter_id' => $user_id,'status'=>'Rented']);
         $delete_reservation = DB::table('reservations')
                     ->where('id',$reservation)
                     ->delete();

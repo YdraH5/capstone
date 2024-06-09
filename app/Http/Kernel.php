@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'isAdmin' => \App\Http\Middleware\AdminMiddleware::class,
         'isRenter' => \App\Http\Middleware\RenterMiddleware::class,
         'isReserve' => \App\Http\Middleware\ReserveMiddleware::class,
+        'sessionTimeout' => \App\Http\Middleware\SessionTimeout::class,
 
     ];
     

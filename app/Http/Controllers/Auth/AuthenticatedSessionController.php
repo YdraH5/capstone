@@ -32,26 +32,25 @@ class AuthenticatedSessionController extends Controller
     // Get the authenticated user
     $user = Auth::user();
 
-    // Check user role and redirect accordingly
-    if ($user->role === 'admin') {
-        // Redirect admins to admin dashboard
-        return redirect()->route('dashboard');
-    } elseif ($user->role === 'renter') {
-        // Redirect customers to customer dashboard
-        return redirect()->route('renters.home');
-    }
-    elseif ($user->role === 'reserve') {
-        // Redirect customers to customer dashboard
-        return redirect()->route('reserve.wait');
-    }
-    elseif ($user->role === '') {
-        // Redirect customers to customer dashboard
-        return redirect()->route('welcome');
-    } 
-    else {
-        // Redirect others to default home route
-        return redirect()->intended(RouteServiceProvider::HOME);
-    }
+    switch($user->role){
+        case 'admin':
+            // Redirect admins to admin dashboard
+            return redirect()->route('dashboard');
+        case 'renter':
+            // Redirect customers to customer dashboard
+            return redirect()->route('renters.home');    
+        case 'reserve':
+            // Redirect customers to customer dashboard
+            return redirect()->route('reserve.wait'); 
+        default:
+            return redirect()->route('welcome');   
+        }
+
+    
+    // else {
+    //     // Redirect others to default home route
+    //     return redirect()->intended(RouteServiceProvider::HOME);
+    // }
 }
 
     /**

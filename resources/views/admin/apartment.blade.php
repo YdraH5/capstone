@@ -16,8 +16,8 @@
     </x-slot>
         
     @livewire('apartment-form')
-    <div class="py-2">
-        <div class="mx-auto sm:px-6 lg:px-8 ">
+    <div class="py-2 max-w-full">
+        <div class="mx-4 sm:px-4 md:px-6 lg:px-8 ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 
                 <div class="flex flex-col">

@@ -11,7 +11,7 @@
             <div class="overflow-hidden relative h-56 rounded-lg sm:h-64 xl:h-80 2xl:h-96">
                 @foreach ($images[$detail->id] as $image)
                 <div class="hidden duration-200 ease-in-out" data-carousel-item>
-                    <img src="{{ asset($image->image) }}"style="width:200px;height:200px;" class="block absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2" alt="...">
+                    <img src="{{ asset($image->image) }}"style="width:250px;height:200px;" class="block absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2" alt="...">
                 </div>
                 @endforeach
             </div>

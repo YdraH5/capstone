@@ -13,7 +13,7 @@
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-black-800 dark:text-black-200 leading-tight">
-        {{ __('CATEGORIES') }}
+        {{ __('IMAGES') }}
     </h2>
     <div class="flex justify-end px-10 h-5"> 
       <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-image'})">

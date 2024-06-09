@@ -91,6 +91,12 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                <x-responsive-nav-link :href="route('renters.home')" :active="request()->routeIs('renters.home')">
+                    @include('components.home-icon') {{ __('Home') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('renters.home')" :active="request()->routeIs('renters.payment')">
+                    @include('components.payment-icon') {{ __('Payment') }}
+                </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('renters.report')" :active="request()->routeIs('renters.report')">
                 @include('components.report-icon') {{ __('Report') }}
                 </x-responsive-nav-link>

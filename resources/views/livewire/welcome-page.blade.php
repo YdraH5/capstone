@@ -1,5 +1,5 @@
-<div>
-  <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4 bg-white shadow rounded-lg p-4">
+<div >
+  {{-- <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4 bg-white shadow rounded-lg p-4"> --}}
     <!-- Filter options -->
     {{-- <div class="w-full md:w-auto flex items-center space-x-2">
         <label for="price" class="text-gray-700 font-medium">Price:</label>
@@ -23,30 +23,30 @@
         </select>
     </div> --}}
     
-    <div class="w-full md:w-auto flex items-center space-x-2">
+    {{-- <div class="w-full md:w-auto flex items-center space-x-2">
         <label for="type" class="text-gray-700 font-medium">Type:</label>
         <select id="type" wire:model.live="roomTypeFilter" class="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:border-blue-500 w-full md:w-40">
             <option value="0">Any</option>
             <option value="Studio Type">Studio Type</option>
         </select>
-    </div>
+    </div> --}}
     
-    <!-- Apply Button -->
+    {{-- <!-- Apply Button -->
     <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-60">
         Apply Filters
     </button>
-  </div>
+  </div> --}}
   @foreach($apartment as $apartments)
   
   <div class="flex flex-col lg:flex-row items-center justify-center space-y-4 lg:space-y-0 lg:space-x-8 bg-white shadow-md rounded-lg p-4">
-  <div class="max-w-2xl w-full">
+  <div class="max-w-2xl w-full ">
   
     <div id="default-carousel" class="relative" data-carousel="static">
           <!-- Carousel wrapper -->
-          <div class="overflow-hidden relative h-56 rounded-lg sm:h-64 xl:h-80 2xl:h-96">
+          <div class="overflow-hidden relative h-56 rounded-lg sm:h-64 xl:h-80 2xl:h-96 ">
               @foreach ($images[$apartments->id] as $image)
               <div class="hidden duration-200 ease-in-out" data-carousel-item>
-                  <img src="{{ asset($image->image) }}"style="width:250px;height:200px;" class="block absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2" alt="...">
+                  <img src="{{ asset($image->image) }}"style="width:350px;height:250px;" class="block absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2" alt="...">
               </div>
               @endforeach
           </div>
@@ -60,13 +60,13 @@
           <!-- Slider controls -->
           <button type="button" class="flex absolute top-0 left-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-prev>
               <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 bg-gray-800/30 group-hover:bg-white/50 group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white group-focus:ring-gray-800/70 group-focus:outline-none">
-                  <svg class="w-4 h-4 opacity-30 text-white sm:w-6 sm:h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                  <svg class="w-6 h-6 opacity-30 text-white sm:w-6 sm:h-6 text-gray-800" fill="none" stroke="blue" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 19l-7-7 7-7"></path></svg>
                   <span class="hidden">Previous</span>
               </span>
           </button>
           <button type="button" class="flex absolute top-0 right-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-next>
               <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 bg-gray-800/30 group-hover:bg-white/50 group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white group-focus:ring-gray-800/70 group-focus:outline-none">
-                  <svg class="w-4 h-4 opacity-30 text-white sm:w-6 sm:h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                  <svg class="w-6 h-6 opacity-30 text-white sm:w-6 sm:h-6 text-gray-800" fill="none" stroke="blue" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path></svg>
                   <span class="hidden">Next</span>
               </span>
           </button>
@@ -75,7 +75,7 @@
     
   </div>
     <!-- Description -->
-    <div class="w-full lg:w-1/2">
+    <div class="w-full lg:w-1/2 ">
       <h2 class="text-xl font-semibold text-gray-800 mb-2">{{$apartments->categ_name}}</h2>
       <span class="text-gray-700 font-medium">Description</span>
         <p class="text-gray-700 mb-4">{{$apartments->description}}</p>

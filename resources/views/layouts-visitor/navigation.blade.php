@@ -19,7 +19,44 @@
                 </x-nav-link>
               </div>
               {{--container for login and register  --}}
+              @if(Auth::check())
+              <div class="inline-flex absolute top-4 right-2 space-x-reverse space-y-0 hidden sm:flex sm:items-center sm:ms-6">                    
+                <x-dropdown >
+                    <x-slot name="trigger">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-black-500 bg-gray-300 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">                                
+                            @include('components.user-icon')
+                            <div class="flex ">                
+                                {{ Auth::user()->name }}
+                            </div>
 
+                            <div class="ms-1">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </button>
+                    </x-slot>
+
+                    <x-slot name="content">
+                        <x-dropdown-link :href="route('profile.edit')">
+                            {{ __('Profile') }}
+                        </x-dropdown-link>
+
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                {{ __('Log Out') }}
+                            </x-dropdown-link>
+                        </form>
+                    </x-slot>
+                </x-dropdown>
+            </div>
+            @else
+ 
           <div class="inline-flex absolute top-4 right-2 space-x-reverse space-y-0 ">
                 <div class="hidden space-x-1 sm:-my-px sm:ms-10 sm:flex ">
                   <x-nav-link  :href="route('login')" :active="request()->routeIs('login')">
@@ -30,6 +67,9 @@
                   </x-nav-link>
                 </div>
             </div>
+              @endif
+             
+
           </div>
           <div class="-me-2 flex items-center sm:hidden">
             <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
@@ -47,15 +87,24 @@
         <x-responsive-nav-link   :href="route('welcome')" :active="request()->routeIs('welcome')">
         {{ __('Available') }}
         </x-responsive-nav-link>
-
+        @if(!Auth::check())
         <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('auth.login')">
             {{ __('Login') }}
         </x-responsive-nav-link>
 
-        <x-responsive-nav-link :href="route('register')" :active="request()->routeIs('auth.register')">
+        <x-responsive-nav-link  :href="route('register')" :active="request()->routeIs('auth.register')">
           {{ __('Register') }}
         </x-responsive-nav-link>
+        @else
+        <form method="POST" action="{{ route('logout') }}">
+          @csrf
+          <a href="route('logout')" class="block w-full ps-3 pe-4 py-2 border-l-4 border-indigo-400 text-start text-base font-medium text-indigo-700  focus:outline-none focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 transition duration-150 ease-in-out'
+          : 'block w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
 
+          </a>
+          
+        </form>
+        @endif
     </div>
   </div>
 </nav>

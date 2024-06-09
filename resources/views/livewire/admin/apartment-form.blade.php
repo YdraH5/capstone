@@ -17,7 +17,7 @@
                         @error('category_id') <span class="error text-red-900">{{ $message }}</span> @enderror 
                     </div>
                     <div>
-                        <label class="block font-medium opacity-70">Status</label>
+                        <label class="block font-medium opacity-70">Bulding</label>
                         <select wire:model="building"class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
                             <option value="" disabled selected hidden>Building</option>
                             <option value="A">A</option>

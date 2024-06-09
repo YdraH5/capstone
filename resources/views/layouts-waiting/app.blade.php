@@ -29,6 +29,6 @@
 
             <!-- Page Content -->
             @yield('waiting')
-        <script src="{{ asset('js/app.js') }}"></script>
-    </body>
+            @livewireScripts
+            </body>
 </html>

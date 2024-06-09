@@ -23,6 +23,11 @@ class Appartment extends Model
     {
         return $this->hasMany(Payment::class);
     }
+    public function dueDates()
+    {
+        return $this->hasMany(DueDate::class);
+    }
+
 
 }
 

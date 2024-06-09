@@ -18,6 +18,13 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/dashboard';
+    public const RENTER = 'renters/home';
+    public const RESERVE = 'reserve/wait';
+
+    public const DEFAULT = 'welcome';
+
+
+
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
