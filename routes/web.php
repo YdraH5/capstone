@@ -6,8 +6,9 @@ use App\Http\Controllers\VisitorPageController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SubmitReportController;
 use App\Http\Controllers\PaymentController;
-
-
+use App\Http\Controllers\MailingController;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Mailing;
 
 use Illuminate\Support\Facades\Route;
 
@@ -88,7 +89,7 @@ Route::get('success',[PaymentController::class,'success']);
         })->name('renters.home');
     });
 
-
+Route::get('/',[MailingController::class,'index']);
 Route::get('/reserve/{apartment}/index',[ReservationController::class,'index'])->name('reserve.index')->middleware('auth');
 Route::post('/reserve/create',[ReservationController::class,'create'])->name('reserve.create');
 
@@ -99,6 +100,11 @@ Route::post('/reserve/create',[ReservationController::class,'create'])->name('re
 Route::get('/', function () {
     return view('/visitors/index');
 })->name('welcome');
+// Route::get('/', function () {
+//     $subject = 'test subject';
+//         $body = 'Test MEssage';
+//         Mail::to('hardyaranzanso0930@gmail.com')->send(new Mailing($subject,$body));
+// })->name('mail');
 
 
 

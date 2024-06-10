@@ -26,7 +26,7 @@ class ReportTable extends Component
                     ->update(['status' => $this->status]);
             if ($update) {
                 $this->reset(); // Reset the component if the update was successful
-                 return redirect()->route('admin.reports')->with('success', 'Report Action submitted successfully');
+                 return redirect()->route('admin.reports.index')->with('success', 'Report Action submitted successfully');
                 } else {
                     return redirect()->back()->withInput()->withErrors(['status' => 'Failed to update status']); 
             }                

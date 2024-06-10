@@ -33,7 +33,7 @@
                         {{$reservation->payment_status}}
                     </td>
                     @endif
-                    <td class="text-center border border-black-900">{{$reservation->total_price}}</td>
+                    <td class="text-center border border-black-900">₱{{$reservation->total_price}}</td>
                 </tr>
                 @endforeach   
             </tbody>

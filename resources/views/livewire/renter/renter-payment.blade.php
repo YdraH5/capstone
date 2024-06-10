@@ -47,7 +47,8 @@
                 <tr class="bg-white hover:bg-gr`ay-300 odd:bg-white even:bg-slate-50">
                     <td class="text-center border border-black-900 border-2">{{$payment->category}}</td>
                     <td class="text-center border border-black-900 border-2">{{$payment->amount}}</td>
-                    <td>Pay</td>
+                    <td class="text-center border border-black-900 border-2"><button class="bg-green-300 w-20">
+                        pay</button></td>
                 </tr>
                 @endforeach
             </tbody>

@@ -1,6 +1,6 @@
 
   
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-300">
+<nav x-data="{ open: false }" class="bg-gray-900 text-white">
   <!-- Primary Navigation Menu -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
@@ -17,6 +17,9 @@
                 <x-nav-link  :href="route('welcome')" :active="request()->routeIs('welcome')">
                   {{ __('Available') }}
                 </x-nav-link>
+                {{-- <x-nav-link  :href="route('mail')" :active="request()->routeIs('mail')">
+                  {{ __('Email') }}
+                </x-nav-link> --}}
               </div>
               {{--container for login and register  --}}
               @if(Auth::check())

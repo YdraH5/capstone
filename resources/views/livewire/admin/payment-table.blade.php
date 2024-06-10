@@ -10,7 +10,7 @@
             <table class="mx-2 table-auto w-full border-seperate">
                 <thead>
                     <tr class="bg-gray-300 rounded">
-                        <th class="text-center border border-black-900">USER NAME</th>
+                        <th class="text-center border border-black-900">USERNAME</th>
                         <th class="text-center border border-black-900">AMOUNT</th>
                         <th class="text-center border border-black-900">Room Info</th>
                         <th class="text-center border border-black-900">CATEGORY</th>
@@ -23,7 +23,7 @@
                     @foreach($payments as $payment)
                     <tr class="bg-white hover:bg-gray-300 odd:bg-white even:bg-slate-50">
                         <td class="text-center border border-black-900">{{ $payment->user_name }}</td>
-                        <td class="text-center border border-black-900">{{ $payment->amount }}</td>
+                        <td class="text-center border border-black-900">₱{{ $payment->amount }}</td>
                         <td class="text-center border border-black-900">{{ $payment->building }}-{{ $payment->room_number}}</td>
                         <td class="text-center border border-black-900">{{ $payment->category }}</td>
                         <td class="text-center border border-black-900">{{ $payment->payment_method }}</td>

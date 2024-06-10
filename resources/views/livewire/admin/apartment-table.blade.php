@@ -34,7 +34,7 @@
                 </td>
                 <td class="text-center border border-black-900 border-2">{{$apartments->building}}</td>
                 <td class="text-center border border-black-900 border-2">{{$apartments->room_number}}</td>
-                <td class="text-center border border-black-900 border-2">{{$apartments->price}}/month</td>
+                <td class="text-center border border-black-900 border-2">₱{{$apartments->price}}/month</td>
                 <td class="text-center border border-black-900 border-2">{{$apartments->status}}</td>
                 <td class=" border border-black-900 border-2">
                 <div class="flex justify-center"> 
