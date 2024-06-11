@@ -83,7 +83,7 @@ class ApartmentTable extends Component
                     ->orWhere('apartment.status', 'like', '%' . $keyword . '%')
                     ->orWhere('apartment.room_number', 'like', '%' . $keyword . '%')
                     ->orWhere('apartment.building', 'like', '%' . $keyword . '%')
-                    ->orWhere('apartment.price', 'like', '%' . $keyword . '%');
+                    ->orWhere('categories.price', 'like', '%' . $keyword . '%');
             })
             ->join('categories', 'categories.id', '=', 'apartment.category_id')
             ->leftJoin('users', 'users.id', '=', 'apartment.renter_id')
@@ -93,7 +93,7 @@ class ApartmentTable extends Component
                 'users.name as renters_name',
                 'apartment.id',
                 'apartment.room_number',
-                'apartment.price',
+                'categories.price',
                 'apartment.status',
                 'apartment.building'
             )

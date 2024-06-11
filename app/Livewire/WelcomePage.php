@@ -24,22 +24,31 @@ class WelcomePage extends Component
     public function render()
     {
         $query = DB::table('apartment')
-        ->leftjoin('categories', 'categories.id', '=', 'apartment.category_id')
-        ->leftjoin('users', 'users.id', '=', 'apartment.renter_id')
-        ->select('apartment.id','categories.id','categories.name as categ_name','categories.description','apartment.price','apartment.status');
-
-    $this->apartments = $query->whereNot('apartment.status', 'Unavailable')->get();
-        foreach ($this->apartments as $category){
-            $category_id = $category->id;
+            ->leftJoin('categories', 'categories.id', '=', 'apartment.category_id')
+            ->leftJoin('users', 'users.id', '=', 'apartment.renter_id')
+            ->select(
+                'categories.id as category_id',
+                'categories.name as category_name',
+                'categories.description',
+                'categories.price',
+                DB::raw('COUNT(apartment.id) as apartment_count')
+            )
+            ->where('apartment.status', '!=', 'Unavailable')
+            ->groupBy('categories.id', 'categories.name', 'categories.description', 'categories.price')
+            ->get();
+    
+        $this->apartments = $query;
+    
+        foreach ($this->apartments as $category) {
             $categoryImages = DB::table('category_images')
-                        ->where('category_id', $category_id)
-                        ->get();
-        $this->images[$category->id] = $categoryImages;
+                ->where('category_id', $category->category_id)
+                ->get();
+            $this->images[$category->category_id] = $categoryImages;
         }
+    
         return view('livewire.welcome-page', [
-            'apartment' => $this->apartments,
+            'categories' => $this->apartments,
             'images' => $this->images,
-        ]);    
-        
+        ]);
     }
-}
+}    

@@ -17,12 +17,15 @@ class CategoryTable extends Component
     #[Validate('required|min:10|max:200')] 
     public $description = '';
 
+    #[Validate('required|numeric')] 
+    public $price = '';
     public function edit($id){
         $this->isEditing = true;
         $this->id = $id;
 
         $this->editCategory = Category::find($id);
         $this->name = $this->editCategory->name;
+        $this->price = $this->editCategory->price;
         $this->description = $this->editCategory->description;
     }
     public function update(){
@@ -33,6 +36,7 @@ class CategoryTable extends Component
             // Update the apartment record with the new data
             $category->update([
                 'name' => $this->name,
+                'price' => $this->price,
                 'description' => $this->description,
             ]);
             $this->reset();

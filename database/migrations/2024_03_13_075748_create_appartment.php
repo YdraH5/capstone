@@ -17,7 +17,6 @@ return new class extends Migration
             $table->integer('room_number');
             $table->unsignedBigInteger('renter_id')->nullable();
             $table->foreign('renter_id')->references('id')->on('users');
-            $table->integer('price');
             $table->string('status');
             $table->timestamps();
         });

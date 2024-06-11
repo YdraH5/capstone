@@ -14,7 +14,6 @@ class Appartment extends Model
         protected $fillable = [
         'building',
         'category_id',
-        'price',
         'room_number',
         'status'
     ];    

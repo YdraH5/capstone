@@ -10,6 +10,9 @@ class CategoryForm extends Component
     #[Validate('required|min:5|max:50')] 
     public $name = '';
  
+    #[Validate('required|numeric')]
+    public $price = '';
+
     #[Validate('required|min:10|max:200')] 
     public $description = '';
 
@@ -19,11 +22,12 @@ class CategoryForm extends Component
     {
         $this->validate([
             'name' => 'required|max:50|unique:categories,name',
+            'price' => 'required|numeric',
             'description' => 'required|max:190'
         ]); 
  
         Category::create(
-            $this->only(['name', 'description'])
+            $this->only(['name', 'price','description'])
         );
         $this->reset();
         return redirect()->route('admin.categories.index')->with('success','Adding category success');

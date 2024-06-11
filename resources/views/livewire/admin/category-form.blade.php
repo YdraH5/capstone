@@ -9,6 +9,11 @@
                             @error('name') <span class="error text-red-900">{{ $message }}</span> @enderror 
                         </div>
                         <div>
+                            <label class="block font-medium opacity-70">Price</label>
+                            <input type="number" wire:model="price" placeholder="Price" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
+                            @error('price') <span class="error text-red-900">{{ $message }}</span> @enderror 
+                        </div>
+                        <div>
                             <label class="block font-medium opacity-70">Description</label>
                             <textarea rows="4" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-32 flex items-center pl-3 text-sm border-gray-300 rounded border"wire:model="description" placeholder="Write apartment description here"></textarea>
                             @error('description') <span class="error text-red-900">{{ $message }}</span> @enderror 

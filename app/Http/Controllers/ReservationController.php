@@ -17,7 +17,7 @@ class ReservationController extends Controller
         ->join('categories', 'categories.id', '=', 'apartment.category_id')
         ->leftjoin('users', 'users.id', '=', 'apartment.renter_id')
         ->leftjoin('category_images', 'category_images.category_id','=','categories.id')
-        ->select('categories.name as categ_name','categories.description','apartment.id','apartment.price','apartment.status','category_images.image','category_images.category_id AS categ_id','users.id AS user_id')
+        ->select('categories.name as categ_name','categories.description','apartment.id','categories.price','apartment.status','category_images.image','category_images.category_id AS categ_id','users.id AS user_id')
         ->where('apartment.id',$apartment->id)
         ->limit(1)
         ->get();

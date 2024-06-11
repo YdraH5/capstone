@@ -15,9 +15,6 @@ class ApartmentForm extends Component
  
     #[Validate('required')] 
     public $building = '';
-  
-    #[Validate('required|numeric')]
-    public $price = '';
 
     #[Validate('required')] 
     public $status = '';
@@ -30,7 +27,6 @@ class ApartmentForm extends Component
         $this->validate([
             'category_id' => 'required',
             'building' => 'required',
-            'price' => 'required|numeric',
             'status' => 'required',
             'room_number' => [
                 'required',
@@ -46,7 +42,6 @@ class ApartmentForm extends Component
         Appartment::create([
             'category_id' => $this->category_id,
             'building' => $this->building,
-            'price' => $this->price,
             'status' => $this->status,
             'room_number' => $this->room_number,
         ]);

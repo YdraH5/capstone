@@ -15,11 +15,13 @@ class VisitorPageController extends Controller
             ->join('categories', 'categories.id', '=', 'apartment.category_id')
             ->leftjoin('users', 'users.id', '=', 'apartment.renter_id')
             ->leftjoin('category_images', 'category_images.category_id','=','categories.id')
-            ->select('categories.name as categ_name','categories.description','apartment.id','apartment.price','apartment.status','category_images.image','category_images.category_id AS categ_id')
+            ->select('categories.name as categ_name','categories.description','apartment.id','categories.price','apartment.status','category_images.image','category_images.category_id AS categ_id')
             ->where('apartment.category_id', $apartment->id)
             ->limit(1)
             ->get();
-    
+        $available = Appartment::where('category_id',$apartment->id)
+            ->where('status','Available')
+            ->count();
         $images = [];
         foreach ($apartments as $apartment) {
             $categoryImages = DB::table('category_images')
@@ -28,7 +30,7 @@ class VisitorPageController extends Controller
             $images[$apartment->id] = $categoryImages;
         }
     
-        return view('visitors.detail', ['apartment' => $apartments, 'images' => $images]);
+        return view('visitors.detail', ['apartment' => $apartments, 'images' => $images,'available'=>$available]);
     }
     
 }
