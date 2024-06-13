@@ -42,35 +42,41 @@
             @yield('visitor')
             @livewireScripts
             <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    const slides = document.querySelectorAll('#hero-carousel .carousel-slide');
-                    const prevButton = document.getElementById('prev-slide');
-                    const nextButton = document.getElementById('next-slide');
-                    let currentSlide = 0;
-            
-                    const showSlide = (index) => {
-                        slides.forEach((slide, i) => {
-                            slide.classList.toggle('hidden', i !== index);
-                            slide.classList.toggle('active', i === index);
-                        });
-                    };
-            
-                    const nextSlide = () => {
-                        currentSlide = (currentSlide + 1) % slides.length;
-                        showSlide(currentSlide);
-                    };
-            
-                    const prevSlide = () => {
-                        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-                        showSlide(currentSlide);
-                    };
-            
-                    nextButton.addEventListener('click', nextSlide);
-                    prevButton.addEventListener('click', prevSlide);
-            
-                    // Optionally, you can add auto-slide functionality
-                    setInterval(nextSlide, 10000); // Auto-slide every 5 seconds
-                });
+               document.addEventListener('DOMContentLoaded', () => {
+    setupCarousel('hero-carousel-1', 'prev-slide-1', 'next-slide-1');
+    setupCarousel('hero-carousel-2', 'prev-slide-2', 'next-slide-2');
+});
+
+function setupCarousel(carouselId, prevButtonId, nextButtonId) {
+    const slides = document.querySelectorAll(`#${carouselId} .carousel-slide`);
+    const prevButton = document.getElementById(prevButtonId);
+    const nextButton = document.getElementById(nextButtonId);
+    let currentSlide = 0;
+
+    const showSlide = (index) => {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle('hidden', i !== index);
+            slide.classList.toggle('active', i === index);
+        });
+    };
+
+    const nextSlide = () => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    };
+
+    const prevSlide = () => {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+    };
+
+    nextButton.addEventListener('click', nextSlide);
+    prevButton.addEventListener('click', prevSlide);
+
+    // Optionally, you can add auto-slide functionality
+    setInterval(nextSlide, 5000); // Auto-slide every 5 seconds
+}
+
             </script>
             
         <script src="https://unpkg.com/flowbite@1.4.0/dist/flowbite.js"></script>

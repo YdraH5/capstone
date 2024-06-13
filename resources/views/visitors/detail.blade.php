@@ -41,6 +41,7 @@
     <div class="max-w-2xl w-full text-center lg:text-left">
         <h1 class="text-3xl font-bold text-gray-800">{{ $detail->categ_name }}</h1>
         <p class="mt-4 text-gray-600">{{ $detail->description }}</p>
+        <p class="mt-4 text-gray-600 font-semibold">Monthly Rent: ₱{{ $detail->price }}.00</p>
         <p class="mt-4 text-gray-600 font-semibold">Available Rooms: {{ $available }}</p>
         <div class="mt-6">
             <a href="{{ route('reserve.index', ['apartment' => $detail->id]) }}">

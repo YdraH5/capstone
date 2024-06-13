@@ -1,6 +1,6 @@
 
   
-<nav x-data="{ open: false }" class="bg-gray-900 text-white">
+<nav x-data="{ open: false }" class="bg-gray-900 text-white sticky top-0 z-50">
   <!-- Primary Navigation Menu -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
@@ -8,14 +8,22 @@
               <!-- Logo -->
               <div class="logo shrink-0 flex items-center">
                   <a href="{{ route('welcome') }}">
-                      <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                    <img src="{{ asset('images/NRN LOGO.png') }}" style="height: 40px; width:70px"class="sm:mx-4 lg:mx-6 lg:h-40 lg:w-60">
                   </a>
               </div>
 
               <!-- Navigation Links -->
               <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <x-nav-link  :href="route('welcome')" :active="request()->routeIs('welcome')">
-                  {{ __('Available') }}
+                <x-nav-link href="{{ route('welcome') }}#overview" :active="request()->fullUrlIs(route('welcome') . '#overview')">
+                  {{ __('Overview') }}
+                </x-nav-link>
+                
+                <x-nav-link href="{{ route('welcome') }}#establishment" :active="request()->fullUrlIs(route('welcome') . '#establishment')">
+                  {{ __('Establishments') }}
+                </x-nav-link>
+
+                <x-nav-link href="{{ route('welcome') }}#reserve" :active="request()->fullUrlIs(route('welcome') . '#reserve')">
+                  {{ __('Reserve') }}
                 </x-nav-link>
                 {{-- <x-nav-link  :href="route('mail')" :active="request()->routeIs('mail')">
                   {{ __('Email') }}
