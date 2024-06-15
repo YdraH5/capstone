@@ -7,6 +7,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SubmitReportController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MailingController;
+use App\Http\Controllers\NotifyMeController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Mailing;
 use Illuminate\Support\Facades\Auth;
@@ -89,9 +90,10 @@ Route::get('success',[PaymentController::class,'success']);
         })->name('renters.home');
     });
 
-Route::get('/',[MailingController::class,'index']);
+Route::get('/notify',[NotifyMeController::class,'notify'])->name('emails.notify')->middleware('auth');
 Route::get('/reserve/{apartment}/index',[ReservationController::class,'index'])->name('reserve.index')->middleware('auth');
 Route::post('/reserve/create',[ReservationController::class,'create'])->name('reserve.create');
+
 
 });
 

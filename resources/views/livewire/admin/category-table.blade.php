@@ -9,6 +9,7 @@
           @endif
             <tr>
                 <th class="text-center border border-black-900 border-2">Category Name</th>
+                <th class="text-center border border-black-900 border-2">Price</th>
                 <th class="text-center border border-black-900 border-2">Description</th>
                 <th class="text-center border border-black-900 border-2">Images</th>
                 <th class="text-center border border-black-900 border-2">Actions</th>
@@ -17,8 +18,11 @@
         <tbody>
             @foreach($categories as $category)
             <tr class="bg-white hover:bg-gray-300 odd:bg-white even:bg-slate-50">
-              <td class="text-center border border-black-900 border-2">
+                <td class="text-center border border-black-900 border-2">
                   {{$category->name}}
+                </td>
+                <td class="text-center border border-black-900 border-2">
+                  ₱{{$category->price}}
                 </td>
                 <td class="text-center border border-black-900 border-2">
                   {{$category->description}}
@@ -49,6 +53,11 @@
                                         <label label="block font-medium">Category Name</label>
                                         <input type="text" wire:model="name" placeholder="Name"class="text-black focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
                                         @error('name') <span class="error text-red-900">{{ $message }}</span> @enderror 
+                                    </div>
+                                    <div>
+                                      <label class="block font-medium opacity-70">Price</label>
+                                      <input type="number" wire:model="price" placeholder="Price" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
+                                      @error('price') <span class="error text-red-900">{{ $message }}</span> @enderror 
                                     </div>
                                     <div>
                                         <label class="block font-medium">Description</label>

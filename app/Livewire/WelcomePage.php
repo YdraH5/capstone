@@ -33,7 +33,6 @@ class WelcomePage extends Component
                 'categories.price',
                 DB::raw('COUNT(apartment.id) as apartment_count')
             )
-            ->where('apartment.status', '!=', 'Unavailable')
             ->groupBy('categories.id', 'categories.name', 'categories.description', 'categories.price')
             ->get();
     

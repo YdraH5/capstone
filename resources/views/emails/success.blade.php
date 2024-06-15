@@ -1,0 +1,1 @@
+<p>Hello {{$data['name']}}, Thanks for choosing NRN Building to live. We send this email to notify you that we receive your payment of ₱{{$data['payment']}} and your reservation have been processed. We're excited to meet you.</p>

@@ -8,9 +8,12 @@ use App\Models\Category;
 use App\Models\Reservation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationSuccess;
 use Illuminate\Support\Facades\Auth;
 class ReservationController extends Controller
 {
+    public $price;
     public function index(Appartment $apartment){
        
         $apartment = DB::table('apartment')
@@ -35,6 +38,7 @@ class ReservationController extends Controller
             'total_price'=>'required',
             'payment_status'=>'required'
         ]);
+        $this->price = $data['total_price'];
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
         // to retrieve the category id inside apartment table
         $categ = DB::table('apartment')
@@ -64,7 +68,7 @@ class ReservationController extends Controller
                 DB::table('users')
                     ->where('id', $user_id)
                     ->update(['role' => 'reserve']);
-                
+           
                     Payment::create([
                         'apartment_id' => $data['apartment_id'],
                         'user_id' => $data['user_id'],
@@ -74,18 +78,20 @@ class ReservationController extends Controller
                         'payment_method' => 'stripe', 
                         'status' => $data['payment_status']
                     ]);
+                    
             }
 
           return redirect($session->url);
         }
   
     public function waiting(Request $request){
-        // $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
-        // $sessionId = $request->get('session_id');
 
-        // $session = \Stripe\Checkout\Session::retrieve($sessionId);
-        // $customer = \Stripe\Customer::retrieve($session->customer);
-
+        $user = Auth::User();
+                    $dataemail = array(
+                        'name' => $user->name,
+                        'payment' => $this->price,
+                    );
+        Mail::to($user->email)->send(new ReservationSuccess($dataemail));
         $user = auth()->user();
         $reserve_date = Reservation::select('check_in','apartment_id','id')->where('user_id', '=', $user->id)->limit(1)->get();
         return view('reserve.wait',['reservations'=>$reserve_date])->with('success','Paymenthave been succesful');

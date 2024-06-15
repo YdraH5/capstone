@@ -76,7 +76,7 @@ function setupCarousel(carouselId, prevButtonId, nextButtonId) {
     // Optionally, you can add auto-slide functionality
     setInterval(nextSlide, 5000); // Auto-slide every 5 seconds
 }
-
+    
             </script>
             
         <script src="https://unpkg.com/flowbite@1.4.0/dist/flowbite.js"></script>

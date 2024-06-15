@@ -16,7 +16,6 @@
               <th class="text-center border border-black-900 border-2">Renter</th>
               <th class="text-center border border-black-900 border-2">Building</th>
               <th class="text-center border border-black-900 border-2">Room Number</th>
-              <th class="text-center border border-black-900 border-2">Price</th>
               <th class="text-center border border-black-900 border-2">Status</th>
               <th class="text-center border border-black-900 border-2">Actions</th>
           </tr>
@@ -34,7 +33,6 @@
                 </td>
                 <td class="text-center border border-black-900 border-2">{{$apartments->building}}</td>
                 <td class="text-center border border-black-900 border-2">{{$apartments->room_number}}</td>
-                <td class="text-center border border-black-900 border-2">₱{{$apartments->price}}/month</td>
                 <td class="text-center border border-black-900 border-2">{{$apartments->status}}</td>
                 <td class=" border border-black-900 border-2">
                 <div class="flex justify-center"> 
@@ -74,11 +72,6 @@
                                         <label class="block font-medium opacity-70">Room Number</label>
                                         <input type="text" wire:model="room_number" placeholder="Room #" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
                                         @error('room_number') <span class="error text-red-900">{{ $message }}</span> @enderror 
-                                    </div>
-                                    <div>
-                                        <label class="block font-medium opacity-70">Price</label>
-                                        <input type="number" wire:model="price" placeholder="Price" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
-                                        @error('price') <span class="error text-red-900">{{ $message }}</span> @enderror 
                                     </div>
                                     <div>
                                         <label class="block font-medium opacity-70">Status</label>

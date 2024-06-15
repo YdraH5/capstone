@@ -94,7 +94,18 @@
   </div>
   <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
     <div class="pt-2 pb-3 space-y-1">
-      
+      @if(Auth::check())
+        <!-- Authentication -->
+        <form method="POST" action="{{ route('logout') }}">
+          @csrf
+
+          <x-responsive-nav-link :href="route('logout')"
+                  onclick="event.preventDefault();
+                              this.closest('form').submit();">
+              {{ __('Log Out') }}
+          </x-responsive-nav-link>
+      </form>
+      @endif
         <x-responsive-nav-link   :href="route('welcome')" :active="request()->routeIs('welcome')">
         {{ __('Available') }}
         </x-responsive-nav-link>

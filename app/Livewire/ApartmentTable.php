@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 class ApartmentTable extends Component
 {
-    public $editApartment;// to save data that use is going to edit
+    private $editApartment ;
+    private $editPrice;
     public $isEditing= false;// to only run the form when the user clicked the edit icon
     public $id; // to save the id that the user want to edit
     public $search = ""; // to set an empty string for search
@@ -21,8 +22,6 @@ class ApartmentTable extends Component
     #[Validate('required')] 
     public $building;
  
-    #[Validate('required|numeric')] 
-    public $price;
 
     #[Validate('required')] 
     public $status;
@@ -39,7 +38,6 @@ class ApartmentTable extends Component
         $this->editApartment = Appartment::find($id);
         $this->category_id = $this->editApartment->category_id;
         $this->building = $this->editApartment->building;
-        $this->price = $this->editApartment->price;
         $this->status = $this->editApartment->status;
         $this->room_number = $this->editApartment->room_number;
         $this->editApartment = Appartment::find($id); 
@@ -55,9 +53,13 @@ class ApartmentTable extends Component
         $apartment->update([
             'category_id' => $this->category_id,
             'building' => $this->building,
-            'price' => $this->price,
+            // 'price' => $this->price,
             'status' => $this->status,
             'room_number' => $this->room_number,
+        ]);
+        $category = Category::find($this->category_id);
+        $category->update([
+            'price' => $this->price,
         ]);
         $this->reset();
         // Reset the component state

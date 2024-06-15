@@ -44,11 +44,20 @@
         <p class="mt-4 text-gray-600 font-semibold">Monthly Rent: ₱{{ $detail->price }}.00</p>
         <p class="mt-4 text-gray-600 font-semibold">Available Rooms: {{ $available }}</p>
         <div class="mt-6">
+            @if ($available > 0)
             <a href="{{ route('reserve.index', ['apartment' => $detail->id]) }}">
                 <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     Reserve
                 </button>
             </a>
+            @else
+            <button class="bg-gray-300 text-gray-600 px-6 py-3 rounded-full cursor-not-allowed opacity-50" disabled>
+                No Rooms Available
+            </button>
+            <a href="{{ route('emails.notify') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white ml-4 px-6 py-3 rounded-full transition duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                Notify Me
+            </a>
+            @endif
         </div>
     </div>
 </div>
