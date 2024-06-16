@@ -47,11 +47,10 @@
     </div>
     {{-- end of overview --}}
 
-    <div class="text-center my-8">
+    {{-- <div class="text-center my-8">
         <button id="see-more-btn" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition duration-300">See More...</button>
-    </div>
+    </div> --}}
 
-    <div id="see-more-content" class="hidden">
         <hr class="my-4 border-t border-gray-600">
         <h2 class="text-3xl sm:text-4xl font-semibold text-center my-8" id="establishment">Some Establishments Near NRN Building</h2>
         <hr class="my-4 border-t border-gray-600">
@@ -94,7 +93,6 @@
                 <button id="prev-slide-2" class="prev absolute top-1/2 left-0 transform -translate-y-1/2 text-3xl sm:text-4xl font-bold text-white bg-black bg-opacity-50 hover:bg-opacity-75 rounded-r focus:outline-none">&#10094;</button>
                 <button id="next-slide-2" class="next absolute top-1/2 right-0 transform -translate-y-1/2 text-3xl sm:text-4xl font-bold text-white bg-black bg-opacity-50 hover:bg-opacity-75 rounded-l focus:outline-none">&#10095;</button>
             </div>
-        </div>
         {{-- end of overview --}}
 
         <!-- Apartments Section -->
@@ -149,7 +147,7 @@
     </div>
 </div>
 
-<script>
+{{-- <script>
     document.getElementById('see-more-btn').addEventListener('click', function() {
         var content = document.getElementById('see-more-content');
         if (content.classList.contains('hidden')) {
@@ -160,4 +158,4 @@
             this.textContent = 'See More...';
         }
     });
-</script>
+</script> --}}

@@ -12,13 +12,14 @@
 @section('content')
 <x-app-layout>
   <x-slot name="header">
+    <div class="flex justify-between items-center px-2">
     <h2 class="font-semibold text-xl text-black-800 dark:text-black-200 leading-tight">
         {{ __('IMAGES') }}
     </h2>
-    <div class="flex justify-end px-10 h-5"> 
       <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-image'})">
         @include('buttons.add')
       </button>
+    </div>
 </x-slot>
 <x-modal name="add-image" title="Add Image">
   <x-slot:body>

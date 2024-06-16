@@ -16,7 +16,6 @@ return new class extends Migration
             $table->text('report_category');
             $table->text('description');
             $table->text('status')->default('Pending');
-            $table->string('ticket')->unique();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

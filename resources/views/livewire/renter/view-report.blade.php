@@ -19,7 +19,7 @@
         <table class="w-full table-auto rounded-lg">
             <thead>
                 <tr class="bg-neutral-400">
-                    <th class="text-center border border-black-900">Report Ticket</th>
+                    <th class="text-center border border-black-900">Report ID</th>
                     <th class="text-center border border-black-900">View</th>
                 </tr>
             </thead>
@@ -27,7 +27,7 @@
                 @foreach($reports as $report)
                     @if($report->status !== 'Solved')
                     <tr class="bg-white hover:bg-gray-300 odd:bg-white even:bg-slate-50">
-                        <td class="text-center border border-black-900">{{$report->ticket}}</td>
+                        <td class="text-center border border-black-900">{{$report->id}}</td>
                             <td class="border border-black-900 flex justify-center">
                                 <button
                                     x-data="{ id: {{$report->id}} }"
@@ -49,7 +49,7 @@
                                                 <span class="font-semibold">Report Status:</span> {{$report->status}}
                                             </div>
                                             <div class="mb-4">
-                                                <span class="font-semibold">Report Ticket:</span> {{$report->ticket}}
+                                                <span class="font-semibold">Report ID:</span> {{$report->id}}
                                             </div>
                                             <div class="mb-4">
                                                 <span class="font-semibold">Report Description:</span> {{$report->description}}
@@ -74,7 +74,7 @@
         <table class="w-full table-auto">
             <thead>
               <tr class="bg-neutral-400">
-                  <th class="text-center border border-black-900">Report Ticket</th>
+                  <th class="text-center border border-black-900">Report ID</th>
                   <th class="text-center border border-black-900">View</th>
               </tr>
             </thead>
@@ -100,7 +100,7 @@
                                   <span class="font-semibold">Report Status:</span> {{$report->status}}
                               </div>
                                 <div class="mb-4">
-                                    <span class="font-semibold">Report Ticket:</span> {{$report->ticket}}
+                                    <span class="font-semibold">Report Ticket:</span> {{$report->id}}
                                 </div>
                                 <div class="mb-4">
                                     <span class="font-semibold">Report Description:</span> {{$report->description}}

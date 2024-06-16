@@ -15,19 +15,19 @@ class SubmitReportController extends Controller
     public function home(){
         return view('renters.payment');
     }
-    public function index(Request $request){
-        $userId = $request->user()->id;
-        do {
-            $ticket = Str::random(10);
-            $existingTicket = DB::table('reports')->where('ticket', $ticket)->exists();
-        } while ($existingTicket);
-        $reports = DB::table('reports')
-        ->join('users', 'users.id', '=', 'reports.user_id')
-        ->select('users.name','reports.id', 'reports.report_category', 'reports.description','reports.status','reports.ticket',(DB::raw('DATE_FORMAT(reports.created_at, "%b-%d-%Y") as date')))
-        ->where('reports.user_id', $userId)
-        ->get();
-        return view('renters.report',['reports'=>$reports,'ticket'=>$ticket]);
-        }
+    // public function index(Request $request){
+    //     $userId = $request->user()->id;
+    //     do {
+    //         $ticket = Str::random(10);
+    //         $existingTicket = DB::table('reports')->where('ticket', $ticket)->exists();
+    //     } while ($existingTicket);
+    //     $reports = DB::table('reports')
+    //     ->join('users', 'users.id', '=', 'reports.user_id')
+    //     ->select('users.name','reports.id', 'reports.report_category', 'reports.description','reports.status','reports.ticket',(DB::raw('DATE_FORMAT(reports.created_at, "%b-%d-%Y") as date')))
+    //     ->where('reports.user_id', $userId)
+    //     ->get();
+    //     return view('renters.report',['reports'=>$reports,'ticket'=>$ticket]);
+    //     }
     
 public function create(Request $request) {
     $data = $request->validate([

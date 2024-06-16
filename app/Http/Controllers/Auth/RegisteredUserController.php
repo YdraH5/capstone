@@ -42,6 +42,11 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        // Check if the user ID is 1 and set role to 'admin'
+        if ($user->id === 1) {
+            $user->role = 'admin';
+            $user->save();
+        }
 
         event(new Registered($user));
 

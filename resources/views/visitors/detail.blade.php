@@ -3,14 +3,14 @@
 @include('layouts-visitor.app')
 
 @foreach ($apartment as $detail)
-<div class="flex flex-col lg:flex-row items-center justify-center space-y-6 lg:space-y-0 lg:space-x-10 bg-white shadow-lg rounded-lg p-8 min-h-screen">
-    <div class="max-w-2xl w-full">
-        <div id="default-carousel" class="relative" data-carousel="static">
+<div class="flex flex-col lg:flex-row items-center justify-center bg-white shadow-lg rounded-lg min-h-screen">
+    <div class="w-full lg:w-1/2 h-screen">
+        <div id="default-carousel" class="relative h-full" data-carousel="static">
             <!-- Carousel wrapper -->
-            <div class="overflow-hidden relative h-80 rounded-lg">
+            <div class="overflow-hidden relative h-full rounded-lg">
                 @foreach ($images[$detail->id] as $image)
-                <div class="hidden duration-200 ease-in-out" data-carousel-item>
-                    <img src="{{ asset($image->image) }}" style="width:100%;height:100%;" class="block w-full h-full object-cover absolute top-0 left-0 rounded-lg" alt="Apartment Image">
+                <div class="hidden duration-200 ease-in-out h-full" data-carousel-item>
+                    <img src="{{ asset($image->image) }}" class="block w-full h-full object-cover" alt="Apartment Image">
                 </div>
                 @endforeach
             </div>
@@ -38,7 +38,7 @@
             </button>
         </div>
     </div>
-    <div class="max-w-2xl w-full text-center lg:text-left">
+    <div class="w-full lg:w-1/2 text-center lg:text-left p-8 flex flex-col justify-center">
         <h1 class="text-3xl font-bold text-gray-800">{{ $detail->categ_name }}</h1>
         <p class="mt-4 text-gray-600">{{ $detail->description }}</p>
         <p class="mt-4 text-gray-600 font-semibold">Monthly Rent: ₱{{ $detail->price }}.00</p>
@@ -54,9 +54,30 @@
             <button class="bg-gray-300 text-gray-600 px-6 py-3 rounded-full cursor-not-allowed opacity-50" disabled>
                 No Rooms Available
             </button>
-            <a href="{{ route('emails.notify') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white ml-4 px-6 py-3 rounded-full transition duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                Notify Me
-            </a>
+            <button
+                        class="bg-yellow-500 hover:bg-yellow-600 text-white ml-4 px-6 py-3 rounded-full transition duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                        x-data x-on:click="$dispatch('open-modal',{name:'notify-me'})">
+                        Notify Me
+            </button>
+            
+            <x-modal name="notify-me" title="Notify Me!">
+                <x-slot name="body">
+                    <div class="p-4">
+                        <p class="text-lg text-gray-600 font-semibold mb-4">
+                            By opting in for notifications, you agree to receive emails regarding the availability of rooms in this apartment. We respect your privacy and will not share your email address with third parties.
+                        </p>
+                        <p class="text-gray-600 mb-8">
+                            You can unsubscribe from these notifications at any time by following the link provided in the email. For more details on how we handle your personal information, please refer to our privacy policy.
+                        </p>
+                        <div class="flex justify-end">
+                            <button type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mr-4" x-on:click="$dispatch('close-modal',{name:'delete-apartment'})">Cancel</button>
+                            <a href="{{ route('emails.notify') }}" class="bg-blue-500 hover:bg-blue-600 text-white ml-4 px-6 py-3 rounded-full transition duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                                Accept
+                            </a>
+                        </div>
+                    </div>
+                </x-slot>
+            </x-modal>
             @endif
         </div>
     </div>

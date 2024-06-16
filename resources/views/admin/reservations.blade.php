@@ -3,7 +3,7 @@
 @section('content')
 <x-app-layout>
   <x-slot name="header">
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center px-2">
         <h2 class="font-semibold text-xl text-black-800 dark:text-black-200 leading-tight">
             {{ __('RESERVATIONS') }}
         </h2>

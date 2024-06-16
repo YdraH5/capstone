@@ -78,6 +78,12 @@ class ReservationController extends Controller
                         'payment_method' => 'stripe', 
                         'status' => $data['payment_status']
                     ]);
+                    // Update apartment status to Reserve
+                    DB::table('apartment')
+                    ->where('category_id', $categ->id)
+                    ->where('status','Available')
+                    ->limit(1)
+                    ->update(['status' => 'Reserve']);
                     
             }
 

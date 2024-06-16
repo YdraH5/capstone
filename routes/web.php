@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // specify landing page 
-Route::group(['middleware' => ['auth', 'sessionTimeout']], function () {
+Route::group(['middleware' => ['auth','verified' ,'sessionTimeout']], function () {
 
 Route::get('pay',[PaymentController::class,'pay']);
 Route::get('success',[PaymentController::class,'success']);
@@ -71,12 +71,12 @@ Route::get('success',[PaymentController::class,'success']);
     });
     
     // ROUTING group for reserved users only users who have pending reservation have access here
-    Route::group(['middleware' => ['isReserve']], function () {
+    Route::group(['middleware' => ['isReserve','verified']], function () {
         Route::get('/reserve/wait',[ReservationController::class,'waiting'])->name('reserve.wait');
         Route::get('/reserve/edit',[ReservationController::class,'edit'])->name('reserve.edit');
         Route::get('/reserve/{id}/{apartment}/{reservation}/update',[ReservationController::class,'update'])->name('reserve.update');
     });
-    Route::group(['middleware' => ['isRenter']], function () {
+    Route::group(['middleware' => ['isRenter','verified']], function () {
         Route::controller(SubmitReportController::class)->group(function() {
             Route::get('/renters/report','index')->name('renters.report');
             Route::get('/renters/{report_id}/view','view')->name('renters.report.view');
@@ -90,9 +90,9 @@ Route::get('success',[PaymentController::class,'success']);
         })->name('renters.home');
     });
 
-Route::get('/notify',[NotifyMeController::class,'notify'])->name('emails.notify')->middleware('auth');
-Route::get('/reserve/{apartment}/index',[ReservationController::class,'index'])->name('reserve.index')->middleware('auth');
-Route::post('/reserve/create',[ReservationController::class,'create'])->name('reserve.create');
+Route::get('/notify', [NotifyMeController::class, 'notify'])->name('emails.notify')->middleware(['auth', 'verified']);
+Route::get('/reserve/{apartment}/index',[ReservationController::class,'index'])->name('reserve.index')->middleware(['auth', 'verified']);
+Route::post('/reserve/create',[ReservationController::class,'create'])->name('reserve.create')->middleware(['auth', 'verified']);;
 
 
 });

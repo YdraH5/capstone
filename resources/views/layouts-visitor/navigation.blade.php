@@ -14,16 +14,16 @@
 
               <!-- Navigation Links -->
               <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <x-nav-link href="{{ route('welcome') }}#overview" :active="request()->fullUrlIs(route('welcome') . '#overview')">
+                <x-nav-link wire:navigate href="{{ route('welcome') }}#overview" :active="request()->fullUrlIs(route('welcome') . '#overview')">
                   {{ __('Overview') }}
                 </x-nav-link>
                 
-                <x-nav-link href="{{ route('welcome') }}#establishment" :active="request()->fullUrlIs(route('welcome') . '#establishment')">
+                <x-nav-link wire:navigate href="{{ route('welcome') }}#establishment" :active="request()->fullUrlIs(route('welcome') . '#establishment')">
                   {{ __('Establishments') }}
                 </x-nav-link>
 
                 <x-nav-link href="{{ route('welcome') }}#reserve" :active="request()->fullUrlIs(route('welcome') . '#reserve')">
-                  {{ __('Reserve') }}
+                  {{ __('Rooms') }}
                 </x-nav-link>
                 {{-- <x-nav-link  :href="route('mail')" :active="request()->routeIs('mail')">
                   {{ __('Email') }}
@@ -31,7 +31,7 @@
               </div>
               {{--container for login and register  --}}
               @if(Auth::check())
-              <div class="inline-flex absolute top-4 right-2 space-x-reverse space-y-0 hidden sm:flex sm:items-center sm:ms-6">                    
+              <div class="inline-flex text-black absolute top-4 right-2 space-x-reverse space-y-0 hidden sm:flex sm:items-center sm:ms-6">                    
                 <x-dropdown >
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-black-500 bg-gray-300 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">                                
@@ -106,8 +106,15 @@
           </x-responsive-nav-link>
       </form>
       @endif
-        <x-responsive-nav-link   :href="route('welcome')" :active="request()->routeIs('welcome')">
-        {{ __('Available') }}
+        <x-responsive-nav-link wire:navigate href="{{ route('welcome') }}#overview" :active="request()->fullUrlIs(route('welcome') . '#overview')">
+        {{ __('Overview') }}
+        </x-responsive-nav-link>
+
+        <x-responsive-nav-link wire:navigate href="{{ route('welcome') }}#establishment" :active="request()->fullUrlIs(route('welcome') . '#establishment')">
+          {{ __('Establishment') }}
+        </x-responsive-nav-link>
+        <x-responsive-nav-link href="{{ route('welcome') }}#reserve" :active="request()->fullUrlIs(route('welcome') . '#reserve')">
+            {{ __('Rooms') }}
         </x-responsive-nav-link>
         @if(!Auth::check())
         <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('auth.login')">

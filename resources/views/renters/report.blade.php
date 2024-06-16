@@ -19,7 +19,6 @@
               @csrf
               @method('post')
                 <input type="number" name="user_id"value="{{Auth::user()->id}}"hidden> 
-                <input type="text" name="ticket"value="{{$ticket}}"hidden>  
                   <div>
                     <label for="name" class="block font-medium opacity-70">Report Category</label>
                       <select name="report_category" id="cars" class="w-full h-10 rounded-lg opacity-50">
