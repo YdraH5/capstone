@@ -16,9 +16,11 @@ class Reservation extends Model
         'user_id',
         'check_in',
         'check_out',
-        'total_price',
-        'payment_status'
-    ];
-    
+        'total_price'
+        ];
+        public function user()
+        {
+            return $this->belongsTo(User::class);
+        }
 
 }

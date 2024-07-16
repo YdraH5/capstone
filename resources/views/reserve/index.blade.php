@@ -4,7 +4,7 @@
 @foreach ($apartment as $data)
 @foreach ($category as $info)
 <x-input-error :messages="$errors->get('user_id')" class="mt-2" />
-<form action="{{route('reserve.create')}}" method="post">
+<form action="{{ route('reserve.create') }}" method="post" enctype="multipart/form-data">
     @csrf
     @method('post')
     <div class="container mx-auto p-4">
@@ -17,28 +17,28 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
                     Full Name
                 </label>
-                <input type="number" name="user_id" value="{{Auth::user()->id}}" hidden>
-                <input type="number" name="apartment_id" value="{{$data->id}}" hidden>
+                <input type="number" name="user_id" value="{{ Auth::user()->id }}" hidden>
+                <input type="number" name="apartment_id" value="{{ $data->id }}" hidden>
                 <input type="text" name="payment_status" value="paid" hidden>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" readonly id="name" type="text" value="{{Auth::user()->name}}">
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" readonly id="name" type="text" value="{{ Auth::user()->name }}">
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
                     Email Address
                 </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" value="{{Auth::user()->email}}" readonly>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" value="{{ Auth::user()->email }}" readonly>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="apartment">
                     Apartment Type
                 </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="{{$info->name}}" readonly>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="{{ $info->name }}" readonly>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="pricePerMonth">
                     Price Per Month ($)
                 </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="pricePerMonth" type="number" min="0" step="0.01" value="{{$data->price}}" readonly>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="pricePerMonth" type="number" min="0" step="0.01" value="{{ $data->price }}" readonly>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="checkin">
@@ -69,6 +69,28 @@
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="totalPrice" type="text" readonly name="total_price">
                 <span id="chargeMessage" class="text-red-500"></span>
                 <span id="balanceMessage" class="text-green-500"></span>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="paymentMethod">
+                    Payment Method
+                </label>
+                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="paymentMethod" name="payment_method" onchange="toggleImageUpload()">
+                    <option value="" disabled selected hidden>Select Payment Method</option>
+                    <option value="gcash">Gcash</option>
+                    <option value="stripe">Stripe</option>
+                </select>
+            </div>
+            <div class="mb-4" id="gcashUpload" style="display: none;">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="gcashReceipt">
+                    Upload Gcash Receipt
+                </label>
+                <input type="file" name="receipt" id="gcashReceipt" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <x-input-error :messages="$errors->get('receipt')" class="mt-2" />
+                    <div class="mb-4" id="gcashDetails" >
+                        <p class="text-gray-700 text-sm font-bold mb-2">Scan the QR code below or note down the Gcash number for payment:</p>
+                        <img src="{{ asset('images/GCASH.jpg') }}" alt="GCash QR Code" class="mb-2">
+                        <p class="text-gray-700 font-semibold">GCash Number: 09123456789</p>
+                    </div>
             </div>
             <div class="mb-4" x-data="{ agreed: false }">
                 <label class="block text-gray-700 text-sm font-bold mb-2">
@@ -109,3 +131,14 @@
 @endforeach
 @endforeach
 <script src="{{ asset('js/total.js') }}"></script>
+<script>
+    function toggleImageUpload() {
+        var paymentMethod = document.getElementById("paymentMethod").value;
+        var gcashUpload = document.getElementById("gcashUpload");
+        if (paymentMethod === "gcash") {
+            gcashUpload.style.display = "block";
+        } else {
+            gcashUpload.style.display = "none";
+        }
+    }
+</script>

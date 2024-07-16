@@ -26,11 +26,15 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
 {
     $request->authenticate();
-
+    
     $request->session()->regenerate();
 
     // Get the authenticated user
     $user = Auth::user();
+    if (!$user->email_verified_at) {
+        // If not verified, send them to the verify-email route
+        return redirect()->route('verification.notice');
+    }
 
     switch($user->role){
         case 'admin':
@@ -43,7 +47,7 @@ class AuthenticatedSessionController extends Controller
             // Redirect customers to customer dashboard
             return redirect()->route('reserve.wait'); 
         default:
-            return redirect()->route('welcome');   
+            return redirect()->route('welcome');
         }
 
     

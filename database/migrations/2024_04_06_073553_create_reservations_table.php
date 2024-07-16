@@ -18,7 +18,6 @@ return new class extends Migration
             $table->date('check_in');
             $table->date('check_out');
             $table->integer('total_price');
-            $table->text('payment_status');
             $table->timestamps();
         });
     }

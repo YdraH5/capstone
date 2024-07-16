@@ -15,7 +15,6 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    protected $redirectTo = '/login';
     /**
      * Display the registration view.
      */
@@ -50,6 +49,6 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        return redirect($this->redirectTo)->with('success','Verification link sent');
+        return redirect('verify-email');
     }
 }

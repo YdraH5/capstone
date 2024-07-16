@@ -43,7 +43,6 @@ class ReportTable extends Component
                 'apartment.building',
                 'reports.description',
                 'reports.status',
-                'reports.ticket',
                 'apartment.room_number',
                 'reports.created_at as date'
             )
@@ -55,13 +54,12 @@ class ReportTable extends Component
                 ->orWhere('reports.report_category', 'like', '%' . $this->search . '%')
                 ->orWhere('reports.description', 'like', '%' . $this->search . '%')
                 ->orWhere('reports.status', 'like', '%' . $this->search . '%')
-                ->orWhere('reports.ticket', 'like', '%' . $this->search . '%')
                 ->orWhere('reports.created_at', 'like', '%' . $this->search . '%')
                 ->orWhere('apartment.room_number', 'like', '%' . $this->search . '%');
                 
         }
 
-        $reports = $query->cursorPaginate(10);
+        $reports = $query->Paginate(10);
 
         return view('livewire.admin.report-table', compact('reports'));
     }

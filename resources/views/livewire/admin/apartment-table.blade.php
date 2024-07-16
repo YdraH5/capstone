@@ -48,7 +48,7 @@
                         <x-modal name="edit-apartment" title="Edit Apartment">
                             <x-slot:body>
                               <form id="modalForm" class="space-y-4 "wire:submit.prevent="update">
-                                <div class="lg:columns-2 xl:columns-2">
+                                <div class="lg:grid lg:grid-cols-2 lg:gap-6">
                                     <div> 
                                         <label class="block font-medium opacity-70">Category Name</label>
                                         <select wire:model="category_id" placeholder="Category"class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
@@ -71,7 +71,7 @@
                                     <div>
                                         <label class="block font-medium opacity-70">Room Number</label>
                                         <input type="text" wire:model="room_number" placeholder="Room #" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
-                                        @error('room_number') <span class="error text-red-900">{{ $message }}</span> @enderror 
+                                        @error('room_number') <span class="error text-red-900">{{ $message }}</span> @enderror
                                     </div>
                                     <div>
                                         <label class="block font-medium opacity-70">Status</label>
@@ -84,8 +84,7 @@
                                         @error('status') <span class="error text-red-900">{{ $message }}</span> @enderror 
                                         <div class="flex items-center justify-between py-8">
                                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-                                            <button wire:click="closeModal" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Close
-                                            </button>
+                                            <button wire:click="close()"x-on:click="$dispatch('close-modal',{name:'edit-apartment'})" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Close</button>
                                         </div>
                                     </div>
                                 </div>
@@ -123,7 +122,7 @@
     </table>
     
     </div>
-    {{ $apartment->links('components.pagination')}}
+    {{ $apartment->links()}}
   </div>
   
 </div>

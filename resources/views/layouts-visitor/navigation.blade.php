@@ -1,6 +1,6 @@
 
   
-<nav x-data="{ open: false }" class="bg-gray-900 text-white sticky top-0 z-50">
+<nav x-data="{ open: false }" class="bg-yellow-800 text-white sticky top-0 z-50">
   <!-- Primary Navigation Menu -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
@@ -14,15 +14,15 @@
 
               <!-- Navigation Links -->
               <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <x-nav-link wire:navigate href="{{ route('welcome') }}#overview" :active="request()->fullUrlIs(route('welcome') . '#overview')">
+                <x-nav-link href="{{ route('welcome') }}#overview-section" :active="request()->fullUrlIs(route('welcome') . '#overview-section')">
                   {{ __('Overview') }}
                 </x-nav-link>
                 
-                <x-nav-link wire:navigate href="{{ route('welcome') }}#establishment" :active="request()->fullUrlIs(route('welcome') . '#establishment')">
+                <x-nav-link href="{{ route('welcome') }}#establishment" :active="request()->fullUrlIs(route('welcome') . '#establishment')">
                   {{ __('Establishments') }}
                 </x-nav-link>
 
-                <x-nav-link href="{{ route('welcome') }}#reserve" :active="request()->fullUrlIs(route('welcome') . '#reserve')">
+                <x-nav-link href="{{ route('welcome') }}#apartments" :active="request()->fullUrlIs(route('welcome') . '#apartments')">
                   {{ __('Rooms') }}
                 </x-nav-link>
                 {{-- <x-nav-link  :href="route('mail')" :active="request()->routeIs('mail')">
@@ -106,14 +106,14 @@
           </x-responsive-nav-link>
       </form>
       @endif
-        <x-responsive-nav-link wire:navigate href="{{ route('welcome') }}#overview" :active="request()->fullUrlIs(route('welcome') . '#overview')">
+        <x-responsive-nav-link href="{{ route('welcome') }}#overview-section" :active="request()->fullUrlIs(route('welcome') . '#overview-section')">
         {{ __('Overview') }}
         </x-responsive-nav-link>
 
-        <x-responsive-nav-link wire:navigate href="{{ route('welcome') }}#establishment" :active="request()->fullUrlIs(route('welcome') . '#establishment')">
+        <x-responsive-nav-link href="{{ route('welcome') }}#establishment" :active="request()->fullUrlIs(route('welcome') . '#establishment')">
           {{ __('Establishment') }}
         </x-responsive-nav-link>
-        <x-responsive-nav-link href="{{ route('welcome') }}#reserve" :active="request()->fullUrlIs(route('welcome') . '#reserve')">
+        <x-responsive-nav-link href="{{ route('welcome') }}#apartments" :active="request()->fullUrlIs(route('welcome') . '#apartments')">
             {{ __('Rooms') }}
         </x-responsive-nav-link>
         @if(!Auth::check())

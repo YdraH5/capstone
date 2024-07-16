@@ -21,7 +21,7 @@ class RouteServiceProvider extends ServiceProvider
     public const RENTER = 'renters/home';
     public const RESERVE = 'reserve/wait';
 
-    public const DEFAULT = 'welcome';
+    public const DEFAULT = '/';
 
 
 

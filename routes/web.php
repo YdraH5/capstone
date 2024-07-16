@@ -6,11 +6,8 @@ use App\Http\Controllers\VisitorPageController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SubmitReportController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\MailingController;
 use App\Http\Controllers\NotifyMeController;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\Mailing;
-use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -72,7 +69,6 @@ Route::get('success',[PaymentController::class,'success']);
     
     // ROUTING group for reserved users only users who have pending reservation have access here
     Route::group(['middleware' => ['isReserve','verified']], function () {
-        Route::get('/reserve/wait',[ReservationController::class,'waiting'])->name('reserve.wait');
         Route::get('/reserve/edit',[ReservationController::class,'edit'])->name('reserve.edit');
         Route::get('/reserve/{id}/{apartment}/{reservation}/update',[ReservationController::class,'update'])->name('reserve.update');
     });
@@ -89,7 +85,6 @@ Route::get('success',[PaymentController::class,'success']);
             return view('/renters/home');
         })->name('renters.home');
     });
-
 Route::get('/notify', [NotifyMeController::class, 'notify'])->name('emails.notify')->middleware(['auth', 'verified']);
 Route::get('/reserve/{apartment}/index',[ReservationController::class,'index'])->name('reserve.index')->middleware(['auth', 'verified']);
 Route::post('/reserve/create',[ReservationController::class,'create'])->name('reserve.create')->middleware(['auth', 'verified']);;
@@ -109,6 +104,7 @@ Route::get('/', function () {
 // })->name('mail');
 
 
+Route::get('/reserve/wait',[ReservationController::class,'waiting'])->name('reserve.wait');        
 
 // route to see the full details for a certain apartment
 Route::get('visitors/{apartment}/detail',[VisitorPageController::class,'display'])->name('visitors.display');

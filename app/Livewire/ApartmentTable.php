@@ -6,10 +6,12 @@ use App\Models\Appartment;
 use App\Models\Category;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+use Livewire\WithPagination;
 
 class ApartmentTable extends Component
 {
-    private $editApartment ;
+    use WithPagination;
+    public $editApartment ;
     private $editPrice;
     public $isEditing= false;// to only run the form when the user clicked the edit icon
     public $id; // to save the id that the user want to edit
@@ -40,7 +42,6 @@ class ApartmentTable extends Component
         $this->building = $this->editApartment->building;
         $this->status = $this->editApartment->status;
         $this->room_number = $this->editApartment->room_number;
-        $this->editApartment = Appartment::find($id); 
          
     }
    
@@ -64,6 +65,10 @@ class ApartmentTable extends Component
         $this->reset();
         // Reset the component state
         session()->flash('success', 'Apartment updated successfully.');
+    }
+    public function close(){
+        $this->isEditing = false;
+        $this->reset(['category_id','building','status','room_number','id','editApartment']);
     }
     public function delete($id){
         $this->deleteId = $id;
@@ -99,7 +104,7 @@ class ApartmentTable extends Component
                 'apartment.status',
                 'apartment.building'
             )
-            ->cursorPaginate(10);
+            ->Paginate(10);
 
         return view('livewire.admin.apartment-table', [
             'apartment' => $apartments,

@@ -1,22 +1,82 @@
 <?php
 
 namespace App\Livewire;
-use App\Models\Reservation;
+
+use App\Models\Payment;
+use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationSuccess;
+
 class ReserveTable extends Component
 {
-    public $search ='';
-   
-    public function reserve($id){
-        
+    public $modal = false;
+    public $search = '';
+    public $currentReceipt;
+    public $id;
+    public $currentStatus;
+    protected $listeners = ['showReceipt'];
+
+    public function showReceipt($receipt,$status,$id)
+    {
+        $this->modal = true;
+        $this->currentReceipt = $receipt;
+        $this->id = $id;
+        $this->currentStatus = $status;
     }
+    public function close()
+    {
+        $this->modal = false;
+        $this->currentStatus = null;
+        $this->currentReceipt = null;
+        $this->id =null;
+        $this->reset(['currentReceipt','currentStatus','id']); // Reset specific property
+    }
+
+    public function approve($id)
+{
+    // Retrieve the specific payment record
+    $payment = Payment::where('reservation_id', $id)->first();
+
+    // Update the status of the payment record
+    $payment->update(['status' => 'paid']);
+
+    // Update user role
+    DB::table('users')
+        ->where('id', $payment->user_id)
+        ->update(['role' => 'reserve']);
+
+    // Update apartment status
+    DB::table('apartment')
+        ->where('id', $payment->apartment_id)
+        ->where('status', 'Available')
+        ->update(['status' => 'Reserved']);
+
+    // Retrieve user information
+    $user = DB::table('users')->where('id', $payment->user_id)->first();
+    session()->flash('success', 'The reservation has been approved'); // Set the success flash message
+
+    // Prepare email data
+    $dataemail = [
+        'name' => $user->name,
+        'payment' => $payment->amount,
+    ];
+    // Send email
+    Mail::to($user->email)->send(new ReservationSuccess($dataemail));
+    $this->modal = true;
+
+}
+
+
     public function render()
     {
+        // Base query with necessary joins
         $query = DB::table('users')
             ->join('reservations', 'users.id', '=', 'reservations.user_id')
             ->join('apartment', 'apartment.id', '=', 'reservations.apartment_id')
             ->join('categories', 'categories.id', '=', 'apartment.category_id')
+            ->join('payments', 'reservations.id', '=', 'payments.reservation_id')
             ->select(
                 'apartment.id as apartment_id',
                 'users.id as user_id',
@@ -27,28 +87,40 @@ class ReserveTable extends Component
                 'apartment.building',
                 DB::raw('DATE_FORMAT(reservations.check_in, "%b-%d-%Y") as check_in_date'),
                 DB::raw('DATE_FORMAT(reservations.check_out, "%b-%d-%Y") as check_out_date'),
+                'reservations.id as reservation_id',
                 'reservations.total_price',
-                'reservations.payment_status',
-                'apartment.building'
+                'payments.receipt',
+                'payments.status'
             )
             ->orderBy('reservations.created_at');
 
-        // Filter based on the search search
+        // Search fields
+        $searchFields = [
+            'users.name',
+            'categories.name',
+            'users.email',
+            'apartment.status',
+            'apartment.room_number',
+            'apartment.building',
+            'reservations.check_in',
+            'reservations.check_out',
+            'payments.status',
+            'reservations.total_price'
+        ];
+
+        // Apply search filter
         if (!empty($this->search)) {
-            $query->where('users.name', 'like', '%' . $this->search . '%')
-                ->orWhere('categories.name', 'like', '%' . $this->search . '%')
-                ->orWhere('users.email', 'like', '%' . $this->search . '%')
-                ->orWhere('apartment.status', 'like', '%' . $this->search . '%')
-                ->orWhere('apartment.room_number', 'like', '%' . $this->search . '%')
-                ->orWhere('apartment.building', 'like', '%' . $this->search . '%')
-                ->orWhere('reservations.check_in', 'like', '%' . $this->search . '%')
-                ->orWhere('reservations.check_out', 'like', '%' . $this->search . '%')
-                ->orWhere('reservations.payment_status', 'like', '%' . $this->search . '%')
-                ->orWhere('apartment.price', 'like', '%' . $this->search . '%');
+            $query->where(function ($query) use ($searchFields) {
+                foreach ($searchFields as $field) {
+                    $query->orWhere($field, 'like', '%' . $this->search . '%');
+                }
+            });
         }
 
+        // Paginate the results
         $reservations = $query->paginate(10);
 
+        // Return view with the reservations data
         return view('livewire.admin.reserve-table', compact('reservations'));
     }
 }

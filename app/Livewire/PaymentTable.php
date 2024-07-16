@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\DB;
 class PaymentTable extends Component
 {
     public $search;
+    public $page = 'validation';
+    public function approve(){
 
+    }
     public function render()
     {
         // Start the query with the Payment model and join the necessary relationships
@@ -19,6 +22,7 @@ class PaymentTable extends Component
                 'payments.id',
                 'payments.category',
                 'payments.amount',
+                'payments.receipt',
                 'payments.transaction_id',
                 'payments.payment_method',
                 'payments.status',
@@ -48,5 +52,6 @@ class PaymentTable extends Component
     
         return view('livewire.admin.payment-table', compact('payments'));
     }
+    
     
 }
