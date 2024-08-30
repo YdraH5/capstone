@@ -6,7 +6,7 @@
   @section('content')
   <section class="text-gray-700 body-font mx-8">
 
-    <div class="container px-5 py-1  ">
+    <div class="container px-5 py-4  ">
       <div class="flex flex-wrap -m-4 text-center">
         <div class="p-4 md:w-1/4 sm:w-1/2 w-full">
           <a href="{{route('admin.users.index')}}">

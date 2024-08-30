@@ -4,7 +4,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-black-800 dark:text-black-200 leading-tight">
-                {{ __('USERS') }}
+                {{ __('REPORT') }}
             </h2>
             <div class="flex items-center">
               <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-report'})">
@@ -23,10 +23,9 @@
                     <label for="name" class="block font-medium opacity-70">Report Category</label>
                       <select name="report_category" id="cars" class="w-full h-10 rounded-lg opacity-50">
                         <option value="">Report Category</option>
-                        <option value="maintenance">maintenance</option>
+                        <option value="maintenance">Maintenance</option>
                         <option value="Room service">Room service</option>
-                        <option value="loud">loud</option>
-                      </select>
+                       </select>
                   </div>
                   <div>
                     <label for="email" class="block font-medium opacity-70">Description</label>

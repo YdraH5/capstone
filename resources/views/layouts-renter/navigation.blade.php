@@ -1,31 +1,30 @@
-<nav x-data="{ open: false }" class="bg-gray-300 border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-yellow-800 text-white sticky top-0 z-50">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('reserve.wait') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                <div class="logo shrink-0 flex items-center">
+                    <a href="{{ route('welcome') }}">
+                      <img src="{{ asset('images/NRN LOGO.png') }}" style="height: 40px; width:70px"class="sm:mx-4 lg:mx-6 lg:h-40 lg:w-60">
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex hover:text-black">
                     <x-nav-link :href="route('renters.home')" :active="request()->routeIs('renters.home')">
-                        @include('components.home-icon')
                         {{ __('Home') }}
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex hover:text-black">
                     <x-nav-link :href="route('renters.payment')" :active="request()->routeIs('renters.payment')">
-                        @include('components.payment-icon'){{ __('Payment') }}
+                        {{ __('Payment') }}
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex hover:text-black">
                     <x-nav-link :href="route('renters.report')" :active="request()->routeIs('renters.report')">
-                       @include('components.report-icon') {{ __('Report') }}
+                       {{ __('Report') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -34,8 +33,7 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">                    
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-black-500 bg-gray-300 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">                                
-                            @include('components.user-icon')
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-black-500  hover:text-gray-900 focus:outline-none transition ease-in-out duration-150">                                
                             <div class="flex ">                
                                 {{ Auth::user()->name }}
                             </div>
@@ -90,15 +88,15 @@
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
 
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('renters.home')" :active="request()->routeIs('renters.home')">
-                    @include('components.home-icon') {{ __('Home') }}
+            <div class="mt-3 space-y-1 text-black">
+                <x-responsive-nav-link wire:navigate :href="route('renters.home')" :active="request()->routeIs('renters.home')">
+                    {{ __('Home') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('renters.home')" :active="request()->routeIs('renters.payment')">
-                    @include('components.payment-icon') {{ __('Payment') }}
+                <x-responsive-nav-link wire:navigate :href="route('renters.payment')" :active="request()->routeIs('renters.payment')">
+                    {{ __('Payment') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('renters.report')" :active="request()->routeIs('renters.report')">
-                @include('components.report-icon') {{ __('Report') }}
+                <x-responsive-nav-link wire:navigate :href="route('renters.report')" :active="request()->routeIs('renters.report')">
+                    {{ __('Report') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->

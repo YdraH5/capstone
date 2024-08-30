@@ -16,19 +16,19 @@
   
             {{-- pending report table --}}
         <h2 class="text-lg font-semibold mb-4 flex justify-center">Pending Report</h2>
-        <table class="w-full table-auto rounded-lg">
+        <table class="min-w-full border-collapse ">
             <thead>
-                <tr class="bg-neutral-400">
-                    <th class="text-center border border-black-900">Report ID</th>
-                    <th class="text-center border border-black-900">View</th>
+                <tr class="bg-indigo-500 text-white uppercase text-sm">
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">Report ID</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">View</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($reports as $report)
-                    @if($report->status !== 'Solved')
-                    <tr class="bg-white hover:bg-gray-300 odd:bg-white even:bg-slate-50">
-                        <td class="text-center border border-black-900">{{$report->id}}</td>
-                            <td class="border border-black-900 flex justify-center">
+                    @if($report->status !== 'Fixed')
+                    <tr class="hover:bg-indigo-100 ">
+                        <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->id}}</td>
+                        <td class="py-3 px-4 text-center border-b border-gray-300">
                                 <button
                                     x-data="{ id: {{$report->id}} }"
                                     x-on:click="$wire.set('id', id); $dispatch('open-modal', { name: 'view-report-{{$report->id}}' })"
@@ -40,19 +40,19 @@
                                     <x-slot name="body">
                                         <div class="p-4">
                                             <div class="mb-4">
-                                                <span class="font-semibold">Report Category:</span> {{$report->report_category}}
+                                                <p class="font-semibold">Report Category:</p> {{$report->report_category}}
                                             </div>
                                             <div class="mb-4">
-                                                <span class="font-semibold">Report Date:</span> {{ \Carbon\Carbon::parse($report->created_at)->diffForHumans() }}
+                                                <p class="font-semibold">Report Date:</p> {{ \Carbon\Carbon::parse($report->created_at)->diffForHumans() }}
                                             </div>
                                             <div class="mb-4">
-                                                <span class="font-semibold">Report Status:</span> {{$report->status}}
+                                                <p class="font-semibold">Report Status:</p> {{$report->status}}
                                             </div>
                                             <div class="mb-4">
-                                                <span class="font-semibold">Report ID:</span> {{$report->id}}
+                                                <p class="font-semibold">Report ID:</p> {{$report->id}}
                                             </div>
                                             <div class="mb-4">
-                                                <span class="font-semibold">Report Description:</span> {{$report->description}}
+                                                <p class="font-semibold">Report Description:</p> {{$report->description}}
                                             </div>
                                             <button  x-on:click="$dispatch('close-modal',{name:'view-report'})" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Close
                                             </button>
@@ -68,22 +68,22 @@
         
     </div>
    
-    {{-- Solved report table --}}
+    {{-- Fixed report table --}}
     <div class="w-full sm:w-1/2 bg-gray-100 px-2 rounded-lg p-6 shadow-md">
-        <h2 class="text-lg font-semibold mb-4 flex justify-center">Solved Reports</h2>
-        <table class="w-full table-auto">
+        <h2 class="text-lg font-semibold mb-4 flex justify-center">Fixed Reports</h2>
+        <table class="min-w-full border-collapse ">
             <thead>
-              <tr class="bg-neutral-400">
-                  <th class="text-center border border-black-900">Report ID</th>
-                  <th class="text-center border border-black-900">View</th>
-              </tr>
+                <tr class="bg-indigo-500 text-white uppercase text-sm">
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">Report ID</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">View</th>
+                </tr>
             </thead>
             @foreach($reports as $report)
-            @if($report->status === 'Solved')
+            @if($report->status === 'Fixed')
             <tbody>
-                <tr class="bg-white hover:bg-gray-300 odd:bg-white even:bg-slate-50">
-                    <td class="text-center border border-black-900">{{$report->ticket}}</td>
-                  <td class="border border-black-900 flex justify-center">
+                <tr class="hover:bg-indigo-100 ">
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->id}}</td>
+                    <td class="py-3 px-4 text-center border-b border-gray-300">
                     <button class="" x-data x-on:click="$dispatch('open-modal',{name:'view-solve-report'})">
                         @include('components.view-icon')
                     </button>
@@ -91,19 +91,19 @@
                         <x-slot:body>
                             <div class="p-4">
                                 <div class="mb-4">
-                                    <span class="font-semibold">Report Category:</span> {{$report->report_category}}
+                                    <p class="font-semibold">Report Category:</p> {{$report->report_category}}
                                 </div>
                                 <div class="mb-4">
-                                    <span class="font-semibold">Report Date:</span> {{$report->date}}
+                                    <p class="font-semibold">Report Date:</p> {{ \Carbon\Carbon::parse($report->created_at)->diffForHumans() }}
                                 </div>
                                 <div class="mb-4">
-                                  <span class="font-semibold">Report Status:</span> {{$report->status}}
+                                  <p class="font-semibold">Report Status:</p> {{$report->status}}
                               </div>
                                 <div class="mb-4">
-                                    <span class="font-semibold">Report Ticket:</span> {{$report->id}}
+                                    <p class="font-semibold">Report ID:</p> {{$report->id}}
                                 </div>
                                 <div class="mb-4">
-                                    <span class="font-semibold">Report Description:</span> {{$report->description}}
+                                    <p class="font-semibold">Report Description:</p> {{$report->description}}
                                 </div>
                                 <button  x-on:click="$dispatch('close-modal',{name:'view-solve-report'})" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Close</button>
                             </div>

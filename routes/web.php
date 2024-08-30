@@ -84,12 +84,14 @@ Route::get('success',[PaymentController::class,'success']);
         Route::get('/renters/home', function () {
             return view('/renters/home');
         })->name('renters.home');
+        Route::get('/renters/home', function () {
+            return view('/renters/report');
+        })->name('renters.report');
     });
 Route::get('/notify', [NotifyMeController::class, 'notify'])->name('emails.notify')->middleware(['auth', 'verified']);
 Route::get('/reserve/{apartment}/index',[ReservationController::class,'index'])->name('reserve.index')->middleware(['auth', 'verified']);
-Route::post('/reserve/create',[ReservationController::class,'create'])->name('reserve.create')->middleware(['auth', 'verified']);;
-
-
+Route::post('/reserve/create',[ReservationController::class,'create'])->name('reserve.create')->middleware(['auth', 'verified']);
+Route::get('/payment-success', [ReservationController::class, 'paymentSuccess'])->name('reserve.payment_success')->middleware(['auth', 'verified']);
 });
 
 

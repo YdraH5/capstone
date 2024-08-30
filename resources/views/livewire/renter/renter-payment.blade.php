@@ -1,31 +1,32 @@
 <div>
-    <div class="bg-slate-200">
+    {{-- <div class="bg-slate-200">
         <select wire:model.live="page" class="w-32 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300">
             <option value="history">History</option>
             <option value="to pay">To pay</option>
         </select>
     </div>
-    
+     --}}
+    <!-- Table -->
     <div class="overflow-x-auto">
-        <table class="table-auto w-full border-seperate max-w-7xl">
+        <table class="min-w-full border-collapse ">
             @if($page === 'history')
             
             <thead>
-                <tr class="bg-gray-300 rounded">
-                    <th class="text-center border border-black-900 border-2">{{ __('Date') }}</th>
-                    <th class="text-center border border-black-900 border-2">{{ __('Category') }}</th>
-                    <th class="text-center border border-black-900 border-2">{{ __('Payment Method') }}</th>
-                    <th class="text-center border border-black-900 border-2">{{ __('Amount') }}</th>
+                <tr class="bg-indigo-500 text-white uppercase text-sm">
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">{{ __('Date') }}</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">{{ __('Category') }}</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">{{ __('Payment Method') }}</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">{{ __('Amount') }}</th>
                 </tr>
             </thead>
 
             <tbody>
                 @foreach($payments as $payment)
-                <tr class="bg-white hover:bg-gr`ay-300 odd:bg-white even:bg-slate-50">
-                    <td class="text-center border border-black-900 border-2">{{$payment->created_at}}</td>
-                    <td class="text-center border border-black-900 border-2">{{$payment->category}}</td>
-                    <td class="text-center border border-black-900 border-2">{{$payment->payment_method}}</td>
-                    <td class="text-center border border-black-900 border-2">{{$payment->amount}}</td>
+                <tr class="hover:bg-indigo-100 ">
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$payment->created_at}}</td>
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$payment->category}}</td>
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$payment->payment_method}}</td>
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$payment->amount}}</td>
                 </tr>
                 @endforeach
 
@@ -33,26 +34,26 @@
 
             @endif
 
-            @if($page === 'to pay')
+            {{-- @if($page === 'to pay')
             
             <thead>
                 <tr class="bg-gray-300 rounded">
-                    <th class="text-center border border-black-900 border-2">{{ __('Category') }}</th>
-                    <th class="text-center border border-black-900 border-2">{{ __('Amount') }}</th>
-                    <th class="text-center border border-black-900 border-2">{{ __('Action') }}</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">{{ __('Category') }}</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">{{ __('Amount') }}</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">{{ __('Action') }}</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($payments as $payment)
                 <tr class="bg-white hover:bg-gr`ay-300 odd:bg-white even:bg-slate-50">
-                    <td class="text-center border border-black-900 border-2">{{$payment->category}}</td>
-                    <td class="text-center border border-black-900 border-2">{{$payment->amount}}</td>
-                    <td class="text-center border border-black-900 border-2"><button class="bg-green-300 w-20">
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$payment->category}}</td>
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$payment->amount}}</td>
+                    <td class="py-3 px-4 text-center border-b border-gray-300"><button class="bg-green-300 w-20">
                         pay</button></td>
                 </tr>
                 @endforeach
             </tbody>
-            @endif
+            @endif --}}
         </table>
     </div>
 </div>

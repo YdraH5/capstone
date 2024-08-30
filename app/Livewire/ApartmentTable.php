@@ -58,10 +58,7 @@ class ApartmentTable extends Component
             'status' => $this->status,
             'room_number' => $this->room_number,
         ]);
-        $category = Category::find($this->category_id);
-        $category->update([
-            'price' => $this->price,
-        ]);
+
         $this->reset();
         // Reset the component state
         session()->flash('success', 'Apartment updated successfully.');

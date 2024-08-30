@@ -1,50 +1,66 @@
 <div>
-    <div class="flex justify-start mx-2 mb-5 mt-2">
-        <input wire:model.debounce.300ms.live="search" type="search" placeholder="Search...."
-            class="w-1/2 h-10 px-4 py-2 text-gray-600 placeholder-gray-500 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+    <!-- Search Bar -->
+    <div class="flex items-center gap-4 mb-4 p-2 bg-gray-50 rounded-lg shadow-sm">
+        <div class="flex gap-2 text-gray-700">
+            <h1 class="text-2xl font-semibold text-black">Reports</h1>
+        </div>
+        <div class="relative w-1/2 ml-auto">
+            <input id="search-input" wire:model.debounce.300ms.live="search" type="search" placeholder="Search..."
+                class="w-full h-12 pl-4 pr-12 py-2 text-gray-700 placeholder-gray-500 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+            <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" width="1.25rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
+            </svg>
+        </div>
     </div>
-    <div class="overflow-x-auto">
-        <table class="table-auto h-full w-full mx-2  border-seperate">
+    <!-- Table -->
+    <div class="overflow-x-auto bg-white shadow-lg">
+        <table class="min-w-full mx-2 border-collapse">
             <thead> 
-            @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-            @endif
-                <tr class="bg-gray-300 rounded">
-                    <th class="text-center border border-black-900 border-2">Reporters</th>
-                    <th class="text-center border border-black-900 border-2">Room Info</th>
-                    <th class="text-center border border-black-900 border-2">Report Category</th>
-                    <th class="text-center border border-black-900 border-2">Description</th>
-                    <th class="text-center border border-black-900 border-2">Ticket</th>
-                    <th class="text-center border border-black-900 border-2">Status</th>
-                    <th class="text-center border border-black-900 border-2">Date</th>
-                    <th class="text-center border border-black-900 border-2">Actions</th>
+                @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+                @endif
+                <tr class="bg-indigo-500 text-white uppercase text-sm">
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">Reporters</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">Room Info</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">Report Category</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">Description</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">Status</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">Date</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($reports as $report)
-                <tr class="bg-white hover:bg-gray-300 odd:bg-white even:bg-slate-50">
-                    <td class="text-center border border-black-900 border-2">{{$report->name}}</td>
-                    <td class="text-center border border-black-900 border-2">{{$report->building}}-{{$report->room_number}}</td>
-                    <td class="text-center border border-black-900 border-2">{{$report->report_category}}</td>
-                    <td class="text-center border border-black-900 border-2">{{$report->description}}</td>
-                    <td class="text-center border border-black-900 border-2">{{$report->ticket}}</td>
-                    @if($report->status === 'Solved')
-                    <td class="text-center border bg-green-100 border-black-900 border-2">{{$report->status}}</td>
+                <tr class="hover:bg-indigo-100 ">
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->name}}</td>
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->building}}-{{$report->room_number}}</td>
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->report_category}}</td>
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->description}}</td>
+                    @if($report->status === 'Fixed')
+                    <td class="py-3 px-4 text-center border-b border-gray-300 bg-green-100">{{$report->status}}</td>
                         @else
-                    <td class="text-center border bg-yellow-100 border-black-900 border-2">{{$report->status}}</td>
+                        <td class="py-3 px-4 text-center border-b border-gray-300 bg-yellow-100">{{$report->status}}</td>
                         @endif
-                    <td class="text-center border border-black-900 border-2">{{ \Carbon\Carbon::parse($report->date)->diffForHumans() }}</td>
-                    <td class=" border border-black-900 border-2">
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{ \Carbon\Carbon::parse($report->date)->diffForHumans() }}</td>
+                    <td class="py-3 px-4 text-center border-b border-gray-300">
                         <x-modal name="solve-report" title="Solve Report">
                             <x-slot:body>
                                 <form id="modalForm" class="space-y-4 "wire:submit.prevent="action">
                                     <div>
-                                        <input type="hidden"wire:model="id">
-                                        <label class="block font-medium opacity-70">Status</label>
-                                        <input type="text" wire:model="status" placeholder="Status" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
-                                        @error('status') <span class="error text-red-900">{{ $message }}</span> @enderror 
+                                        <input type="hidden"wire:model="status">
+                                        <div>
+                                            <label class="block font-medium opacity-70">Status</label>
+                                            <select wire:model="status" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
+                                                <option value="" disabled selected hidden>Status</option>
+                                                <option value="Pending">Pending</option>
+                                                <option value="Sent Labor">Sent Labor</option>
+                                                <option value="Ongoing">Ongoing</option>
+                                                <option value="Fixed">Fixed</option>
+                                            </select>
+                                            @error('status') <span class="error text-red-900">{{ $message }}</span> @enderror
+                                        </div> 
                                     </div>
                                     <div class="flex items-center justify-between py-8">
                                         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>

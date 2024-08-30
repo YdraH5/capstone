@@ -8,10 +8,10 @@
     @endif
 
     @foreach($reservations as $reservation)
-    @if($reservation->status ==='paid')
-    <div class="min-h-screen flex flex-col justify-center items-center">
+    @if(Auth::user()->role ==='reserve')
+    <div class="bg-yellow-100 min-h-screen flex flex-col justify-center items-center">
     <h1 class="text-3xl font-bold mb-6">Welcome to the Reservation Waiting Page</h1>
-        <div class="bg-white p-8 rounded-lg shadow-lg">
+        <div class=" p-8 rounded-lg shadow-lg">
             <p class="text-lg mb-4">Please wait patiently for access to the renters module.</p>
             <p class="text-lg mb-4">Your reservation date is <span id="reservationDate" class="font-semibold">{{ date('l, F jS Y', strtotime($reservation->check_in)) }}</span>.</p>
             <input type="hidden" value="{{$reservation->check_in}}" id="reservedDate">
@@ -23,8 +23,8 @@
             </a>
         </div>
     </div>
-
-    @else
+    @endif
+    @if(Auth::user()->role ==='pending')
     <div class="min-h-screen flex flex-col justify-center items-center">    
         <div class="bg-white p-8 rounded-lg shadow-lg">
             <h1 class="text-3xl font-bold mb-6">Your payment is under review.</h1>

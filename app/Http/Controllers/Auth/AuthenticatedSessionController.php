@@ -46,6 +46,9 @@ class AuthenticatedSessionController extends Controller
         case 'reserve':
             // Redirect customers to customer dashboard
             return redirect()->route('reserve.wait'); 
+        case 'pending':
+            // Redirect customers to customer dashboard
+            return redirect()->route('reserve.wait'); 
         default:
             return redirect()->route('welcome');
         }

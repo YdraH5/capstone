@@ -39,6 +39,7 @@ class CategoryTable extends Component
                 'price' => $this->price,
                 'description' => $this->description,
             ]);
+            
             $this->reset();
             // Reset the component state
             session()->flash('success', 'Category updated successfully.');

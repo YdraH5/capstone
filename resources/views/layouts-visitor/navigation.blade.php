@@ -18,7 +18,7 @@
                   {{ __('Overview') }}
                 </x-nav-link>
                 
-                <x-nav-link href="{{ route('welcome') }}#establishment" :active="request()->fullUrlIs(route('welcome') . '#establishment')">
+                <x-nav-link href="{{ route('welcome') }}#near-establishments" :active="request()->fullUrlIs(route('welcome') . '#near-establishments')">
                   {{ __('Establishments') }}
                 </x-nav-link>
 
@@ -110,18 +110,18 @@
         {{ __('Overview') }}
         </x-responsive-nav-link>
 
-        <x-responsive-nav-link href="{{ route('welcome') }}#establishment" :active="request()->fullUrlIs(route('welcome') . '#establishment')">
+        <x-responsive-nav-link href="{{ route('welcome') }}#near-establishments" :active="request()->fullUrlIs(route('welcome') . '#near-establishments')">
           {{ __('Establishment') }}
         </x-responsive-nav-link>
         <x-responsive-nav-link href="{{ route('welcome') }}#apartments" :active="request()->fullUrlIs(route('welcome') . '#apartments')">
             {{ __('Rooms') }}
         </x-responsive-nav-link>
         @if(!Auth::check())
-        <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('auth.login')">
+        <x-responsive-nav-link wire:navigate :href="route('login')" :active="request()->routeIs('auth.login')">
             {{ __('Login') }}
         </x-responsive-nav-link>
 
-        <x-responsive-nav-link  :href="route('register')" :active="request()->routeIs('auth.register')">
+        <x-responsive-nav-link  wire:navigate :href="route('register')" :active="request()->routeIs('auth.register')">
           {{ __('Register') }}
         </x-responsive-nav-link>
         @else
