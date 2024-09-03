@@ -46,16 +46,19 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#sidebar").mCustomScrollbar({
-                theme: "minimal"
-            });
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar, #content').toggleClass('active');
-                $('.collapse.in').toggleClass('in');
-                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-            });
+        $("#sidebarCollapse").on('click', function () {
+            $('#sidebar').toggleClass('active');
+            $('#content').toggleClass('active');
+            
+            // Adjust button position when sidebar is toggled
+            if ($('#sidebar').hasClass('active')) {
+            $('#sidebarCollapse').css('left', '0'); // Adjust position when sidebar is hidden
+            } else {
+            $('#sidebarCollapse').css('left', '250px'); // Adjust position when sidebar is visible
+            }
         });
-        document.getElementById('search-input').addEventListener('input', function(event) {
+        });
+                document.getElementById('search-input').addEventListener('input', function(event) {
                     const searchValue = event.target.value;
                     const params = new URLSearchParams(window.location.search);
                     if (searchValue) {

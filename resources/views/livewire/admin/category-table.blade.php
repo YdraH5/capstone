@@ -3,7 +3,7 @@
   <div class="flex items-center gap-4 mb-4 p-2 bg-gray-50 rounded-lg shadow-sm">
     <div class=" flex gap-2 text-gray-700">
       <h1 class="text-2xl font-semibold text-black">Categories</h1>
-  </div>
+    </div>
     <div class="relative w-1/2 ml-auto">
         <input id="search-input" wire:model.debounce.300ms.live="search" type="search" placeholder="Search..."
             class="w-full h-12 pl-4 pr-12 py-2 text-gray-700 placeholder-gray-500 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
@@ -15,7 +15,7 @@
     <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-category'})">
         @include('buttons.add')
     </button> 
-</div>
+  </div>
     <!-- Table -->
     <div class="overflow-x-auto bg-white shadow-lg">
       <table class="min-w-full mx-2 border-collapse">

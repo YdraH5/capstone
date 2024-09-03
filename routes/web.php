@@ -5,7 +5,6 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\VisitorPageController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SubmitReportController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\NotifyMeController;
 
 use Illuminate\Support\Facades\Route;
@@ -22,9 +21,6 @@ use Illuminate\Support\Facades\Route;
 */
 // specify landing page 
 Route::group(['middleware' => ['auth','verified' ,'sessionTimeout']], function () {
-
-Route::get('pay',[PaymentController::class,'pay']);
-Route::get('success',[PaymentController::class,'success']);
 
     Route::group(['middleware' => ['isAdmin']], function () {
         Route::get('/dashboard', function () {
@@ -65,6 +61,11 @@ Route::get('success',[PaymentController::class,'success']);
         Route::get('/admin/reservations', function () {
             return view('/admin/reservations');
         })->name('admin.reserve.index');
+
+        // ROUTE TO BUILDING MANAGEMENT FOR ADMIN
+        Route::get('/admin/building', function () {
+            return view('/admin/building');
+        })->name('admin.building.index');
     });
     
     // ROUTING group for reserved users only users who have pending reservation have access here

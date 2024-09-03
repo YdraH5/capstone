@@ -109,10 +109,11 @@ a[data-toggle="collapse"] {
   width: 100%;
 }
 #sidebarCollapse {
-position: absolute; /* Position it absolutely relative to its parent */
-top: 20px; /* Adjust positioning as needed */
-left: 20px; /* Adjust positioning as needed */
-z-index: 50; /* Ensure it's above other elements */
+  position: absolute;
+  top: 20px; /* Adjust positioning as needed */
+  left: 250px; /* Adjust positioning as needed */
+  z-index: 50; /* Ensure it's above other elements */
+  transition: left 0.3s; /* Smooth transition for movement */
 }
 
 /* ---------------------------------------------------

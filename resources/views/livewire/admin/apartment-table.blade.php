@@ -25,11 +25,12 @@
                     {{ session('success') }}
                 </div>    
                 @endif
+                
                 <tr class="bg-indigo-500 text-white uppercase text-sm">
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">Room Number</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">Building</th>
                     <th class="py-3 px-4 text-center border-b border-indigo-600">Category Name</th>
                     <th class="py-3 px-4 text-center border-b border-indigo-600">Renter</th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Building</th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Room Number</th>
                     <th class="py-3 px-4 text-center border-b border-indigo-600">Status</th>
                     <th class="py-3 px-4 text-center border-b border-indigo-600">Actions</th>
                 </tr>
@@ -37,6 +38,8 @@
             <tbody>
                 @foreach($apartment as $apartments)
                 <tr class="hover:bg-indigo-100">
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->room_number}}</td>
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->building_name}}</td>
                     <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->categ_name}}</td>
                     @if($apartments->renters_name == NULL)
                     <td class="py-3 px-4 text-center border-b border-gray-300">Vacant</td>
@@ -45,8 +48,6 @@
                             {{$apartments->renters_name}}
                     @endif
                         </td>
-                        <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->building}}</td>
-                        <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->room_number}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->status}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">
                             <div class="flex justify-center"> 

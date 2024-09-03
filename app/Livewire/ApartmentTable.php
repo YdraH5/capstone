@@ -22,7 +22,7 @@ class ApartmentTable extends Component
     public $category_id;
  
     #[Validate('required')] 
-    public $building;
+    public $building_id;
  
 
     #[Validate('required')] 
@@ -39,7 +39,7 @@ class ApartmentTable extends Component
         // to set the value of current data to the public variables
         $this->editApartment = Appartment::find($id);
         $this->category_id = $this->editApartment->category_id;
-        $this->building = $this->editApartment->building;
+        $this->building_id = $this->editApartment->building_id;
         $this->status = $this->editApartment->status;
         $this->room_number = $this->editApartment->room_number;
          
@@ -53,7 +53,7 @@ class ApartmentTable extends Component
         // Update the apartment record with the new data
         $apartment->update([
             'category_id' => $this->category_id,
-            'building' => $this->building,
+            'building_id' => $this->building_id,
             // 'price' => $this->price,
             'status' => $this->status,
             'room_number' => $this->room_number,
@@ -65,7 +65,7 @@ class ApartmentTable extends Component
     }
     public function close(){
         $this->isEditing = false;
-        $this->reset(['category_id','building','status','room_number','id','editApartment']);
+        $this->reset(['category_id','building_id','status','room_number','id','editApartment']);
     }
     public function delete($id){
         $this->deleteId = $id;
@@ -86,12 +86,14 @@ class ApartmentTable extends Component
                     ->orWhere('categories.name', 'like', '%' . $keyword . '%')
                     ->orWhere('apartment.status', 'like', '%' . $keyword . '%')
                     ->orWhere('apartment.room_number', 'like', '%' . $keyword . '%')
-                    ->orWhere('apartment.building', 'like', '%' . $keyword . '%')
+                    ->orWhere('apartment.building_id', 'like', '%' . $keyword . '%')
                     ->orWhere('categories.price', 'like', '%' . $keyword . '%');
             })
             ->join('categories', 'categories.id', '=', 'apartment.category_id')
+            ->join('buildings','buildings.id', '=', 'apartment.building_id')
             ->leftJoin('users', 'users.id', '=', 'apartment.renter_id')
             ->select(
+                'buildings.name as building_name',
                 'categories.id as categ_id',
                 'categories.name as categ_name',
                 'users.name as renters_name',
@@ -99,7 +101,7 @@ class ApartmentTable extends Component
                 'apartment.room_number',
                 'categories.price',
                 'apartment.status',
-                'apartment.building'
+                'apartment.building_id'
             )
             ->Paginate(10);
 

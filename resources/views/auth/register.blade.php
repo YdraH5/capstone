@@ -15,7 +15,12 @@
             <input type="email" :value="old('email')" class="mb-3 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"required autofocus autocomplete="username" name="email"placeholder="example.email@gmail.com">
             @error('email') <span class="error text-red-900">{{ $message }}</span> @enderror 
         </div>
-
+        {{-- Phone number --}}
+        <div class="mt-2">
+            <x-input-label for="mobile" :value="__('Mobile Number (PH)')" />
+            <input type="text" placeholder="09XX-XXX-XXXX" pattern="09[0-9]{9}" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" name="phone_number"maxlength="11"minlength="11" required>
+            @error('mobile') <span class="error text-red-900">{{ $message }}</span> @enderror 
+        </div>
         <!-- Password -->
         <div class="mt-2">
             <x-input-label for="password" :value="__('Password')" />

@@ -1,15 +1,21 @@
-<div class="fixed w-full z-30 flex bg-yellow-800 p-2 items-center justify-center h-20 px-10">
+
+<div class="fixed w-full z-30 flex bg-[#343a40] p-2 items-center justify-center h-20 px-10">
+  
   <div class="flex">
-    
+    <button type="button" id="sidebarCollapse" class="text-white p-2 rounded focus:outline-none">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+    </button>
     <!-- Sidebar -->
-    <nav id="sidebar" class="text-white w-64 min-h-screen fixed bg-yellow-800">
-      <div class="p-4">
-        <img src="{{ asset('images/NRN LOGO.png') }}" style="height: 40px; width:100px" class="sm:mx-4 lg:mx-6 lg:h-40 lg:w-60">
+    <nav id="sidebar" class="text-white w-64 min-h-screen fixed bg-[#212529]">
+      <div class="p-2 bg-[#343a40] px-4">
+        <img src="{{ asset('images/NRN LOGO.png') }}" style="height: 64px; width:128px" class="sm:mx-4 lg:mx-6 lg:h-20 lg:w-60">
       </div>
-      <div id="mobileLogo" class="hidden fixed top-0 left-0 p-2 bg-yellow-800">
+      <div id="mobileLogo" class="hidden fixed top-0 left-0 my-2 bg-[#212529]">
         <img src="{{ asset('images/NRN LOGO.png') }}" style="height: 40px; width:70px;" alt="Logo">
       </div>
-      <ul class="p-4">
+      <ul class="px-2 py-4">
         <li class="mb-4">
             <div class="hidden sm:-my-px sm:ms-10 sm:flex hover:text-black"> 
                @include('components.dashboard-icon')
@@ -47,6 +53,15 @@
         </li>
         <li class="mb-4">
           <div class="hidden sm:-my-px sm:ms-10 sm:flex hover:text-black"> 
+            <!-- Reservation Icon -->
+            @include('components.apartment-icon')
+            <x-nav-link :href="route('admin.building.index')" :active="request()->routeIs('admin.building.index')">
+              {{ __('Buildings') }}
+            </x-nav-link>
+          </div>
+        </li>
+        <li class="mb-4">
+          <div class="hidden sm:-my-px sm:ms-10 sm:flex hover:text-black"> 
             <!-- Report Icon -->
             @include('components.report-icon')
             <x-nav-link :href="route('admin.reports.index')" :active="request()->routeIs('admin.reports.index')">
@@ -73,6 +88,11 @@
           </div>
         </li>
       </ul>
+        <!-- Footer -->
+      <footer class="p-4 bg-[#212529] text-gray-400 border-t border-gray-600">
+        <p class="text-sm">&copy; NRN BUILDING</p>
+        <p class="text-xs">All rights reserved.</p>
+      </footer>
     </nav> 
   </div>
    <!-- SPACER -->
@@ -123,7 +143,7 @@
           </svg>
         </div>
       </button>
-      <div class="absolute top-16 left-0 w-full bg-yellow-800 z-10" x-show="open" @click.away="open = false">
+      <div class="absolute top-16 left-0 w-full bg-[#212529] z-10" x-show="open" @click.away="open = false">
           <ul class="py-4 overflow-y-auto max-h-80">
               <x-responsive-nav-link href="{{ route('dashboard') }}" 
                  active="{{ request()->routeIs('dashboard') }}" 
@@ -194,10 +214,5 @@
 </div>
 
   <div id="content" class="w-full py-16 px-2">
-    <button type="button" id="sidebarCollapse" class="text-white p-2 rounded focus:outline-none">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-      </svg>
-    </button>
     <!-- Page Content -->
 

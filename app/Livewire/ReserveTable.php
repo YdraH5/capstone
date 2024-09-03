@@ -75,6 +75,7 @@ class ReserveTable extends Component
         $query = DB::table('users')
             ->join('reservations', 'users.id', '=', 'reservations.user_id')
             ->join('apartment', 'apartment.id', '=', 'reservations.apartment_id')
+            ->join('buildings','buildings.id', '=', 'apartment.building_id')
             ->join('categories', 'categories.id', '=', 'apartment.category_id')
             ->join('payments', 'reservations.id', '=', 'payments.reservation_id')
             ->select(
@@ -84,7 +85,7 @@ class ReserveTable extends Component
                 'users.email',
                 'categories.name as categ_name',
                 'apartment.room_number',
-                'apartment.building',
+                'buildings.name as building_name',
                 DB::raw('DATE_FORMAT(reservations.check_in, "%b-%d-%Y") as check_in_date'),
                 DB::raw('DATE_FORMAT(reservations.check_out, "%b-%d-%Y") as check_out_date'),
                 'reservations.id as reservation_id',

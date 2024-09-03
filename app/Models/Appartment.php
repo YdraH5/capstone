@@ -12,7 +12,7 @@ class Appartment extends Model
     use HasFactory;
     use SoftDeletes;
         protected $fillable = [
-        'building',
+        'building_id',
         'category_id',
         'room_number',
         'status'
@@ -21,6 +21,10 @@ class Appartment extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+    public function buildings()
+    {
+        return $this->hasMany(Building::class);
     }
     public function dueDates()
     {

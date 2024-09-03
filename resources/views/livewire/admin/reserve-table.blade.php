@@ -40,7 +40,7 @@
                     <tr class="hover:bg-indigo-100 ">
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->user_name}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->email}}</td>
-                        <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->building}}-{{$reservation->room_number}}</td>
+                        <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->building_name}}-{{$reservation->room_number}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->check_in_date}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->check_out_date}}</td>
                         @if($reservation->status === 'approval')
