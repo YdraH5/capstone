@@ -16,7 +16,7 @@ class PaymentForm extends Component
     public $apartment_id='';
 
     public $payment_method='';
-
+    public $reservation_id=1;
     public $category='';
     public $status='';
 
@@ -41,19 +41,20 @@ class PaymentForm extends Component
         $this->validate([
             'apartment_id'=>'required',
             'user_id'=>'required',
+            'reservation_id'=>'required',
             'amount'=>'required|numeric',
             'category'=>'required',
             'payment_method'=>'required',
             'status'=>'required',
         ]); 
         Payment::create(
-            $this->only(['apartment_id', 'user_id','amount','category','payment_method','status'])
+            $this->only(['apartment_id', 'user_id','amount','reservation_id','category','payment_method','status'])
         );
         return redirect()->route('admin.payments.index')->with('success','Adding payment success');
     }
     public function render()
     {
-        $apartments = Appartment::all();
+        $apartments = Appartment::with('building')->get();        
         return view('livewire.admin.payment-form',compact('apartments'));
     }
 }

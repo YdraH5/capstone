@@ -26,19 +26,22 @@ class PaymentTable extends Component
                 'payments.transaction_id',
                 'payments.payment_method',
                 'payments.status',
-                'apartment.building',
+                'apartment.building_id',
+                'buildings.name AS building_name',
                 'apartment.room_number',
                 DB::raw('DATE_FORMAT(apartment.created_at, "%b-%d-%Y") as date'),
             )
             ->leftJoin('users', 'users.id', '=', 'payments.user_id')
             ->leftJoin('apartment', 'apartment.id', '=', 'payments.apartment_id')
-            ->orderBy('date', 'asc');
+            ->leftJoin('buildings', 'buildings.id', '=', 'apartment.building_id')
+            ->orderBy('payments.created_at', 'asc'); // Order by payments.created_at
     
         // Filter based on the search
         if (!empty($this->search)) {
             $query->where(function($query) {
                 $query->where('users.name', 'like', '%' . $this->search . '%')
                     ->orWhere('payments.category', 'like', '%' . $this->search . '%')
+                    ->orWhere('buildings.name', 'like', '%' . $this->search . '%')
                     ->orWhere('payments.transaction_id', 'like', '%' . $this->search . '%')
                     ->orWhere('payments.payment_method', 'like', '%' . $this->search . '%')
                     ->orWhere('payments.status', 'like', '%' . $this->search . '%')

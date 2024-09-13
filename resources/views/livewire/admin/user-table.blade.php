@@ -26,6 +26,11 @@
             </thead>
             <tbody>
                 @foreach($users as $user)
+                @if($user->role === 'admin')
+                <tr class="hidden">
+
+                </tr>
+                @else
                 <tr class="hover:bg-indigo-100 ">
                     <td class="py-3 px-4 text-center border-b border-gray-300">{{$user->name}}</td>
                     <td class="py-3 px-4 text-center border-b border-gray-300">{{$user->email}}</td>
@@ -36,6 +41,7 @@
                     @endif
                     <td class="py-3 px-4 text-center border-b border-gray-300">{{$user->date}}</td>
                 </tr>
+                @endif
                 @endforeach
             </tbody>
         </table>   

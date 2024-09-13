@@ -22,9 +22,9 @@ class Appartment extends Model
     {
         return $this->hasMany(Payment::class);
     }
-    public function buildings()
+    public function building()
     {
-        return $this->hasMany(Building::class);
+        return $this->belongsTo(Building::class, 'building_id');
     }
     public function dueDates()
     {

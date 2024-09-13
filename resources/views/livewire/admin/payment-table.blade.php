@@ -14,11 +14,19 @@
                     <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
                 </svg>
             </div>
+            <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-payment'})">
+                @include('buttons.add')
+            </button> 
         </div>
         <!-- Table -->
         <div class="overflow-x-auto bg-white shadow-lg">
             <table class="min-w-full mx-2 border-collapse">
                 <thead>
+                    @if (session('success'))
+                    <div class="alert alert-success text-green-500">
+                        {{ session('success') }}
+                    </div>    
+                    @endif
                     <tr class="bg-indigo-500 text-white uppercase text-sm">
                         <th class="py-3 px-4 text-center border-b border-indigo-600">USERNAME</th>
                         <th class="py-3 px-4 text-center border-b border-indigo-600">AMOUNT</th>
@@ -34,7 +42,7 @@
                     <tr class="hover:bg-indigo-100 ">
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->user_name }}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">₱{{ $payment->amount }}</td>
-                        <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->building }}-{{ $payment->room_number}}</td>
+                        <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->building_name }}-{{ $payment->room_number}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->category }}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->payment_method }}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->status }}</td>
@@ -45,7 +53,7 @@
             </table>       
         </div>
         <div>
-            {{ $payments->links('components.pagination') }}
+            {{ $payments->links()}}
         </div>
     </div>
 </div>

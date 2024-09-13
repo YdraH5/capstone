@@ -3,7 +3,7 @@
 @include('layouts-visitor.app')
 
 @foreach ($apartment as $detail)
-<div class="flex flex-col lg:flex-row items-center justify-center bg-white shadow-lg rounded-lg min-h-screen">
+<div class="flex flex-col bg-yellow-100 lg:flex-row items-center justify-center bg-white shadow-lg rounded-lg min-h-screen">
     <div class="w-full lg:w-1/2 h-screen">
         <div id="default-carousel" class="relative h-full" data-carousel="static">
             <!-- Carousel wrapper -->

@@ -7,7 +7,7 @@
                     <div class="lg:col-span-1 xl:col-span-1">
 
                         <label class="block font-medium opacity-70">Username</label>
-                        <input type="text" wire:model="username" placeholder="Username" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" wire:keyup="searchUser">
+                        <input type="text" wire:model="username" placeholder="Username" class="mb-2 mt-2 text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" wire:keyup="searchUser">
                         @if($users)
                         <ul class="bg-white border rounded mt-2 max-h-40 overflow-y-auto">
                             @foreach($users as $user)
@@ -20,41 +20,40 @@
                     </div>
                     <div class="lg:col-span-1 xl:col-span-1">
                         <label class="block font-medium opacity-70">Amount</label>
-                        <input type="number" wire:model="amount" placeholder="Amount" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
+                        <input type="number" wire:model="amount" placeholder="Amount" class="mb-2 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
                         @error('amount') <span class="error text-red-900">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block font-medium opacity-70">Room Info</label>
-                        <select wire:model="apartment_id" placeholder="Room Info" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
+                        <select wire:model="apartment_id" placeholder="Room Info" class="mb-2 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
                             <option value="" disabled selected hidden>Select</option>
                             @foreach ($apartments as $room)
-                                <option value="{{$room->id}}">{{$room->building}}-{{$room->room_number}}</option>
+                                <option value="{{$room->id}}">{{$room->building->name }}-{{$room->room_number}}</option>
                             @endforeach
                         </select>
                         @error('room_id') <span class="error text-red-900">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block font-medium opacity-70">Payment Method</label>
-                        <select wire:model="payment_method" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
+                        <select wire:model="payment_method" class="mb-2 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
                             <option value="" disabled selected hidden>Select</option>
-                            <option value="Credit Card">Stripe</option>
+                            <option value="Visa">Visa</option>
                             <option value="Cash">Cash</option>
                         </select>
                         @error('payment_method') <span class="error text-red-900">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block font-medium opacity-70">Status</label>
-                        <select wire:model="status" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
+                        <select wire:model="status" class="mb-2 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
                             <option value="" disabled selected hidden>Select</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Completed">Paid</option>
-                            <option value="Failed">With balance</option>
+                            <option value="Paid">Paid</option>
+                            <option value="With balance">With balance</option>
                         </select>
                         @error('status') <span class="error text-red-900">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block font-medium opacity-70">Category</label>
-                        <select wire:model="category" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
+                        <select wire:model="category" class="mb-2 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
                             <option value="" disabled selected hidden>select</option>
                             <option value="Lease">Lease</option>
                             <option value="Pay Balance">Pay balance</option>

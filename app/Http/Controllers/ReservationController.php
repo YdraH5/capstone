@@ -31,7 +31,7 @@ class ReservationController extends Controller
     }
     public function create(Request $request) {
         $data = $request->validate([
-            'apartment_id' => 'required|numeric|unique:reservations,user_id',
+            'apartment_id' => 'required',
             'user_id' => 'required|numeric',
             'check_in' => 'required|date_format:Y-m-d',
             'check_out' => 'required|date_format:Y-m-d',

@@ -8,6 +8,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationSuccess;
+use Illuminate\Support\Facades\Queue;
 
 class ReserveTable extends Component
 {
@@ -35,39 +36,49 @@ class ReserveTable extends Component
     }
 
     public function approve($id)
-{
-    // Retrieve the specific payment record
-    $payment = Payment::where('reservation_id', $id)->first();
-
-    // Update the status of the payment record
-    $payment->update(['status' => 'paid']);
-
-    // Update user role
-    DB::table('users')
-        ->where('id', $payment->user_id)
-        ->update(['role' => 'reserve']);
-
-    // Update apartment status
-    DB::table('apartment')
-        ->where('id', $payment->apartment_id)
-        ->where('status', 'Available')
-        ->update(['status' => 'Reserved']);
-
-    // Retrieve user information
-    $user = DB::table('users')->where('id', $payment->user_id)->first();
-    session()->flash('success', 'The reservation has been approved'); // Set the success flash message
-
-    // Prepare email data
-    $dataemail = [
-        'name' => $user->name,
-        'payment' => $payment->amount,
-    ];
-    // Send email
-    Mail::to($user->email)->send(new ReservationSuccess($dataemail));
-    $this->modal = true;
-
-}
-
+    {
+        // Use a transaction to group database updates for consistency and speed
+        DB::transaction(function () use ($id) {
+            // Retrieve the specific payment record and related user data in one go
+            $payment = Payment::where('reservation_id', $id)
+                ->with('user') // Assuming a relationship is defined in the Payment model
+                ->first();
+    
+            if (!$payment) {
+                session()->flash('error', 'Payment not found');
+                return;
+            }
+    
+            // Update the status of the payment record
+            $payment->update(['status' => 'paid']);
+    
+            // Update user role and apartment status in one transaction for efficiency
+            DB::table('users')
+                ->where('id', $payment->user_id)
+                ->update(['role' => 'reserve']);
+    
+            DB::table('apartment')
+                ->where('id', $payment->apartment_id)
+                ->where('status', 'Available')
+                ->update([
+                    'status' => 'Reserved',
+                    'renter_id' => $payment->user_id
+                ]);
+    
+            // Set the success flash message
+            session()->flash('success', 'The reservation has been approved');
+    
+            // Prepare email data
+            $user = $payment->user;
+            $dataemail = [
+                'name' => $user->name,
+                'payment' => $payment->amount,
+            ];
+    
+            // Queue the email to send it asynchronously
+            Mail::to($user->email)->queue(new ReservationSuccess($dataemail));
+        });
+    }
 
     public function render()
     {
