@@ -6,6 +6,7 @@ use App\Http\Controllers\VisitorPageController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SubmitReportController;
 use App\Http\Controllers\NotifyMeController;
+use App\Http\Controllers\AdminDashboardController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -23,9 +24,8 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['auth','verified' ,'sessionTimeout']], function () {
 
     Route::group(['middleware' => ['isAdmin']], function () {
-        Route::get('/dashboard', function () {
-            return view('/dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
   
         Route::controller(ImageController::class)->group(function() {
             Route::get('/admin/categories/{categoryId}/upload', 'index');
@@ -75,7 +75,7 @@ Route::group(['middleware' => ['auth','verified' ,'sessionTimeout']], function (
     });
     Route::group(['middleware' => ['isRenter','verified']], function () {
         Route::controller(SubmitReportController::class)->group(function() {
-            Route::get('/renters/report','index')->name('renters.report');
+            // Route::get('/renters/report','index')->name('renters.report');
             Route::get('/renters/{report_id}/view','view')->name('renters.report.view');
             Route::post('/renters/create','create')->name('renters.report.create');
         });
@@ -85,7 +85,7 @@ Route::group(['middleware' => ['auth','verified' ,'sessionTimeout']], function (
         Route::get('/renters/home', function () {
             return view('/renters/home');
         })->name('renters.home');
-        Route::get('/renters/home', function () {
+        Route::get('/renters/report', function () {
             return view('/renters/report');
         })->name('renters.report');
     });

@@ -4,6 +4,7 @@ namespace App\Livewire;
 use Livewire\Attributes\Validate; 
 use App\Models\Appartment;
 use App\Models\Category;
+use App\Models\Building;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
@@ -60,6 +61,7 @@ class ApartmentTable extends Component
         ]);
 
         $this->reset();
+        $this->isEditing = false;
         // Reset the component state
         session()->flash('success', 'Apartment updated successfully.');
     }
@@ -108,6 +110,7 @@ class ApartmentTable extends Component
         return view('livewire.admin.apartment-table', [
             'apartment' => $apartments,
             'categories' => $categories,
+            'buildings' => Building::all()
         ]);
     }
 }

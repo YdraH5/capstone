@@ -37,7 +37,7 @@
                         </div>
                         <div>
                             <label class="block font-medium opacity-70">Room Number</label>
-                            <input type="text" wire:model="room_number" placeholder="Room #" class="text-gray-600 focus:outline-none focus:border focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
+                            <input type="number" wire:model="room_number" placeholder="Room #" class="text-gray-600 focus:outline-none focus:border focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
                             @error('room_number') <span class="error text-red-900">{{ $message }}</span> @enderror
                         </div>
                         <div>
