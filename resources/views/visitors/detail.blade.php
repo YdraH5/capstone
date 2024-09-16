@@ -3,44 +3,24 @@
 @include('layouts-visitor.app')
 
 @foreach ($apartment as $detail)
-<div class="flex flex-col lg:flex-row items-center justify-center bg-white shadow-lg rounded-lg min-h-screen">
-    <div class="w-full lg:w-1/2 h-screen">
-        <div id="default-carousel" class="relative h-full" data-carousel="static">
-            <!-- Carousel wrapper -->
-            <div class="overflow-hidden relative h-full rounded-lg">
+<div class="flex flex-col lg:flex-row items-center justify-center bg-yellow-100  shadow-lg rounded-lg min-h-screen ">
+    <div class="w-full lg:w-1/2 h-screen p-4  bg-orange-200">
+        <div class="h-screen overflow-y-auto">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-y-52 ">
                 @if (isset($images[$detail->id]) && $images[$detail->id]->isNotEmpty())
                     @foreach ($images[$detail->id] as $image)
-                        <div class="hidden duration-200 ease-in-out h-full" data-carousel-item>
-                            <img src="{{ asset($image->image) }}" class="block w-full h-full object-cover" alt="">
+                        <div class="relative group">
+                            <img src="{{ asset($image->image) }}" class="block absolute px-1 w-full h-48 clickable-image rounded-lg" alt="">
+                            <div class="mx-2 absolute bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-lg">
+                                <span class="text-white text-sm">{{ $image->description ?? 'No Description Available' }}</span>
+                            </div>
                         </div>
                     @endforeach
                 @endif
             </div>
-            @if (isset($images[$detail->id]) && $images[$detail->id]->isNotEmpty())
-                <!-- Slider indicators -->
-                <div class="flex absolute bottom-5 left-1/2 z-30 space-x-3 -translate-x-1/2">
-                    @for ($i = 0; $i < $images[$detail->id]->count(); $i++)
-                        <button type="button" class="w-3 h-3 rounded-full bg-gray-800" aria-label="Slide {{ $i + 1 }}" data-carousel-slide-to="{{ $i }}"></button>
-                    @endfor
-                </div>
-            @endif
-            <!-- Slider controls -->
-            <button type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-prev>
-                <span class="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white/30 group-hover:bg-white/50 rounded-full">
-                    <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                </span>
-            </button>
-            <button type="button" class="absolute top-0 right-0 z-30 flex items-center justify-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-next>
-                <span class="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white/30 group-hover:bg-white/50 rounded-full">
-                    <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </span>
-            </button>
         </div>
     </div>
+
     <div class="w-full lg:w-1/2 text-center lg:text-left p-8 flex flex-col justify-center">
         <h1 class="text-3xl font-bold text-gray-800">{{ $detail->categ_name }}</h1>
         <p class="mt-4 text-gray-600">{{ $detail->description }}</p>
@@ -85,4 +65,33 @@
 </div>
 @endforeach
 
+<!-- Full-screen Modal -->
+<div id="image-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+    <img id="modal-image" class="max-w-full max-h-full">
+    <span id="close-modal" class="absolute top-2 right-4 text-white text-2xl cursor-pointer">&times;</span>
+</div>
+<script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("image-modal");
+        const modalImg = document.getElementById("modal-image");
+        const closeModal = document.getElementById("close-modal");
+
+        document.querySelectorAll(".clickable-image").forEach(img => {
+            img.addEventListener("click", function () {
+                modal.style.display = "flex";
+                modalImg.src = this.src;
+            });
+        });
+
+        closeModal.addEventListener("click", function () {
+            modal.style.display = "none";
+        });
+
+        modal.addEventListener("click", function (event) {
+            if (event.target !== modalImg) {
+                modal.style.display = "none";
+            }
+        });
+    });
+</script>
 <script src="https://unpkg.com/flowbite@1.4.0/dist/flowbite.js"></script>

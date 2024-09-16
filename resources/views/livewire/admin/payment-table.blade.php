@@ -34,7 +34,7 @@
                     <tr class="hover:bg-indigo-100 ">
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->user_name }}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">₱{{ $payment->amount }}</td>
-                        <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->building }}-{{ $payment->room_number}}</td>
+                        <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->building_name }}-{{ $payment->room_number}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->category }}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->payment_method }}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->status }}</td>

@@ -36,11 +36,12 @@ class ReportTable extends Component
         $query = DB::table('reports')
             ->leftJoin('users', 'users.id', '=', 'reports.user_id')
             ->leftJoin('apartment', 'apartment.renter_id', '=', 'reports.user_id')
+            ->leftjoin('buildings','buildings.id', '=', 'apartment.building_id')
             ->select(
                 'users.name',
                 'reports.id',
                 'reports.report_category',
-                'apartment.building',
+                'buildings.name as building_name',
                 'reports.description',
                 'reports.status',
                 'apartment.room_number',
@@ -54,6 +55,7 @@ class ReportTable extends Component
                 ->orWhere('reports.report_category', 'like', '%' . $this->search . '%')
                 ->orWhere('reports.description', 'like', '%' . $this->search . '%')
                 ->orWhere('reports.status', 'like', '%' . $this->search . '%')
+                ->orWhere('buildings.name', 'like', '%' . $this->search . '%')
                 ->orWhere('reports.created_at', 'like', '%' . $this->search . '%')
                 ->orWhere('apartment.room_number', 'like', '%' . $this->search . '%');
                 

@@ -35,7 +35,7 @@
                 @foreach($reports as $report)
                 <tr class="hover:bg-indigo-100 ">
                     <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->name}}</td>
-                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->building}}-{{$report->room_number}}</td>
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->building_name}}-{{$report->room_number}}</td>
                     <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->report_category}}</td>
                     <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->description}}</td>
                     @if($report->status === 'Fixed')

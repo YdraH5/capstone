@@ -27,35 +27,115 @@
                 </form>
         </x-slot:body>
       </x-modal>
+<!-- Image Table -->
 <div class="overflow-x-auto bg-white shadow-lg">
+                @if (session('success'))
+                    <div class="text-green-400">
+                      {{session('success')}}
+                    </div>
+                @else
+                @endif
     <table class="min-w-full mx-2 border-collapse">
         <thead>
             <tr class="bg-indigo-500 text-white uppercase text-sm">
-                <th class="py-3 px-4 text-center border-b border-indigo-600">
+                <th class="py-3 px-4 text-center border-b border-indigo-600 w-1/6">
                     Image
                 </th>
-                <th class="py-3 px-4 text-center border-b border-indigo-600">
+                <th class="py-3 px-4 text-center border-b border-indigo-600 w-4/6">
+                    Description
+                </th>
+                <th class="py-3 px-4 text-center border-b border-indigo-600 w-1/6">
                     Action
                 </th>
             </tr>
         </thead>
-        @foreach ($categoryImages as $image)
         <tbody>
+        @foreach ($categoryImages as $image)
             <tr class="hover:bg-indigo-100">
                 <td class="py-3 px-4 text-center border-b border-gray-300">
-                    <img class="text-center block thumbnail" src="{{ asset($image->image) }}" style="width:320px;height:320px;" onclick="expandImage(this, 'overlay1', 'expandedImage1')">
-                    <div class="overlay" id="overlay1" onclick="closeImage('overlay1', 'expandedImage1')"></div>
-                    <div class="expanded-image" id="expandedImage1">
-                        <!-- This will be populated dynamically by JavaScript -->
-                    </div>
+                    <!-- Thumbnail image -->
+                    <img class="text-center block thumbnail cursor-pointer" 
+                         src="{{ asset($image->image) }}" 
+                         style="width:100px;height:100px;" 
+                         onclick="openModal('{{ asset($image->image) }}')"> <!-- Set up image click event -->
                 </td>
-                <td class="py-3 px-4 text-center border-b border-gray-300">>
+                <td class="py-3 px-4 text-left text-xl border-b border-gray-300">
+                    
+                        <form action="{{url('/admin/categories/'.$image->id.'/description')}}"method="post">
+                            @csrf
+                            <div class="flex">
+                                <input name="description"type="text"placeholder="Image Description" value="{{$image->description}}"class="text-xl text-gray-600 focus:outline-none focus:border focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
+                                    <x-input-error :messages="$errors->get('description')" class="mt-2" />
+                                @if(!$image->description)
+                                <button class="" x-data >
+                                        @include('buttons.add')
+                                </button> 
+                                @else
+                                <button>
+                                    @include('buttons.edit')
+                                </button>
+                                @endif
+                            </div>
+                        </form>
+                </td>
+                <td class="py-3 px-4 text-center border-b border-gray-300">
                     <a href="{{ url('admin/category-image/'.$image->id.'/delete') }}" class="mt-auto">
                         @include('buttons.delete')
                     </a>
                 </td>
-            </tr>   
-        @endforeach  
+            </tr>
+        @endforeach
         </tbody>
     </table>
 </div>
+
+<!-- Modal for full-size image -->
+<div id="imageModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-75">
+    <span class="absolute top-0 right-0 m-4 text-white text-3xl cursor-pointer" onclick="closeModal()">&times;</span>
+    <img id="fullImage" class="max-w-full max-h-full">
+</div>
+
+<script>
+    // Function to open the modal and display the full-size image
+    function openModal(imageSrc) {
+        document.getElementById('fullImage').src = imageSrc; // Set image source
+        document.getElementById('imageModal').style.display = 'flex'; // Show modal
+        document.addEventListener('keydown', handleEscKey); // Add ESC key listener
+        document.addEventListener('click', handleOutsideClick); // Add outside click listener
+    }
+
+    // Function to close the modal
+    function closeModal() {
+        document.getElementById('imageModal').style.display = 'none'; // Hide modal
+        document.removeEventListener('keydown', handleEscKey); // Remove ESC key listener when modal is closed
+        document.removeEventListener('click', handleOutsideClick); // Remove outside click listener
+    }
+
+    // Function to handle the ESC key press
+    function handleEscKey(event) {
+        if (event.key === 'Escape') {
+            closeModal(); // Close the modal if the ESC key is pressed
+        }
+    }
+
+    // Function to handle outside click (clicks outside the image)
+    function handleOutsideClick(event) {
+        const modal = document.getElementById('imageModal');
+        const fullImage = document.getElementById('fullImage');
+        // If the click is outside the image but inside the modal, close the modal
+        if (!fullImage.contains(event.target) && modal.contains(event.target)) {
+            closeModal();
+        }
+    }
+</script>
+
+<style>
+    /* Styling for the modal */
+    #imageModal {
+        display: none; /* Hidden by default */
+    }
+    #imageModal img {
+        max-width: 90%; /* Full-size image shouldn't exceed 90% of the screen */
+        max-height: 90%;
+    }
+</style>

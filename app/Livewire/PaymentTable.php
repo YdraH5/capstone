@@ -26,12 +26,13 @@ class PaymentTable extends Component
                 'payments.transaction_id',
                 'payments.payment_method',
                 'payments.status',
-                'apartment.building',
+                'buildings.name as building_name',
                 'apartment.room_number',
                 DB::raw('DATE_FORMAT(apartment.created_at, "%b-%d-%Y") as date'),
             )
             ->leftJoin('users', 'users.id', '=', 'payments.user_id')
             ->leftJoin('apartment', 'apartment.id', '=', 'payments.apartment_id')
+            ->leftjoin('buildings','buildings.id', '=', 'apartment.building_id')
             ->orderBy('date', 'asc');
     
         // Filter based on the search
@@ -42,6 +43,7 @@ class PaymentTable extends Component
                     ->orWhere('payments.transaction_id', 'like', '%' . $this->search . '%')
                     ->orWhere('payments.payment_method', 'like', '%' . $this->search . '%')
                     ->orWhere('payments.status', 'like', '%' . $this->search . '%')
+                    ->orWhere('buildings.name', 'like', '%' . $this->search . '%')
                     ->orWhere('payments.created_at', 'like', '%' . $this->search . '%')
                     ->orWhere('apartment.room_number', 'like', '%' . $this->search . '%');
             });

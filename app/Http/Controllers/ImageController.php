@@ -45,7 +45,35 @@ class ImageController extends Controller
       }
       Images::insert($imageData);
       return redirect()->back()->with('success','Uploaded Successfully');
-  }        
+  }      
+  public function edit($id)
+  {
+
+  }  
+  public function description(Request $request, $categoryId)
+  {
+      // Validate the request data
+      $data = $request->validate([
+          'description' => 'required|string|max:255'
+      ]);
+  
+      // Find the image by ID
+      $image = Images::find( $categoryId);
+  
+      // Check if the image exists
+      if (!$image) {
+          return redirect()->back()->with('error', 'Image not found');
+      }
+  
+      // Update the description
+      $image->update([
+          'description' => $data['description']
+      ]);
+  
+      // Redirect back with a success message
+      return redirect()->back()->with('success', 'Description updated successfully');
+  }
+  
   public function delete(int $categoryImageId){
     $categoryImage = Images::findOrFail($categoryImageId);
     if(File::exists($categoryImage->image)){

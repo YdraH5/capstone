@@ -18,7 +18,7 @@
         {{-- Phone number --}}
         <div class="mt-2">
             <x-input-label for="mobile" :value="__('Mobile Number (PH)')" />
-            <input type="number" placeholder="09XX-XXX-XXXX" pattern="09[0-9]{9}" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" name="phone_number"maxlength="11"minlength="11" required>
+            <input type="tel" placeholder="09XX-XXX-XXXX" pattern="09[0-9]{9}" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" name="phone_number" maxlength="11" minlength="11" required>
             @error('mobile') <span class="error text-red-900">{{ $message }}</span> @enderror 
         </div>
         <!-- Password -->

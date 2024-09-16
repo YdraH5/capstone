@@ -29,6 +29,8 @@ Route::group(['middleware' => ['auth','verified' ,'sessionTimeout']], function (
   
         Route::controller(ImageController::class)->group(function() {
             Route::get('/admin/categories/{categoryId}/upload', 'index');
+            Route::get('/admin/categories/{categoryId}/edit', 'edit');
+            Route::post('/admin/categories/{categoryId}/description', 'description');
             Route::post('/admin/categories/{categoryId}/upload', 'store');
             Route::get('/admin/category-image/{categoryImageId}/delete', 'delete');
         });

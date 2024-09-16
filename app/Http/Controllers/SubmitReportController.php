@@ -20,7 +20,7 @@ class SubmitReportController extends Controller
 public function create(Request $request) {
     $data = $request->validate([
         'report_category' => ['required', 'string', 'max:50'], 
-        'description' => ['required', 'max:250'],
+        'description' => ['required'],
         'user_id' => ['required', 'numeric'],
     ]);
 

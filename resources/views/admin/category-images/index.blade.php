@@ -7,12 +7,7 @@
     <div class="min-w-full mx-auto">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg ">
             <div class="flex flex-col">
-                @if (session('success'))
-                    <div class="text-green-400">
-                      {{session('success')}}
-                    </div>
-                @else
-                @endif
+
               @include('admin.category-images.table')
 
             </div>
