@@ -23,7 +23,7 @@
 
     <div class="w-full lg:w-1/2 text-center lg:text-left p-8 flex flex-col justify-center">
         <h1 class="text-3xl font-bold text-gray-800">{{ $detail->categ_name }}</h1>
-        <p class="mt-4 text-gray-600">{{ $detail->description }}</p>
+        <p class="mt-4 text-gray-600 text-2xl">{{ $detail->description }}</p>
         <p class="mt-4 text-gray-600 font-semibold">Monthly Rent: ₱{{ $detail->price }}.00</p>
         <p class="mt-4 text-gray-600 font-semibold">Available Rooms: {{ $available }}</p>
         <div class="mt-6">

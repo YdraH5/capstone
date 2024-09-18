@@ -16,7 +16,7 @@ class Reservation extends Model
         'apartment_id',
         'user_id',
         'check_in',
-        'check_out',
+        'rental_period',
         'total_price'
         ];
         public function user()

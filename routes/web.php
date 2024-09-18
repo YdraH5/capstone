@@ -7,7 +7,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SubmitReportController;
 use App\Http\Controllers\NotifyMeController;
 use App\Http\Controllers\AdminDashboardController;
-
+use App\Http\Controllers\RenterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -80,20 +80,26 @@ Route::group(['middleware' => ['auth','verified' ,'sessionTimeout']], function (
             // Route::get('/renters/report','index')->name('renters.report');
             Route::get('/renters/{report_id}/view','view')->name('renters.report.view');
             Route::post('/renters/create','create')->name('renters.report.create');
+
+
         });
+        Route::get('/renters/home',[RenterController::class,'index'])->name('renters.home');        
+        Route::get('/renters/{id}/{apartment}/{reservation}/resend',[RenterController::class,'resend'])->name('renters.resend');
+        Route::post('/renters/extend',[RenterController::class,'extend'])->name('renters.extend');
+
         Route::get('/renters/payment', function () {
             return view('/renters/payment');
         })->name('renters.payment');
-        Route::get('/renters/home', function () {
-            return view('/renters/home');
-        })->name('renters.home');
         Route::get('/renters/report', function () {
             return view('/renters/report');
         })->name('renters.report');
     });
 Route::get('/notify', [NotifyMeController::class, 'notify'])->name('emails.notify')->middleware(['auth', 'verified']);
+Route::get('/contract', [ReservationController::class, 'contract'])->name('emails.contract')->middleware(['auth', 'verified']);
+
 Route::get('/reserve/{apartment}/index',[ReservationController::class,'index'])->name('reserve.index')->middleware(['auth', 'verified']);
 Route::post('/reserve/create',[ReservationController::class,'create'])->name('reserve.create')->middleware(['auth', 'verified']);
+Route::post('/reserve/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservation.cancel');
 Route::get('/payment-success', [ReservationController::class, 'paymentSuccess'])->name('reserve.payment_success')->middleware(['auth', 'verified']);
 });
 

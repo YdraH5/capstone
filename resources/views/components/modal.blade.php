@@ -6,8 +6,7 @@
     x-on:open-modal.window="show = ($event.detail.name === name)"
     x-on:close-modal.window="show = false"
     x-on:keydown.escape.window="show = false"
-    class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4 bg-gray-900 bg-opacity-50"
-    style="display:none;"
+    class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4"
     x-transition:enter="transition ease-out duration-300"
     x-transition:enter-start="opacity-0 scale-90"
     x-transition:enter-end="opacity-100 scale-100"
@@ -17,7 +16,7 @@
 >
 
     <!-- Modal Background Overlay -->
-    <div class="fixed inset-0 bg-black bg-opacity-30"></div>
+    <div class="fixed inset-0 bg-black bg-opacity-30 z-0"></div>
 
     <!-- Modal Content -->
     <div class="relative z-10 w-full max-w-lg p-6 bg-white rounded-lg shadow-lg transform transition-all">

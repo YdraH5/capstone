@@ -68,7 +68,6 @@ class ReserveTable extends Component
 
 }
 
-
     public function render()
     {
         // Base query with necessary joins
@@ -87,7 +86,7 @@ class ReserveTable extends Component
                 'apartment.room_number',
                 'buildings.name as building_name',
                 DB::raw('DATE_FORMAT(reservations.check_in, "%b-%d-%Y") as check_in_date'),
-                DB::raw('DATE_FORMAT(reservations.check_out, "%b-%d-%Y") as check_out_date'),
+                'reservations.rental_period',
                 'reservations.id as reservation_id',
                 'reservations.total_price',
                 'payments.receipt',
@@ -104,7 +103,7 @@ class ReserveTable extends Component
             'apartment.room_number',
             'apartment.building',
             'reservations.check_in',
-            'reservations.check_out',
+            'reservations.rental_period',
             'payments.status',
             'reservations.total_price'
         ];

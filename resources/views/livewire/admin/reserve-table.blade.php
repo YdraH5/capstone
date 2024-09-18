@@ -29,7 +29,7 @@
                         <th class="py-3 px-4 text-center border-b border-indigo-600">EMAIL</th>
                         <th class="py-3 px-4 text-center border-b border-indigo-600">ROOM INFO</th>
                         <th class="py-3 px-4 text-center border-b border-indigo-600">CHECK IN</th>
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">CHECK OUT</th>
+                        <th class="py-3 px-4 text-center border-b border-indigo-600">RENTAL PERIOD</th>
                         <th class="py-3 px-4 text-center border-b border-indigo-600">PAYMENT STATUS</th>
                         <th class="py-3 px-4 text-center border-b border-indigo-600">TOTAL AMOUNT</th>
                         <th class="py-3 px-4 text-center border-b border-indigo-600">Action</th>
@@ -42,7 +42,7 @@
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->email}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->building_name}}-{{$reservation->room_number}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->check_in_date}}</td>
-                        <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->check_out_date}}</td>
+                        <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->rental_period}} Months</td>
                         @if($reservation->status === 'approval')
                         <td class="text-center border border-black-900 bg-yellow-100">Need approval</td>
                         @else

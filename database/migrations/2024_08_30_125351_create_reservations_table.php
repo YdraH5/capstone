@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('apartment_id')->references('id')->on('apartment');
             $table->foreignId('user_id')->references('id')->on('users');
             $table->date('check_in');
-            $table->date('check_out');
             $table->integer('total_price');
             $table->timestamps();
         });

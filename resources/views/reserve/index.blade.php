@@ -36,7 +36,7 @@
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="pricePerMonth">
-                    Price Per Month ($)
+                    Price Per Month (₱)
                 </label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="pricePerMonth" type="number" min="0" step="0.01" value="{{ $data->price }}" readonly>
             </div>
@@ -48,12 +48,17 @@
                 <x-input-error :messages="$errors->get('check_in')" class="mt-2" />
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="checkout">
-                    Check-Out Date
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="checkout" type="date" name="check_out">
-                <x-input-error :messages="$errors->get('check_out')" class="mt-2" />
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="totalPrice">Reservation Fee(₱)</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="totalPrice" type="text" readonly name="total_price"value="{{$data->price * .05}}">
             </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="checkout">
+                    Rental Period(months)
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="rental_period" type="number" min="1"name="rental_period">
+                <x-input-error :messages="$errors->get('rental_period')" class="mt-2" />
+            </div>
+
             @if ($errors->has('reservation'))
                 <div class="text-red-500">{{ $errors->first('reservation') }}</div>
             @endif
@@ -64,12 +69,7 @@
                     <option value="Paid">Pay in Full</option>
                 </select>
             </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="totalPrice">Reservation Fee</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="totalPrice" type="text" readonly name="total_price">
-                <span id="chargeMessage" class="text-red-500"></span>
-                <span id="balanceMessage" class="text-green-500"></span>
-            </div>
+            
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="paymentMethod">
                     Payment Method
@@ -114,7 +114,7 @@
                             <p class="text-gray-600 mb-8">
                                 1. You agree to pay the full reservation fee as stated in the reservation details.<br>
                                 2. The reservation is non-refundable and cannot be transferred to another person.<br>
-                                3. You must check-in on the specified date and check-out on the specified date. Any changes to these dates must be communicated at least 48 hours in advance.<br>
+                                3. You must check-in on the specified date and check-out on the specified rental period. Any changes to these dates must be communicated at least 48 hours in advance.<br>
                                 4. You are responsible for any damages to the apartment during your stay. Additional charges may apply if any damages are found.<br>
                                 5. All personal information provided will be handled in accordance with our privacy policy.
                             </p>
@@ -141,4 +141,24 @@
             gcashUpload.style.display = "none";
         }
     }
+     // Function to get today's date and the date one week from now
+     function setMinCheckInDate() {
+            var today = new Date();
+            var oneWeekFromNow = new Date();
+            
+            // Add 7 days to the current date for the minimum allowed date
+            oneWeekFromNow.setDate(today.getDate() + 7);
+
+            // Format the dates as yyyy-mm-dd
+            var minDate = today.toISOString().split('T')[0];
+            var minAllowedDate = oneWeekFromNow.toISOString().split('T')[0];
+
+            // Set the min attribute to today's date or one week from now
+            document.getElementById('checkin').setAttribute('min', minAllowedDate);
+        }
+
+        // Call the function on page load
+        window.onload = setMinCheckInDate;
 </script>
+
+

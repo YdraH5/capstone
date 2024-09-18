@@ -4,15 +4,41 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class PaymentTable extends Component
 {
     public $search;
     public $page = 'validation';
-    public function approve(){
-
+    public function send()
+    {
+        // Get all apartments where the renter_id is set
+        $apartments = DB::table('apartment')
+            ->whereNotNull('renter_id')
+            ->get();
+    
+        foreach ($apartments as $apartment) {
+            // Get the renter associated with the apartment
+            $renter = User::find($apartment->renter_id);
+    
+            if ($renter) {
+                // Create a payment record for the renter
+                Payment::create([
+                    'user_id' => $renter->id,
+                    'apartment_id' => $apartment->id,
+                    'amount' => 500, // You might need to set this to the appropriate amount
+                    'payment_method' => '', // You might want to adjust this depending on your requirements
+                    'status' => 'unpaid',
+                    'category'=>'Rent Fee',
+                ]);
+            }
+        }
+    
+        return redirect()->back()->with('success', 'Rent bills have been sent.');
     }
+    
+    
     public function render()
     {
         // Start the query with the Payment model and join the necessary relationships

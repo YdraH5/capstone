@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('apartment_id')->references('id')->on('apartment');
             $table->foreignId('user_id')->references('id')->on('users');
-            $table->foreignId('reservation_id')->references('id')->on('reservations')->nullable();
+            $table->unsignedBigInteger('reservation_id')->nullable();
+            $table->foreign('reservation_id')->references('id')->on('reservations');
             $table->decimal('amount',15,2)->unsigned()->default(0);
             $table->string('category');
             $table->string('transaction_id')->nullable();
