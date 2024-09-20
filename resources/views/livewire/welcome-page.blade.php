@@ -8,11 +8,9 @@
         {{-- overview of apartment v2--}}
         <div class="bg-orange-200 py-8">
             <h2 class="text-3xl text-center font-semibold mb-4 text-black">OVERVIEW OF NRN BUILDING</h2>
-            <div id="overview-section" class="grid grid-cols-1 md:grid-cols-3 gap-2 max-w-7xl mx-auto">
+            <div id="overview-section" class="grid grid-cols-1 md:grid-cols-3 gap-2 max-w-7xl mx-auto  max-w-7xl mx-auto">
                 <div class="bg-yellow-100 shadow-md rounded-lg p-2">
                     <img src="images/NRNBUILDING3.png" alt="Location Image" class="w-full h-48 object-cover mb-4 clickable-image">
-                    {{-- <h3 class="text-2xl font-bold text-black">Parking Space
-                    </h3> --}}
                 </div>
                 <div class="bg-yellow-100 shadow-md rounded-lg p-2">
                     <img src="images/NRNBUILDING1.png" alt="Location Image" class="w-full h-48 object-cover mb-4 clickable-image">

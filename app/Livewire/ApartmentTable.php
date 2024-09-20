@@ -115,37 +115,39 @@ class ApartmentTable extends Component
         $this->isDeleting = false;
     }
     public function render()
-    {
-        $categories = Category::all();
-        $apartments = Appartment::query()
-            ->when($this->search, function ($query, $keyword) {
-                $query->where('users.name', 'like', '%' . $keyword . '%')
-                    ->orWhere('categories.name', 'like', '%' . $keyword . '%')
-                    ->orWhere('apartment.status', 'like', '%' . $keyword . '%')
-                    ->orWhere('apartment.room_number', 'like', '%' . $keyword . '%')
-                    ->orWhere('apartment.building_id', 'like', '%' . $keyword . '%')
-                    ->orWhere('categories.price', 'like', '%' . $keyword . '%');
-            })
-            ->join('categories', 'categories.id', '=', 'apartment.category_id')
-            ->join('buildings','buildings.id', '=', 'apartment.building_id')
-            ->leftJoin('users', 'users.id', '=', 'apartment.renter_id')
-            ->select(
-                'buildings.name as building_name',
-                'categories.id as categ_id',
-                'categories.name as categ_name',
-                'users.name as renters_name',
-                'apartment.id',
-                'apartment.room_number',
-                'categories.price',
-                'apartment.status',
-                'apartment.building_id'
-            )
-            ->Paginate(10);
+{
+    $categories = Category::all();
+    $apartment = Appartment::query()
+        ->when($this->search, function ($query) {
+            $keyword = '%' . $this->search . '%';
+            $query->where('users.name', 'like', $keyword)
+                ->orWhere('categories.name', 'like', $keyword)
+                ->orWhere('apartment.status', 'like', $keyword)
+                ->orWhere('apartment.room_number', 'like', $keyword)
+                ->orWhere('apartment.building_id', 'like', $keyword)
+                ->orWhere('categories.price', 'like', $keyword);
+        })
+        ->join('categories', 'categories.id', '=', 'apartment.category_id')
+        ->join('buildings', 'buildings.id', '=', 'apartment.building_id')
+        ->leftJoin('users', 'users.id', '=', 'apartment.renter_id')
+        ->select(
+            'buildings.name as building_name',
+            'categories.id as categ_id',
+            'categories.name as categ_name',
+            'users.name as renters_name',
+            'apartment.id',
+            'apartment.room_number',
+            'categories.price',
+            'apartment.status',
+            'apartment.building_id'
+        )
+        ->paginate(10); // Ensure it's lowercase 'p'
 
-        return view('livewire.admin.apartment-table', [
-            'apartment' => $apartments,
-            'categories' => $categories,
-            'buildings' => Building::all()
-        ]);
-    }
+    return view('livewire.admin.apartment-table', [
+        'apartment' => $apartment, // Make sure this matches in the view
+        'categories' => $categories,
+        'buildings' => Building::all()
+    ]);
+}
+
 }
