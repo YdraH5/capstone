@@ -13,17 +13,17 @@
                 <!-- Navigation Links -->
                 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex hover:text-black">
-                    <x-nav-link :href="route('renters.home')" :active="request()->routeIs('renters.home')">
+                    <x-nav-link wire:navigate :href="route('renters.home')" :active="request()->routeIs('renters.home')">
                         {{ __('Home') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex hover:text-black">
-                    <x-nav-link :href="route('renters.payment')" :active="request()->routeIs('renters.payment')">
+                    <x-nav-link wire:navigate :href="route('renters.payment')" :active="request()->routeIs('renters.payment')">
                         {{ __('Payment') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex hover:text-black">
-                    <x-nav-link :href="route('renters.report')" :active="request()->routeIs('renters.report')">
+                    <x-nav-link wire:navigate :href="route('renters.report')" :active="request()->routeIs('renters.report')">
                        {{ __('Report') }}
                     </x-nav-link>
                 </div>
@@ -47,7 +47,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
+                        <x-dropdown-link wire:navigate :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
 

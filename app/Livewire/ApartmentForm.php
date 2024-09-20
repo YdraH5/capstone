@@ -25,6 +25,7 @@ class ApartmentForm extends Component
     #[Validate('required|numeric')] 
     public $room_number = '';
     
+    
     public function save()
     {
         // Fetch the maximum units allowed for the selected building
@@ -65,7 +66,6 @@ class ApartmentForm extends Component
             'status' => $this->status,
             'room_number' => $this->room_number,
         ]);
-    
         return redirect()->route('admin.apartment.index')->with('success', 'Adding apartment room success');
     }
     public function render(){

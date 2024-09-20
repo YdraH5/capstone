@@ -8,6 +8,37 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
     <style>
+            /* Webkit-based browsers */
+    ::-webkit-scrollbar {
+        width: 8px;
+        background-color: black;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.3); /* A subtle dark color */
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(0, 0, 0, 0.5); /* Darker on hover */
+            
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    /* Firefox */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+    }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+
         #image-modal {
     display: none;
     justify-content: center;

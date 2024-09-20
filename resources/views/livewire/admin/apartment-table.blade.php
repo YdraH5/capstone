@@ -59,6 +59,7 @@
                                 class="my-2">
                             @include('buttons.edit')
                             </button>
+                            @if($isEditing)
                             <x-modal name="edit-apartment" title="Edit Apartment">
                                 <x-slot:body>
                                         <!-- Form -->
@@ -116,6 +117,7 @@
                                         </form> 
                                 </x-slot:body>
                         </x-modal>
+                        @endif
                             <button
                                 x-data="{ id: {{$apartments->id}} }"
                                 x-on:click="$wire.set('id', id); $dispatch('open-modal', { name: 'delete-apartment' })"
@@ -124,6 +126,7 @@
                                 class="my-2">
                                 @include('buttons.delete')
                             </button>
+                            @if($isDeleting)
                             <x-modal name="delete-apartment" title="Delete Apartment">
                                 <x-slot name="body">
                                     <div class="p-4">
@@ -137,6 +140,7 @@
                                     </div>
                                 </x-slot>
                             </x-modal>
+                            @endif
                         </div>
                     </td>
                 </tr>

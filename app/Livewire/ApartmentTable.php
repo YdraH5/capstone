@@ -16,6 +16,8 @@ class ApartmentTable extends Component
     public $editApartment ;
     private $editPrice;
     public $isEditing= false;// to only run the form when the user clicked the edit icon
+    public $isDeleting= false;// to only run the form when the user clicked the edit icon
+
     public $id; // to save the id that the user want to edit
     public $search = ""; // to set an empty string for search
     public $deleteId;
@@ -101,6 +103,7 @@ class ApartmentTable extends Component
         $this->reset(['category_id','building_id','status','room_number','id','editApartment']);
     }
     public function delete($id){
+        $this->isDeleting = true;
         $this->deleteId = $id;
     }
     public function deleted(){
@@ -109,6 +112,7 @@ class ApartmentTable extends Component
             session()->flash('success', 'Apartment deleted successfully.');
             $this->reset();
         }
+        $this->isDeleting = false;
     }
     public function render()
     {

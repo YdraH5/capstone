@@ -106,6 +106,7 @@
                             class="my-2">
                               @include('buttons.delete')
                         </button>
+                        @if ($isDeleting)
                         <x-modal name="delete-building" title="Delete Building">
                             <x-slot name="body">
                                 <div class="p-4">
@@ -119,6 +120,7 @@
                                 </div>
                             </x-slot>
                         </x-modal>
+                        @endif
                       </div>
                     </td>
                     @endforeach        

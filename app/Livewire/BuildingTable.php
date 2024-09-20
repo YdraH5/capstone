@@ -17,7 +17,8 @@ class BuildingTable extends Component
     #[Validate('required')] 
     public $parking_space = '';
     public $id; // to save the id that the user want to edit
-    public $isEditing= false;// to only run the form when the user clicked the edit icon
+    public $isEditing = false;// to only run the form when the user clicked the edit icon
+    public $isDeleting =false;
     public $editBuilding;
     public $deleteId;
 
@@ -44,13 +45,14 @@ class BuildingTable extends Component
             // 'price' => $this->price,
             'parking_space' => $this->parking_space,
         ]);
-
+        $this->isEditing = false;
         $this->reset();
         // Reset the component state
         session()->flash('success', 'Building updated successfully.');
     }
     // function to get the id of the data that user wanted to delete
     public function delete($id){
+        $this->isDeleting = true;
         $this->deleteId = $id;
     }
 
@@ -61,6 +63,7 @@ class BuildingTable extends Component
             session()->flash('success', 'Building deleted successfully.');
             $this->reset();
         }
+        $this->isDeleting = false;
     }
     public function render()
     {

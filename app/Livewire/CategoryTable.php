@@ -10,7 +10,7 @@ class CategoryTable extends Component
     public $isEditing= false;// to only run the form when the user clicked the edit icon
     public $id; // to save the id that the user want to edit
     public $editCategory;// to save data that use is going to edit
-
+    public $isDeleting = false;
     #[Validate('required|min:5|max:50')] 
     public $name = '';
  
@@ -45,6 +45,7 @@ class CategoryTable extends Component
             session()->flash('success', 'Category updated successfully.');
     }
     public function delete($id){
+        $this->isDeleting = true;
         $this->deleteId = $id;
     }
     public function deleted(){
@@ -53,6 +54,7 @@ class CategoryTable extends Component
             session()->flash('success', 'Category deleted successfully.');
             $this->reset();
         }
+        $this->isDeleting=false;
     }
     public function render()
     {
