@@ -12,7 +12,7 @@
         </svg>
     </div>
     
-    <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-building'})">
+    <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-building'})"title="Add building">
         @include('buttons.add')
     </button> 
     </div>
@@ -60,6 +60,7 @@
                         <button
                             x-data="{ id: {{$building->id}} }"
                             x-on:click="$wire.set('id', id); $dispatch('open-modal', { name: 'edit-building' })"
+                            title="edit"
                             wire:click="edit(id)"
                             type="button">@include('buttons.edit')
                         </button>
@@ -102,6 +103,7 @@
                             x-data="{ id: {{$building->id}} }"
                             x-on:click="$wire.set('id', id); $dispatch('open-modal', { name: 'delete-building' })"
                             wire:click="delete(id)"
+                            title="delete"
                             type="button"
                             class="my-2">
                               @include('buttons.delete')

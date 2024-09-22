@@ -44,6 +44,15 @@
         </li>
         <li class="mb-4">
           <div class="hidden sm:-my-px sm:ms-10 sm:flex hover:text-black"> 
+            <!-- Users Icon -->
+            @include('components.occupant-icon')
+            <x-nav-link wire:navigate :href="route('admin.occupants.index')" :active="request()->routeIs('admin.occupants.index')">
+              {{ __('Occupants') }}
+            </x-nav-link>
+          </div>
+        </li>
+        <li class="mb-4">
+          <div class="hidden sm:-my-px sm:ms-10 sm:flex hover:text-black"> 
             <!-- Category Icon -->
             @include('components.category-icon')
             <x-nav-link wire:navigate :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.index')">
@@ -163,6 +172,13 @@
                   :active="request()->routeIs('admin.apartment.index')" 
                   class="flex items-center px-4 py-2 text-white ">
                   @include('components.apartment-icon') 
+                  Aparment
+              </x-responsive-nav-link>
+
+              <x-responsive-nav-link  href="{{ route('admin.occupants.index') }}" 
+                  :active="request()->routeIs('admin.occupants.index')" 
+                  class="flex items-center px-4 py-2 text-white ">
+                  @include('components.occupant-icon') 
                   Aparment
               </x-responsive-nav-link>
 

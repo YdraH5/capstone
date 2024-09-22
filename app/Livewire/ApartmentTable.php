@@ -6,6 +6,7 @@ use App\Models\Appartment;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\Building;
+use App\Models\Reservation;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
@@ -34,9 +35,11 @@ class ApartmentTable extends Component
 
     #[Validate('required|numeric')] 
     public $room_number;
+
+    public $check_in,$rental_period;
     public $users;
     public $email;
-
+    public $selectedEmail = null;
     public $apartment_id;
     public Appartment $selectedApartment;
 
@@ -136,29 +139,62 @@ class ApartmentTable extends Component
     // function so that when user clicked the email needed it will save the value to the wire:model
     public function selectUser($user_id,$email)
     {
-        $this->email = $email;
         $this->user_id = $user_id;
+        $this->selectedEmail = $email;
+        $this->email = $email;
         $this->users = null; // Hide the suggestions once a user is selected
         
     }
 
-// function to update user role and apartment information
-    public function saveRenter(){
-    // Find the apartment record by its ID
-        $apartment = Appartment::find($this->apartment_id);
-        $user = User::find($this->user_id);
-    // Update the apartment record with the new data
-        $apartment->update
-        ([       
-            'renter_id' => $this->user_id,
-            'status'=> 'Rented',
+    // function to update user role and apartment information,and to create reservation
+    public function saveRenter()
+    {
+        // Validation
+        $this->validate([
+            'check_in' => 'required',
+            'rental_period' => 'required',
         ]);
-        $user->update(['role'=>'renter']);
-        $this->reset();
-
-        session()->flash('success', 'Adding renters success.');
-
+    
+        // Wrap everything in a database transaction
+        DB::beginTransaction();
+    
+        try {
+            // Find the apartment and user
+            $apartment = Appartment::find($this->apartment_id);
+            $user = User::find($this->user_id);
+    
+            // Update the apartment record
+            $apartment->update([
+                'renter_id' => $this->user_id,
+                'status' => 'Rented',
+            ]);
+    
+            // Create the reservation
+            Reservation::create([
+                'apartment_id' => $this->apartment_id,
+                'user_id' => $this->user_id,
+                'check_in' => $this->check_in,
+                'rental_period' => $this->rental_period,
+                'total_price' => 0,
+            ]);
+    
+            // Update the user's role
+            $user->update(['role' => 'renter']);
+    
+            // Commit the transaction if all operations succeed
+            DB::commit();
+    
+            // Reset the form values
+            $this->reset();
+            session()->flash('success', 'Adding renter successful.');
+            
+        } catch (\Exception $e) {
+            // Rollback the transaction if something fails
+            DB::rollback();
+            session()->flash('error', 'Something went wrong ' . $e->getMessage());
+        }
     }
+    
     public function render()
     {
         // Start the query with the Apartment model and join the necessary relationships
@@ -183,6 +219,7 @@ class ApartmentTable extends Component
                 $query->where('users.name', 'like', '%' . $this->search . '%')
                 ->orWhere('categories.name', 'like', '%' . $this->search . '%')
                 ->orWhere('apartment.status', 'like', '%' . $this->search . '%')
+                ->orwhere('users.role')
                 ->orWhere('apartment.room_number', 'like', '%' . $this->search . '%')
                 ->orWhere('apartment.building_id', 'like', '%' . $this->search . '%')
                 ->orWhere('categories.price', 'like', '%' . $this->search . '%');

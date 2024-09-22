@@ -117,7 +117,7 @@
                         <p class="text-gray-600 mb-4">{{ $category->description }}</p>
                         <div class="flex items-center mb-4">
                             <h6 class="text-lg sm:text-xl font-semibold text-gray-700 mr-2">Price:</h6>
-                            <p class="text-md sm:text-lg text-gray-800">{{ $category->price }}</p>
+                            <p class="text-md sm:text-lg text-gray-800">₱{{ number_format($category->price, 2) }}/month</p>
                         </div>
                         <a href="{{ route('visitors.display', ['apartment' => $category->category_id]) }}" class="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition duration-300">View Details</a>
                     </div>

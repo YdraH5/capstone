@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Payment;
+use App\Models\Appartment;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
@@ -17,14 +18,16 @@ class ReserveTable extends Component
     public $search = '';
     public $currentReceipt;
     public $id;
+    public $categ_id;
     public $currentStatus;
     protected $listeners = ['showReceipt'];
 
-    public function showReceipt($receipt,$status,$id)
+    public function showReceipt($receipt,$categ_id,$status,$id)
     {
         $this->modal = true;
         $this->currentReceipt = $receipt;
         $this->id = $id;
+        $this->categ_id = $categ_id;
         $this->currentStatus = $status;
     }
     public function close()
@@ -38,22 +41,28 @@ class ReserveTable extends Component
 
     public function approve($id)
 {
+    // Count available apartments
+    $available = DB::table('apartment')
+        ->where('category_id', $this->categ_id)
+        ->whereIn('status', ['Available', 'Under Review'])  // Use whereIn for multiple statuses
+        ->count();
+    if($available > 0)
+    {
     // Retrieve the specific payment record
     $payment = Payment::where('reservation_id', $id)->first();
+
 
     // Update the status of the payment record
     $payment->update(['status' => 'paid']);
 
     // Update user role
-    DB::table('users')
-        ->where('id', $payment->user_id)
+    User::where('id', $payment->user_id)
         ->update(['role' => 'reserve']);
 
-    // Update apartment status
-    DB::table('apartment')
-        ->where('id', $payment->apartment_id)
-        ->where('status', 'Available')
-        ->update(['status' => 'Reserved']);
+     // Update apartment status
+     Appartment::where('id', $payment->apartment_id)
+        ->update(['status' => 'Reserved',
+                'renter_id' => $payment->user_id]);
 
     // Retrieve user information
     $user = DB::table('users')->where('id', $payment->user_id)->first();
@@ -67,7 +76,7 @@ class ReserveTable extends Component
     // Send email
     Mail::to($user->email)->send(new ReservationSuccess($dataemail));
     $this->modal = true;
-
+    }
 }
 
     public function render()
@@ -85,6 +94,7 @@ class ReserveTable extends Component
                 'users.name as user_name',
                 'users.email',
                 'categories.name as categ_name',
+                'categories.id as categ_id',
                 'apartment.room_number',
                 'buildings.name as building_name',
                 DB::raw('DATE_FORMAT(reservations.check_in, "%b-%d-%Y") as check_in_date'),
@@ -92,6 +102,7 @@ class ReserveTable extends Component
                 'reservations.id as reservation_id',
                 'reservations.total_price',
                 'payments.receipt',
+                'payments.payment_method',
                 'payments.status'
             )
             ->orderBy('reservations.created_at');

@@ -48,10 +48,13 @@
                         @else
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->status}}</td>
                         @endif
-                        <td class="py-3 px-4 text-center border-b border-gray-300">₱{{$reservation->total_price}}</td>
+                        <td class="py-3 px-4 text-center border-b border-gray-300">₱{{ number_format($reservation->total_price, 2) }}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">
-                            <button wire:click="showReceipt('{{ asset($reservation->receipt) }}', '{{ $reservation->status }}', '{{ $reservation->reservation_id }}')"
-                                x-data x-on:click="$dispatch('open-modal',{name:'view-receipt'})">
+                            <button wire:click="showReceipt('{{ asset($reservation->receipt) }}','{{$reservation->categ_id}}', '{{ $reservation->status }}', '{{ $reservation->reservation_id }}')"
+                                x-data x-on:click="$dispatch('open-modal',{name:'view-receipt'})"
+                                @if($reservation->payment_method === 'stripe') disabled 
+                                @endif 
+                                >
                                 @include('components.view-icon')
                             </button>
                         </td>

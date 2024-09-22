@@ -12,6 +12,7 @@ class VisitorPageController extends Controller
     // for viewing full details
     public function display(Category $apartment) {
         // Get category details
+        // dd($apartment);
         $category = DB::table('categories')
             ->where('id', $apartment->id)
             ->first();

@@ -1,4 +1,4 @@
-<div class="w-full p-4">
+<div>
     <!-- Search Bar -->
     <div class="flex items-center gap-4 mb-4 p-2 bg-gray-50 rounded-lg shadow-sm">
         <div class="flex gap-2 text-gray-700">

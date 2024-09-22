@@ -16,7 +16,7 @@ class ReserveMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role == 'reserve') {
+        if (Auth::check() && Auth::user()->role == 'reserve'||Auth::check() && Auth::user()->role == 'pending') {
             return $next($request);
         }
 

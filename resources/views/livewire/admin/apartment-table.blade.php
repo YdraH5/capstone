@@ -12,7 +12,7 @@
             </svg>
         </div>
         
-        <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-apartment'})">
+        <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-apartment'})"title ="Add appartment">
             @include('buttons.add')
         </button> 
     </div>
@@ -30,7 +30,7 @@
                     <th class="py-3 px-4 text-center border-b border-indigo-600">Room Number</th>
                     <th class="py-3 px-4 text-center border-b border-indigo-600">Building</th>
                     <th class="py-3 px-4 text-center border-b border-indigo-600">Category Name</th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Renter</th>
+                    <th class="py-3 px-4 text-center border-b border-indigo-600">Tenant/Reservist</th>
                     <th class="py-3 px-4 text-center border-b border-indigo-600">Status</th>
                     <th class="py-3 px-4 text-center border-b border-indigo-600">Actions</th>
                 </tr>
@@ -55,6 +55,7 @@
                                 x-data="{ id: {{$apartments->id}} }"
                                 x-on:click="$wire.set('id', id); $dispatch('open-modal', { name: 'edit-apartment' })"
                                 wire:click="edit(id)"
+                                title ="Edit" 
                                 type="button"
                                 class="my-2">
                             @include('buttons.edit')
@@ -118,41 +119,86 @@
                                 </x-slot:body>
                             </x-modal>
                              @endif
-                             <button class="" 
+                             
+                             <button
                              x-data="{ id: {{$apartments->id}} }"
                              x-data x-on:click="$wire.set('id', id); $dispatch('open-modal',{name:'add-renter'})"
                              wire:click="saveApartment(id)"
+                             @if($apartments->status !== 'Available') disabled title ="disabled" 
+                             @else title ="Add renter" 
+                             @endif
                              >
                              @include('components.add-renter')
                              </button>
                              <x-modal name="add-renter" title="Add Renter">
-                                <x-slot name="body">
-                                    <form wire:submit.prevent = saveRenter>
-                                    <div class="lg:col-span-1 xl:col-span-1">
-                                        <label class="block font-medium opacity-70">Email</label>
-                                        <input type="text" wire:model="email" placeholder="Email" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" wire:keyup="searchUser">
-                                        @if($users)
-                                        <ul class="bg-white border rounded mt-2 max-h-40 overflow-y-auto">
-                                            @foreach($users as $user)
-                                                @if($user->role ===Null)
-                                                    <li wire:click="selectUser('{{ $user->id }}', '{{ $user->email }}')"class="p-1 cursor-pointer hover:bg-gray-200">{{ $user->email }}</li>
-                                                @endif
-                                            @endforeach
-                                        </ul>
-                                        @endif
-                                        @error('username') <span class="error text-red-900">{{ $message }}</span> @enderror
-                                    </div>
-                                    <div class="flex items-center justify-between py-8">
-                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-                                        <button x-on:click="$dispatch('close-modal',{name:'add-renter'})"type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Close</button>
-                                    </div>
-                                    </form>
-                                </x-slot>
-                             </x-modal>
+    <x-slot name="body">
+        <form wire:submit.prevent="saveRenter" class="relative space-y-4">
+            <!-- Email Input Field -->
+            <div>
+                <label class="block font-medium opacity-70">Email</label>
+                <input type="text" 
+                    wire:model="email" 
+                    placeholder="Enter email" 
+                    class="mt-2 text-gray-600 focus:outline-none focus:border-indigo-700 font-normal w-full h-10 pl-3 border border-gray-300 rounded-md" 
+                    wire:keyup="searchUser">
+
+                <!-- Search Results -->
+                @if(!$selectedEmail)
+                    <ul class="absolute bg-white border rounded mt-1 w-full max-h-40 overflow-y-auto z-10">
+                        @if($users && $users->isNotEmpty())
+                            @foreach($users as $user)
+                                @if($user->role === null)
+                                    <li wire:click="selectUser('{{ $user->id }}', '{{ $user->email }}')" 
+                                        class="p-1 cursor-pointer hover:bg-gray-200">
+                                        {{ $user->email }}
+                                    </li>
+                                @endif
+                            @endforeach
+                        @else
+                            <li class="p-2 text-gray-500">No emails found</li>
+                        @endif
+                    </ul>
+                @endif
+                @error('email') 
+                    <span class="error text-red-900">{{ $message }}</span> 
+                @enderror
+            </div>
+
+            <!-- Check-in Date -->
+            <div>
+                <label class="block font-medium opacity-70">Check-in Date</label>
+                <input type="date" wire:model="check_in" class="mt-2 text-gray-600 focus:outline-none focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 w-full h-10 pl-3 border border-gray-300 rounded-md">
+                @error('check_in') <span class="error text-red-900">{{ $message }}</span> @enderror
+            </div>
+
+            <!-- Rental Period -->
+            <div>
+                <label class="block font-medium opacity-70">Rental Period (Months)</label>
+                <input type="number" wire:model="rental_period" placeholder="Number of months" class="mt-2 text-gray-600 focus:outline-none focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 w-full h-10 pl-3 border border-gray-300 rounded-md">
+                @error('rental_period') <span class="error text-red-900">{{ $message }}</span> @enderror
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center justify-between py-4">
+                <button type="submit" 
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">
+                    Submit
+                </button>
+                <button x-on:click="$dispatch('close-modal', {name: 'add-renter'})" 
+                        type="button" 
+                        class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-md">
+                    Close
+                </button>
+            </div>
+        </form>
+    </x-slot>
+</x-modal>
+
                             <button
                                 x-data="{ id: {{$apartments->id}} }"
                                 x-on:click="$wire.set('id', id); $dispatch('open-modal', { name: 'delete-apartment' })"
                                 wire:click="delete(id)"
+                                title ="Delete" 
                                 type="button"
                                 class="my-2">
                                 @include('buttons.delete')

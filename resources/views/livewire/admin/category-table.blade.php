@@ -12,7 +12,7 @@
         </svg>
     </div>
     
-    <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-category'})">
+    <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-category'})"title="add category">
         @include('buttons.add')
     </button> 
   </div>
@@ -40,7 +40,7 @@
                     {{$category->name}}
                   </td>
                   <td class="py-3 px-4 text-center border-b border-gray-300">
-                    ₱{{$category->price}}
+                    ₱{{ number_format($category->price, 2) }}/month
                   </td>
                   <td class="py-3 px-4 text-center border-b border-gray-300">
                     {{$category->description}}
@@ -59,6 +59,7 @@
                       <button
                           x-data="{ id: {{$category->id}} }"
                           x-on:click="$wire.set('id', id); $dispatch('open-modal', { name: 'edit-category' })"
+                          title="edit"
                           wire:click="edit(id)"
                           type="button">@include('buttons.edit')
                       </button>
@@ -95,6 +96,7 @@
                           x-data="{ id: {{$category->id}} }"
                           x-on:click="$wire.set('id', id); $dispatch('open-modal', { name: 'delete-category' })"
                           wire:click="delete(id)"
+                          title="delete"
                           type="button"
                           class="my-2">
                             @include('buttons.delete')

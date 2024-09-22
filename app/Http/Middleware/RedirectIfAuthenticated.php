@@ -33,9 +33,11 @@ class RedirectIfAuthenticated
                 case 'reserve':
                     // Redirect customers to customer dashboard
                     return redirect(RouteServiceProvider::RESERVE); 
-                default:
-                return redirect(RouteServiceProvider::DEFAULT); 
+                case 'pending':
+                    // Redirect customers to customer dashboard
+                    return redirect(RouteServiceProvider::RESERVE); 
                 }
+                
             }
         }
 

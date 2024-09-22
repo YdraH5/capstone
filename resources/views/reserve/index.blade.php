@@ -71,21 +71,29 @@
             </div>
             
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="paymentMethod">
-                    Payment Method
-                </label>
-                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="paymentMethod" name="payment_method" onchange="toggleImageUpload()">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="paymentMethod">
+                Payment Method
+            </label>
+            <div class="relative">
+                <select class="shadow appearance-none border rounded w-full py-2 pr-10 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="paymentMethod" name="payment_method" onchange="toggleImageUpload()">
                     <option value="" disabled selected hidden>Select Payment Method</option>
                     <option value="gcash">Gcash</option>
                     <option value="stripe">Stripe</option>
                 </select>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 10l5 5 5-5H7z" />
+                    </svg>
+                </div>
+            </div>
+            <x-input-error :messages="$errors->get('receipt')" class="mt-2" />
+
             </div>
             <div class="mb-4" id="gcashUpload" style="display: none;">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="gcashReceipt">
                     Upload Gcash Receipt
                 </label>
                 <input type="file" name="receipt" id="gcashReceipt" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <x-input-error :messages="$errors->get('receipt')" class="mt-2" />
                     <div class="mb-4" id="gcashDetails" >
                         <p class="text-gray-700 text-sm font-bold mb-2">Scan the QR code below or note down the Gcash number for payment:</p>
                         <img src="{{ asset('images/GCASH.jpg') }}" alt="GCash QR Code" class="mb-2">

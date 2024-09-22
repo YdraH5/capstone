@@ -28,7 +28,7 @@
         <div class="w-full sm:w-1/2 text-center sm:text-left p-8 flex flex-col justify-center">
             <h1 class="text-3xl font-bold text-gray-800">{{ $detail->categ_name }}</h1>
             <p class="mt-4 text-gray-600 text-2xl">{{ $detail->description }}</p>
-            <p class="mt-4 text-gray-600 font-semibold">Monthly Rent: ₱{{ $detail->price }}.00</p>
+            <p class="mt-4 text-gray-600 font-semibold">Monthly Rent: ₱{{ number_format($detail->price, 2) }}</p>
             <p class="mt-4 text-gray-600 font-semibold">Available Rooms: {{ $available }}</p>
             <div class="mt-6">
                 @if ($available > 0)

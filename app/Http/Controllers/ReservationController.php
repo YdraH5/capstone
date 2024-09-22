@@ -35,13 +35,12 @@ class ReservationController extends Controller
     }
     public function create(Request $request) {
         $data = $request->validate([
-            'apartment_id' => 'required|numeric|unique:reservations,user_id',
+            'apartment_id' => 'required|numeric',
             'user_id' => 'required|numeric',
             'check_in' => 'required|date_format:Y-m-d',
             'rental_period' => 'required|numeric',
             'total_price' => 'required|numeric',
             'payment_method' => 'required|string',
-            'receipt' => 'nullable|image|mimes:png,jpg,jpeg', // Making receipt nullable but validated if present
         ]);
     
         if ($data['payment_method'] === 'gcash') {
@@ -52,8 +51,12 @@ class ReservationController extends Controller
     }
     
     private function handleGcashPayment(array $data, Request $request) {
+
+        $request->validate([
+            'receipt' => 'required|image|mimes:png,jpg,jpeg', // Making receipt nullable but validated if present
+        ]);
         $data['payment_status'] = 'paid';
-    
+
         // Handle the image upload
         if ($request->hasFile('receipt')) {
             $file = $request->file('receipt');
@@ -65,6 +68,9 @@ class ReservationController extends Controller
         DB::table('users')
         ->where('id', $data['user_id'])
         ->update(['role' => 'pending']);
+        DB::table('apartment')
+        ->where('id', $data['apartment_id'])
+        ->update(['status' => 'Under Review']);
         // Save the reservation
         $reservation = Reservation::create([
             'apartment_id' => $data['apartment_id'],

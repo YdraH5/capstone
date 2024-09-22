@@ -68,6 +68,11 @@ Route::group(['middleware' => ['auth','verified' ,'sessionTimeout']], function (
         Route::get('/admin/building', function () {
             return view('/admin/building');
         })->name('admin.building.index');
+
+        // ROUTE TO BUILDING MANAGEMENT FOR ADMIN
+        Route::get('/admin/occupants', function () {
+            return view('/admin/occupants');
+        })->name('admin.occupants.index');
     });
     
     // ROUTING group for reserved users only users who have pending reservation have access here
