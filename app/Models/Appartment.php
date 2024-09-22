@@ -16,6 +16,7 @@ class Appartment extends Model
     use HasFactory, SoftDeletes, LogsActivity;
 
         protected $fillable = [
+        'renter_id',
         'building_id',
         'category_id',
         'room_number',
@@ -26,13 +27,21 @@ class Appartment extends Model
     {
         return $this->hasMany(Payment::class);
     }
+    public function tenant()
+    {
+        return $this->hasMany(Tenant::class);
+    }
+    public function users()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function categories()
+    {
+        return $this->belongsTo(Category::class);
+    }
     public function buildings()
     {
-        return $this->hasMany(Building::class);
-    }
-    public function dueDates()
-    {
-        return $this->hasMany(DueDate::class);
+        return $this->belongsTo(Building::class);
     }
     public function getActivitylogOptions(): LogOptions
     {

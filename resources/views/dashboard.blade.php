@@ -12,12 +12,12 @@
 
           <section class="text-gray-700 body-font mx-4">
             <div class="container px-4 py-4 mx-auto">
-              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-center">
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-4 text-center">
                 @foreach([
-                  ['route' => 'admin.users.index', 'icon' => 'user', 'count' => \App\Models\User::count(), 'label' => 'Users', 'color' => 'text-indigo-500'],
-                  ['route' => 'admin.reports.index', 'icon' => 'report', 'count' => \App\Models\Report::count(), 'label' => 'Reports', 'color' => 'text-red-500'],
-                  ['route' => '', 'icon' => 'room', 'count' => \Illuminate\Support\Facades\DB::table('apartment')->whereNull('renter_id')->count(), 'label' => 'Vacant Room', 'color' => 'text-green-500'],
-                  ['route' => '', 'icon' => 'reservation', 'count' => \Illuminate\Support\Facades\DB::table('reservations')->whereNotNull('user_id')->whereDate('check_in', '>', \Carbon\Carbon::now())->count(), 'label' => 'Reservations', 'color' => 'text-indigo-500']
+                  ['route' => 'admin/users', 'icon' => 'user', 'count' => \App\Models\User::count(), 'label' => 'Users', 'color' => 'text-indigo-500'],
+                  ['route' => 'admin/reports', 'icon' => 'report', 'count' => \App\Models\Report::count(), 'label' => 'Reports', 'color' => 'text-red-500'],
+                  ['route' => 'admin/apartment', 'icon' => 'room', 'count' => \Illuminate\Support\Facades\DB::table('apartment')->whereNull('renter_id')->count(), 'label' => 'Vacant Room', 'color' => 'text-green-500'],
+                  ['route' => 'admin/reservations', 'icon' => 'reservation', 'count' => \Illuminate\Support\Facades\DB::table('reservations')->whereNotNull('user_id')->whereDate('check_in', '>', \Carbon\Carbon::now())->count(), 'label' => 'Reservations', 'color' => 'text-indigo-500']
                 ] as $item)
                   <div class="p-4">
                     <a href="{{ $item['route'] }}">

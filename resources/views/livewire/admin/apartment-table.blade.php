@@ -50,7 +50,7 @@
                         </td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->status}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">
-                            <div class="flex justify-center"> 
+                            <div class="flex justify-center gap-1"> 
                             <button
                                 x-data="{ id: {{$apartments->id}} }"
                                 x-on:click="$wire.set('id', id); $dispatch('open-modal', { name: 'edit-apartment' })"
@@ -116,8 +116,39 @@
                                             </div>
                                         </form> 
                                 </x-slot:body>
-                        </x-modal>
-                        @endif
+                            </x-modal>
+                             @endif
+                             <button class="" 
+                             x-data="{ id: {{$apartments->id}} }"
+                             x-data x-on:click="$wire.set('id', id); $dispatch('open-modal',{name:'add-renter'})"
+                             wire:click="saveApartment(id)"
+                             >
+                             @include('components.add-renter')
+                             </button>
+                             <x-modal name="add-renter" title="Add Renter">
+                                <x-slot name="body">
+                                    <form wire:submit.prevent = saveRenter>
+                                    <div class="lg:col-span-1 xl:col-span-1">
+                                        <label class="block font-medium opacity-70">Email</label>
+                                        <input type="text" wire:model="email" placeholder="Email" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" wire:keyup="searchUser">
+                                        @if($users)
+                                        <ul class="bg-white border rounded mt-2 max-h-40 overflow-y-auto">
+                                            @foreach($users as $user)
+                                                @if($user->role ===Null)
+                                                    <li wire:click="selectUser('{{ $user->id }}', '{{ $user->email }}')"class="p-1 cursor-pointer hover:bg-gray-200">{{ $user->email }}</li>
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                        @endif
+                                        @error('username') <span class="error text-red-900">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="flex items-center justify-between py-8">
+                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+                                        <button x-on:click="$dispatch('close-modal',{name:'add-renter'})"type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Close</button>
+                                    </div>
+                                    </form>
+                                </x-slot>
+                             </x-modal>
                             <button
                                 x-data="{ id: {{$apartments->id}} }"
                                 x-on:click="$wire.set('id', id); $dispatch('open-modal', { name: 'delete-apartment' })"

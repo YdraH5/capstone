@@ -19,12 +19,13 @@ class RenterPayment extends Component
         $currentDate = Carbon::now()->day(25);
         switch($this->page){
             case 'history':
-            $payments = Payment::where('user_id',$user->id)->get();
+            $payments = Payment::where('user_id',$user->id)
+                ->where('status','paid')->get();
                 break;
             case 'to pay':
             $payments = Payment::where('user_id', $user->id)
                 ->where('created_at', '<=', $currentDate)
-                ->where('status','paid')
+                ->where('status','unpaid')
                 ->get();
                 break;
         }

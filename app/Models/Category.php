@@ -17,6 +17,10 @@ class Category extends Model
     ];
     protected $dates = ['deleted_at'];
 
-
+    public function apartments()
+    {
+        return $this->belongsTo(Appartment::class);
+    }
+    
     
 }

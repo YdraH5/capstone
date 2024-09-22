@@ -4,6 +4,7 @@ namespace App\Livewire;
 use Livewire\Attributes\Validate; 
 use App\Models\Appartment;
 use App\Models\Category;
+use App\Models\User;
 use App\Models\Building;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
@@ -27,14 +28,16 @@ class ApartmentTable extends Component
  
     #[Validate('required')] 
     public $building_id;
- 
-
+    public $user_id;
     #[Validate('required')] 
     public $status;
 
     #[Validate('required|numeric')] 
     public $room_number;
+    public $users;
+    public $email;
 
+    public $apartment_id;
     public Appartment $selectedApartment;
 
     public function edit($id){
@@ -64,12 +67,7 @@ class ApartmentTable extends Component
             'category_id' => 'required',
             'status' => 'required',
             'room_number' => [
-                'required',
-                'numeric',
-                Rule::unique('apartment')->where(function ($query) {
-                    return $query->where('building_id', $this->building_id)
-                        ->where('room_number', $this->room_number);
-                }),
+                'required','numeric',
             ],
             // Custom rule to check if the apartment count exceeds the max units
             'building_id' => [
@@ -114,40 +112,92 @@ class ApartmentTable extends Component
         }
         $this->isDeleting = false;
     }
-    public function render()
-{
-    $categories = Category::all();
-    $apartment = Appartment::query()
-        ->when($this->search, function ($query) {
-            $keyword = '%' . $this->search . '%';
-            $query->where('users.name', 'like', $keyword)
-                ->orWhere('categories.name', 'like', $keyword)
-                ->orWhere('apartment.status', 'like', $keyword)
-                ->orWhere('apartment.room_number', 'like', $keyword)
-                ->orWhere('apartment.building_id', 'like', $keyword)
-                ->orWhere('categories.price', 'like', $keyword);
-        })
-        ->join('categories', 'categories.id', '=', 'apartment.category_id')
-        ->join('buildings', 'buildings.id', '=', 'apartment.building_id')
-        ->leftJoin('users', 'users.id', '=', 'apartment.renter_id')
-        ->select(
-            'buildings.name as building_name',
-            'categories.id as categ_id',
-            'categories.name as categ_name',
-            'users.name as renters_name',
-            'apartment.id',
-            'apartment.room_number',
-            'categories.price',
-            'apartment.status',
-            'apartment.building_id'
-        )
-        ->paginate(10); // Ensure it's lowercase 'p'
+    public function mount()
+    {
+        // Initialize with all users having a null role when the component is loaded
+        $this->users = User::whereNull('role')->get();
+    }
+    // function just to save the id of the apartment
+    public function saveApartment($id){
+        $this->apartment_id = $id;
+    }
 
-    return view('livewire.admin.apartment-table', [
-        'apartment' => $apartment, // Make sure this matches in the view
-        'categories' => $categories,
-        'buildings' => Building::all()
-    ]);
-}
+    //function to search the email for adding an exisiting renters to the apartment or walkin renters
+    public function searchUser()
+    {
+        // If email is provided, filter the users by the email, otherwise show all users with null role
+        if (!empty($this->email)) {
+            $this->users = User::where('email', 'like', '%' . $this->email . '%')
+                ->get();
+        } else {
+            $this->users = User::whereNull('role')->get(); // Show all users with null role
+        }
+    }
+    // function so that when user clicked the email needed it will save the value to the wire:model
+    public function selectUser($user_id,$email)
+    {
+        $this->email = $email;
+        $this->user_id = $user_id;
+        $this->users = null; // Hide the suggestions once a user is selected
+        
+    }
+
+// function to update user role and apartment information
+    public function saveRenter(){
+    // Find the apartment record by its ID
+        $apartment = Appartment::find($this->apartment_id);
+        $user = User::find($this->user_id);
+    // Update the apartment record with the new data
+        $apartment->update
+        ([       
+            'renter_id' => $this->user_id,
+            'status'=> 'Rented',
+        ]);
+        $user->update(['role'=>'renter']);
+        $this->reset();
+
+        session()->flash('success', 'Adding renters success.');
+
+    }
+    public function render()
+    {
+        // Start the query with the Apartment model and join the necessary relationships
+        $query = Appartment::with(['categories', 'buildings', 'users'])
+            ->select(
+                'users.name as renters_name',
+                'apartment.id',
+                'categories.name as categ_name',
+                'apartment.room_number',
+                'categories.price',
+                'apartment.status',
+                'buildings.name as building_name',
+                DB::raw('DATE_FORMAT(apartment.created_at, "%b-%d-%Y") as date')
+            )
+            ->join('categories', 'categories.id', '=', 'apartment.category_id')
+            ->join('buildings','buildings.id', '=', 'apartment.building_id')
+            ->leftJoin('users', 'users.id', '=', 'apartment.renter_id')
+            ->orderBy('date', 'asc');
+        // Filter based on the search
+        if (!empty($this->search)) {
+            $query->where(function($query) {
+                $query->where('users.name', 'like', '%' . $this->search . '%')
+                ->orWhere('categories.name', 'like', '%' . $this->search . '%')
+                ->orWhere('apartment.status', 'like', '%' . $this->search . '%')
+                ->orWhere('apartment.room_number', 'like', '%' . $this->search . '%')
+                ->orWhere('apartment.building_id', 'like', '%' . $this->search . '%')
+                ->orWhere('categories.price', 'like', '%' . $this->search . '%');
+            });
+        }
+    
+        // Execute the query and return the results
+        $apartments = $query->paginate(10);
+    
+        return view('livewire.admin.apartment-table', [
+            'apartment' => $apartments, // Make sure this matches in the view
+            'categories' => Category::all(),
+            'buildings' => Building::all()
+        ]);
+    }
+    
 
 }

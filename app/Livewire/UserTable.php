@@ -4,8 +4,11 @@ namespace App\Livewire;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+use Livewire\WithPagination;
+
 class UserTable extends Component
 {
+    use WithPagination;
     public $search;
     public function render()
     {

@@ -4,8 +4,11 @@ namespace App\Livewire;
 use App\Models\Category;
 use Livewire\Component;
 use Livewire\Attributes\Validate; 
+use Livewire\WithPagination;
+
 class CategoryTable extends Component
 {   
+    use WithPagination;
     public $deleteId;
     public $isEditing= false;// to only run the form when the user clicked the edit icon
     public $id; // to save the id that the user want to edit

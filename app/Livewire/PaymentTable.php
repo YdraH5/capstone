@@ -4,13 +4,21 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Payment;
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Livewire\WithPagination;
 
 class PaymentTable extends Component
 {
+    use WithPagination;
     public $search;
     public $page = 'validation';
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
     public function send()
     {
         // Get all apartments where the renter_id is set
@@ -19,23 +27,24 @@ class PaymentTable extends Component
             ->get();
     
         foreach ($apartments as $apartment) {
+            $price = Category::find($apartment->category_id);
             // Get the renter associated with the apartment
             $renter = User::find($apartment->renter_id);
-    
+            
             if ($renter) {
                 // Create a payment record for the renter
                 Payment::create([
                     'user_id' => $renter->id,
                     'apartment_id' => $apartment->id,
-                    'amount' => 500, // You might need to set this to the appropriate amount
+                    'amount' => $price->price, // You might need to set this to the appropriate amount
                     'payment_method' => '', // You might want to adjust this depending on your requirements
                     'status' => 'unpaid',
                     'category'=>'Rent Fee',
                 ]);
             }
         }
-    
-        return redirect()->back()->with('success', 'Rent bills have been sent.');
+        session()->flash('success', 'BIlls for this month succesfully sent to renters.');
+
     }
     
     

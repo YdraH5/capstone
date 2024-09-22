@@ -21,9 +21,9 @@ return new class extends Migration
         Schema::create('category_images', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('category_id');
-            $table->string('image');           
+            $table->string('image');    
+            $table->text('description')->nullable();       
             $table->timestamps();
-    
             $table->foreign('category_id')->references('id')->on('categories');
         });
     }

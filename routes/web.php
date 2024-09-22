@@ -95,7 +95,7 @@ Route::group(['middleware' => ['auth','verified' ,'sessionTimeout']], function (
         })->name('renters.report');
     });
 Route::get('/notify', [NotifyMeController::class, 'notify'])->name('emails.notify')->middleware(['auth', 'verified']);
-Route::get('/contract', [ReservationController::class, 'contract'])->name('emails.contract')->middleware(['auth', 'verified']);
+Route::get('/contract', [ReservationController::class, 'contract'])->name('emails.contract')->middleware(['auth', 'verified','isRenter']);
 
 Route::get('/reserve/{apartment}/index',[ReservationController::class,'index'])->name('reserve.index')->middleware(['auth', 'verified']);
 Route::post('/reserve/create',[ReservationController::class,'create'])->name('reserve.create')->middleware(['auth', 'verified']);
@@ -107,15 +107,11 @@ Route::get('/payment-success', [ReservationController::class, 'paymentSuccess'])
 // first page to see when url of the page is executed
 Route::get('/', function () {
     return view('/visitors/index');
-})->name('welcome');
-// Route::get('/', function () {
-//     $subject = 'test subject';
-//         $body = 'Test MEssage';
-//         Mail::to('hardyaranzanso0930@gmail.com')->send(new Mailing($subject,$body));
-// })->name('mail');
+})->name('welcome')->middleware('guest');
 
 
-Route::get('/reserve/wait',[ReservationController::class,'waiting'])->name('reserve.wait');        
+// 
+Route::get('/reserve/wait',[ReservationController::class,'waiting'])->name('reserve.wait')->middleware('isReserve');        
 
 // route to see the full details for a certain apartment
 Route::get('visitors/{apartment}/detail',[VisitorPageController::class,'display'])->name('visitors.display');

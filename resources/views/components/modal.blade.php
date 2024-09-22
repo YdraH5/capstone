@@ -16,7 +16,7 @@
 >
 
     <!-- Modal Background Overlay -->
-    <div class="fixed inset-0 bg-black bg-opacity-30 z-0"></div>
+    <div class="fixed inset-0 bg-black bg-opacity-20 z-0"></div>
 
     <!-- Modal Content -->
     <div class="relative z-10 w-full max-w-lg p-6 bg-white rounded-lg shadow-lg transform transition-all">

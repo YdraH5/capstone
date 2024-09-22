@@ -5,8 +5,10 @@ use Livewire\Attributes\Validate;
 use App\Models\Report;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 class ViewReport extends Component
 {
+    use WithPagination;
     public $isViewing= false;
     public $id;
     public $search;

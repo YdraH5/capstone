@@ -5,8 +5,12 @@ use App\Models\Report;
 use Livewire\Component;
 use Livewire\Attributes\Validate; 
 use Illuminate\Support\Facades\DB;
+use Livewire\WithPagination;
+
 class ReportTable extends Component
 {
+    use WithPagination;
+
     public $search = "";
     public Report $selectedReport;
 

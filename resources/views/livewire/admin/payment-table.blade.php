@@ -30,6 +30,11 @@
         <!-- Table -->
         <div class="overflow-x-auto bg-white shadow-lg">
             <table class="min-w-full mx-2 border-collapse">
+                 @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+                @endif
                 <thead>
                     <tr class="bg-indigo-500 text-white uppercase text-sm">
                         <th class="py-3 px-4 text-center border-b border-indigo-600">USERNAME</th>

@@ -23,6 +23,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'role',
         'phone_number',
     ];
 
@@ -48,6 +49,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+    public function tenant()
+    {
+        return $this->hasMany(Tenant::class);
     }
     
 }

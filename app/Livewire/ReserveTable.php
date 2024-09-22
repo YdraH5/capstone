@@ -8,9 +8,11 @@ use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationSuccess;
+use Livewire\WithPagination;
 
 class ReserveTable extends Component
 {
+    use WithPagination;
     public $modal = false;
     public $search = '';
     public $currentReceipt;
@@ -101,7 +103,8 @@ class ReserveTable extends Component
             'users.email',
             'apartment.status',
             'apartment.room_number',
-            'apartment.building',
+            'buildings.name',
+            'buildings.name',
             'reservations.check_in',
             'reservations.rental_period',
             'payments.status',

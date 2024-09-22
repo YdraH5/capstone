@@ -5,9 +5,12 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\BUilding;
 use Livewire\Attributes\Validate; 
+use Livewire\WithPagination;
 
 class BuildingTable extends Component
 {
+    use WithPagination;
+
     #[Validate('required')] 
     public $name = '';
  

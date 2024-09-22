@@ -6,11 +6,13 @@ use Livewire\Component;
 use App\Models\User;
 use App\Models\Payment;
 use App\Models\Appartment;
-use Livewire\Attributes\Validate; 
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Validate;
+
+use function PHPUnit\Framework\isNull;
 
 class PaymentForm extends Component
 { 
-    public $username;
     public $amount;
 
     public $apartment_id='';
@@ -22,17 +24,22 @@ class PaymentForm extends Component
 
     #[Validate('required')]
     public $users;
+    public $username;
 
     public $user_id;    
 
 
     public function searchUser()
     {
-        $this->users = User::where('name', 'like', '%' . $this->username . '%')->get();
+        $this->users = User::where('email', 'like', '%' . $this->email . '%')
+        ->whereNull('role')  // Ensure only users with a null role are retrieved
+        ->get();
+        $this->users = DB::table('users')
+            ->whereNull('role')
+            ->get();
     }
-    public function selectUser($user_id,$username)
+    public function selectUser($user_id)
     {
-        $this->username = $username;
         $this->user_id = $user_id;
         $this->users = null; // Hide the suggestions once a user is selected
     }
