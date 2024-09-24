@@ -21,6 +21,23 @@ class ReserveTable extends Component
     public $categ_id;
     public $currentStatus;
     protected $listeners = ['showReceipt'];
+    public $sortDirection="ASC";
+    public $sortColumn ="user_name";
+    public $perPage = 10;
+
+    public function doSort($column){
+        if($this->sortColumn === $column){
+            $this->sortDirection = ($this->sortDirection === 'ASC')? 'DESC':'ASC';
+            return;
+        }
+        $this->sortColumn = $column;
+        $this->sortDirection = 'ASC';
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage(); // Reset pagination when search input is updated
+    }
 
     public function showReceipt($receipt,$categ_id,$status,$id)
     {
@@ -105,7 +122,7 @@ class ReserveTable extends Component
                 'payments.payment_method',
                 'payments.status'
             )
-            ->orderBy('reservations.created_at');
+            ->orderBy($this->sortColumn, $this->sortDirection);
 
         // Search fields
         $searchFields = [
@@ -114,7 +131,6 @@ class ReserveTable extends Component
             'users.email',
             'apartment.status',
             'apartment.room_number',
-            'buildings.name',
             'buildings.name',
             'reservations.check_in',
             'reservations.rental_period',
@@ -132,7 +148,7 @@ class ReserveTable extends Component
         }
 
         // Paginate the results
-        $reservations = $query->paginate(10);
+        $reservations = $query->paginate($this->perPage);
 
         // Return view with the reservations data
         return view('livewire.admin.reserve-table', compact('reservations'));

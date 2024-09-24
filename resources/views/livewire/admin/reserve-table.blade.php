@@ -25,13 +25,41 @@
                     </tr>
                     @endif
                     <tr class="bg-indigo-500 text-white uppercase text-sm">
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">NAME</th>
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">EMAIL</th>
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">ROOM INFO</th>
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">CHECK IN</th>
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">RENTAL PERIOD</th>
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">PAYMENT STATUS</th>
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">TOTAL AMOUNT</th>
+                        <th wire:click="doSort('user_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                            <div class="inline-flex items-center justify-center">
+                            Name
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="user_name" />
+                        </th>
+                        <th wire:click="doSort('email')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                            <div class="inline-flex items-center justify-center">
+                            Email
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="email" />
+                        </th>
+                        <th wire:click="doSort('building_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                            <div class="inline-flex items-center justify-center">
+                            Room info
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="building_name" />
+                        </th>                        
+                        <th wire:click="doSort('check_in')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                            <div class="inline-flex items-center justify-center">
+                            Check in
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="check_in" />
+                        </th> 
+                        <th wire:click="doSort('rental_period')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                            <div class="inline-flex items-center justify-center">
+                            Rental Period
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="rental_period" />
+                        </th> 
+                        <th wire:click="doSort('status')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                            <div class="inline-flex items-center justify-center">
+                            Payment Status
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="status" />
+                        </th> 
+                        <th wire:click="doSort('total_price')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                            <div class="inline-flex items-center justify-center">
+                            Total AMount
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="total_price" />
+                        </th> 
                         <th class="py-3 px-4 text-center border-b border-indigo-600">Action</th>
                     </tr>
                 </thead>

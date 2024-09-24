@@ -10,18 +10,19 @@ class DueDate extends Model
     use HasFactory;
 
     protected $fillable = [
-        'apartment_id',
         'user_id',
-        'amount',
-        'due_date'
+        'payment_id',
+        'amount_due',
+        'payment_due_date',
+        'status'
     ];
-    public function renter()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'renter_id');
+        return $this->belongsTo(User::class);
     }
 
-    public function apartment()
+    public function payments()
     {
-        return $this->belongsTo(Appartment::class);
+        return $this->belongsTo(Payment::class);
     }
 }

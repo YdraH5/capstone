@@ -28,7 +28,9 @@ class PaymentForm extends Component
 
     public function searchUser()
     {
-        $this->users = User::where('name', 'like', '%' . $this->username . '%')->get();
+        $this->users = User::where('role', 'renter')
+        ->where('name', 'like', '%' . $this->username . '%')
+        ->get();    
     }
     public function selectUser($user_id,$username)
     {

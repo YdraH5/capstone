@@ -43,6 +43,18 @@ class ApartmentTable extends Component
     public $apartment_id;
     public Appartment $selectedApartment;
 
+    public $sortDirection="ASC";
+    public $sortColumn ="room_number";
+    public $perPage = 10;
+
+    public function doSort($column){
+        if($this->sortColumn === $column){
+            $this->sortDirection = ($this->sortDirection === 'ASC')? 'DESC':'ASC';
+            return;
+        }
+        $this->sortColumn = $column;
+        $this->sortDirection = 'ASC';
+    }
     public function edit($id){
         $this->isEditing = true;
         $this->id = $id;
@@ -194,7 +206,10 @@ class ApartmentTable extends Component
             session()->flash('error', 'Something went wrong ' . $e->getMessage());
         }
     }
-    
+    public function updatingSearch()
+    {
+        $this->resetPage(); // Reset pagination when search input is updated
+    }
     public function render()
     {
         // Start the query with the Apartment model and join the necessary relationships
@@ -206,13 +221,13 @@ class ApartmentTable extends Component
                 'apartment.room_number',
                 'categories.price',
                 'apartment.status',
-                'buildings.name as building_name',
+                'buildings.name as building',
                 DB::raw('DATE_FORMAT(apartment.created_at, "%b-%d-%Y") as date')
             )
             ->join('categories', 'categories.id', '=', 'apartment.category_id')
             ->join('buildings','buildings.id', '=', 'apartment.building_id')
             ->leftJoin('users', 'users.id', '=', 'apartment.renter_id')
-            ->orderBy('date', 'asc');
+            ->orderBy($this->sortColumn, $this->sortDirection);
         // Filter based on the search
         if (!empty($this->search)) {
             $query->where(function($query) {
@@ -227,7 +242,7 @@ class ApartmentTable extends Component
         }
     
         // Execute the query and return the results
-        $apartments = $query->paginate(10);
+        $apartments = $query->paginate($this->perPage);
     
         return view('livewire.admin.apartment-table', [
             'apartment' => $apartments, // Make sure this matches in the view

@@ -22,12 +22,36 @@
                 </div>
                 @endif
                 <tr class="bg-indigo-500 text-white uppercase text-sm">
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Reporters</th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Room Info</th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Report Category</th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Description</th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Status</th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Date</th>
+                    <th wire:click="doSort('user_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                        Name
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="name" />
+                    </th>
+                    <th wire:click="doSort('building_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                        Room Info
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="building_name" />
+                    </th>
+                    <th wire:click="doSort('report_category')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                        Report Category
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="report_category" />
+                    </th>
+                    <th wire:click="doSort('description')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                        Description
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="description" />
+                    </th>                    
+                    <th wire:click="doSort('status')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                        Status
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="status" />
+                    </th>                    
+                    <th wire:click="doSort('date')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                        Date
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="date" />
+                    </th>                    
                     <th class="py-3 px-4 text-center border-b border-indigo-600">Actions</th>
                 </tr>
             </thead>
@@ -88,8 +112,20 @@
                 @endforeach   
         </tbody>
         </table>
-        {{ $reports->links('components.pagination')}}
 
     </div>
-
+    <div class="py-4">
+        <div class="flex items-center mb-3">
+            <label for="perPage" class="mr-2 mt-2 text-sm font-medium text-gray-700">Per Page:</label>
+            <select id="perPage" wire:model.live="perPage" class="border border-gray-300 rounded px-2 py-1 h-8 w-20 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="" disabled selected>Select</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+            </select>
+        </div>
+        <div class="mt-4">
+        {{ $reports->links()}}
+        </div>
+    </div>
 </div>

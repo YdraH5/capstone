@@ -8,8 +8,8 @@
       </svg>
     </button>
     <!-- Sidebar -->
-    <nav id="sidebar" class="text-white w-64 min-h-screen fixed bg-[#212529]">
-      <div class="p-2 bg-[#343a40] px-4">
+    <nav id="sidebar" class="text-white w-64 min-h-screen fixed bg-[#212529] overflow-y-auto">
+      <div class="p-2 bg-[#343a40] px-4 sticky top-0">
         <img src="{{ asset('images/NRN LOGO.png') }}" style="height: 64px; width:128px" class="sm:mx-4 lg:mx-6 lg:h-20 lg:w-60">
       </div>
       <div id="mobileLogo" class="hidden fixed top-0 left-0 my-2 bg-[#212529]">

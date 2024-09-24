@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Payment;
 use App\Models\Category;
 use App\Models\User;
+use App\Models\DueDate;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
 
@@ -14,11 +15,53 @@ class PaymentTable extends Component
     use WithPagination;
     public $search;
     public $page = 'validation';
+    public $sortDirection="ASC";
+    public $sortColumn ="user_name";
+    public $perPage = 10;
+    public $currentReceipt;
+    public $payment_id;
+    public $currentStatus;
+    public $modal = false;
+    public function doSort($column){
+        if($this->sortColumn === $column){
+            $this->sortDirection = ($this->sortDirection === 'ASC')? 'DESC':'ASC';
+            return;
+        }
+        $this->sortColumn = $column;
+        $this->sortDirection = 'ASC';
+    }
     public function updatingSearch()
     {
-        $this->resetPage();
+        $this->resetPage(); // Reset pagination when search input is updated
     }
+    public function showReceipt($receipt,$payment_id,$status)
+    {
+        $this->modal = true;
+        $this->currentReceipt = $receipt;
+        $this->payment_id = $payment_id;
+        $this->currentStatus = $status;
+    }
+    public function close()
+    {
+        $this->modal = false;
+        $this->currentReceipt = null;
+        $this->payment_id =null;
+        $this->currentStatus =null;
+        $this->reset(['currentReceipt','payment_id','currentStatus']); // Reset specific property
+    }
+    public function approve(){
 
+        // Retrieve the specific payment record    
+    
+        // Update the status of the payment record
+        Payment::where('id' ,$this->payment_id)
+        ->update(['status'=>'Paid']);
+        
+        DueDate::where('payment_id', $this->payment_id)
+        ->update(['status'=>'Paid']);
+        // Retrieve user information
+        session()->flash('success', 'Payment Accepted'); // Set the success flash message
+        }
     public function send()
     {
         // Get all apartments where the renter_id is set
@@ -68,7 +111,7 @@ class PaymentTable extends Component
             ->leftJoin('users', 'users.id', '=', 'payments.user_id')
             ->leftJoin('apartment', 'apartment.id', '=', 'payments.apartment_id')
             ->leftjoin('buildings','buildings.id', '=', 'apartment.building_id')
-            ->orderBy('date', 'asc');
+            ->orderBy($this->sortColumn, $this->sortDirection);
     
         // Filter based on the search
         if (!empty($this->search)) {
@@ -85,7 +128,7 @@ class PaymentTable extends Component
         }
     
         // Execute the query and return the results
-        $payments = $query->paginate(10);
+        $payments = $query->paginate($this->perPage);
     
         return view('livewire.admin.payment-table', compact('payments'));
     }

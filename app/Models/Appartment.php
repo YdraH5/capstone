@@ -25,7 +25,7 @@ class Appartment extends Model
  
     public function payments()
     {
-        return $this->hasMany(Payment::class);
+        return $this->belongsTo(DueDate::class);
     }
     public function tenant()
     {
@@ -34,6 +34,10 @@ class Appartment extends Model
     public function users()
     {
         return $this->belongsTo(User::class);
+    }
+    public function due_dates()
+    {
+        return $this->belongsTo(DueDate::class);
     }
     public function categories()
     {

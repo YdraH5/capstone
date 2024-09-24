@@ -37,6 +37,7 @@ class Payment extends Model
         {
             return $this->belongsTo(Appartment::class);
         }
+
         public function getActivitylogOptions(): LogOptions
         {
             return LogOptions::defaults()

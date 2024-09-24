@@ -27,11 +27,36 @@
                 @endif
                 
                 <tr class="bg-indigo-500 text-white uppercase text-sm">
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Room Number</th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Building</th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Category Name</th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Tenant/Reservist</th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Status</th>
+                    <th wire:click="doSort('room_number')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                            Room Number
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="room_number" />
+                        </div>
+                    </th>               
+                    <th wire:click="doSort('building')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                            Building
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="building" />
+                        </div>
+                    </th>  
+                    <th wire:click="doSort('categ_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                            Category
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="categ_name" />
+                        </div>
+                    </th>  
+                    <th wire:click="doSort('renters_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                            Renters/Reservist
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="renters_name" />
+                        </div>
+                    </th>  
+                    <th wire:click="doSort('status')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                            Status
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="status" />
+                        </div>
+                    </th>
                     <th class="py-3 px-4 text-center border-b border-indigo-600">Actions</th>
                 </tr>
             </thead>
@@ -39,7 +64,7 @@
                 @foreach($apartment as $apartments)
                 <tr class="hover:bg-indigo-100">
                     <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->room_number}}</td>
-                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->building_name}}</td>
+                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->building}}</td>
                     <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->categ_name}}</td>
                     @if($apartments->renters_name == NULL)
                     <td class="py-3 px-4 text-center border-b border-gray-300">Vacant</td>
@@ -131,68 +156,68 @@
                              @include('components.add-renter')
                              </button>
                              <x-modal name="add-renter" title="Add Renter">
-    <x-slot name="body">
-        <form wire:submit.prevent="saveRenter" class="relative space-y-4">
-            <!-- Email Input Field -->
-            <div>
-                <label class="block font-medium opacity-70">Email</label>
-                <input type="text" 
-                    wire:model="email" 
-                    placeholder="Enter email" 
-                    class="mt-2 text-gray-600 focus:outline-none focus:border-indigo-700 font-normal w-full h-10 pl-3 border border-gray-300 rounded-md" 
-                    wire:keyup="searchUser">
+                                <x-slot name="body">
+                                    <form wire:submit.prevent="saveRenter" class="relative space-y-4">
+                                        <!-- Email Input Field -->
+                                        <div>
+                                            <label class="block font-medium opacity-70">Email</label>
+                                            <input type="text" 
+                                                wire:model="email" 
+                                                placeholder="Enter email" 
+                                                class="mt-2 text-gray-600 focus:outline-none focus:border-indigo-700 font-normal w-full h-10 pl-3 border border-gray-300 rounded-md" 
+                                                wire:keyup="searchUser">
 
-                <!-- Search Results -->
-                @if(!$selectedEmail)
-                    <ul class="absolute bg-white border rounded mt-1 w-full max-h-40 overflow-y-auto z-10">
-                        @if($users && $users->isNotEmpty())
-                            @foreach($users as $user)
-                                @if($user->role === null)
-                                    <li wire:click="selectUser('{{ $user->id }}', '{{ $user->email }}')" 
-                                        class="p-1 cursor-pointer hover:bg-gray-200">
-                                        {{ $user->email }}
-                                    </li>
-                                @endif
-                            @endforeach
-                        @else
-                            <li class="p-2 text-gray-500">No emails found</li>
-                        @endif
-                    </ul>
-                @endif
-                @error('email') 
-                    <span class="error text-red-900">{{ $message }}</span> 
-                @enderror
-            </div>
+                                            <!-- Search Results -->
+                                            @if(!$selectedEmail)
+                                                <ul class="absolute bg-white border rounded mt-1 w-full max-h-40 overflow-y-auto z-10">
+                                                    @if($users && $users->isNotEmpty())
+                                                        @foreach($users as $user)
+                                                            @if($user->role === null)
+                                                                <li wire:click="selectUser('{{ $user->id }}', '{{ $user->email }}')" 
+                                                                    class="p-1 cursor-pointer hover:bg-gray-200">
+                                                                    {{ $user->email }}
+                                                                </li>
+                                                            @endif
+                                                        @endforeach
+                                                    @else
+                                                        <li class="p-2 text-gray-500">No emails found</li>
+                                                    @endif
+                                                </ul>
+                                            @endif
+                                            @error('email') 
+                                                <span class="error text-red-900">{{ $message }}</span> 
+                                            @enderror
+                                        </div>
 
-            <!-- Check-in Date -->
-            <div>
-                <label class="block font-medium opacity-70">Check-in Date</label>
-                <input type="date" wire:model="check_in" class="mt-2 text-gray-600 focus:outline-none focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 w-full h-10 pl-3 border border-gray-300 rounded-md">
-                @error('check_in') <span class="error text-red-900">{{ $message }}</span> @enderror
-            </div>
+                                        <!-- Check-in Date -->
+                                        <div>
+                                            <label class="block font-medium opacity-70">Check-in Date</label>
+                                            <input type="date" wire:model="check_in" class="mt-2 text-gray-600 focus:outline-none focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 w-full h-10 pl-3 border border-gray-300 rounded-md">
+                                            @error('check_in') <span class="error text-red-900">{{ $message }}</span> @enderror
+                                        </div>
 
-            <!-- Rental Period -->
-            <div>
-                <label class="block font-medium opacity-70">Rental Period (Months)</label>
-                <input type="number" wire:model="rental_period" placeholder="Number of months" class="mt-2 text-gray-600 focus:outline-none focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 w-full h-10 pl-3 border border-gray-300 rounded-md">
-                @error('rental_period') <span class="error text-red-900">{{ $message }}</span> @enderror
-            </div>
+                                        <!-- Rental Period -->
+                                        <div>
+                                            <label class="block font-medium opacity-70">Rental Period (Months)</label>
+                                            <input type="number" wire:model="rental_period" placeholder="Number of months" class="mt-2 text-gray-600 focus:outline-none focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 w-full h-10 pl-3 border border-gray-300 rounded-md">
+                                            @error('rental_period') <span class="error text-red-900">{{ $message }}</span> @enderror
+                                        </div>
 
-            <!-- Action Buttons -->
-            <div class="flex items-center justify-between py-4">
-                <button type="submit" 
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">
-                    Submit
-                </button>
-                <button x-on:click="$dispatch('close-modal', {name: 'add-renter'})" 
-                        type="button" 
-                        class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-md">
-                    Close
-                </button>
-            </div>
-        </form>
-    </x-slot>
-</x-modal>
+                                        <!-- Action Buttons -->
+                                        <div class="flex items-center justify-between py-4">
+                                            <button type="submit" 
+                                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">
+                                                Submit
+                                            </button>
+                                            <button x-on:click="$dispatch('close-modal', {name: 'add-renter'})" 
+                                                    type="button" 
+                                                    class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-md">
+                                                Close
+                                            </button>
+                                        </div>
+                                    </form>
+                                </x-slot>
+                            </x-modal>
 
                             <button
                                 x-data="{ id: {{$apartments->id}} }"
@@ -223,11 +248,23 @@
                 </tr>
                 @endforeach  
             </tbody>
-
-    </table>
-    
+        </table>
     </div>
-    {{ $apartment->links()}}
+    <!-- Pagination -->
+    <div class="py-4">
+        <div class="flex items-center mb-3">
+            <label for="perPage" class="mr-2 mt-2 text-sm font-medium text-gray-700">Per Page:</label>
+            <select id="perPage" wire:model.live="perPage" class="border border-gray-300 rounded px-2 py-1 h-8 w-20 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="" disabled selected>Select</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+            </select>
+        </div>
+        <div class="mt-4">
+        {{ $apartment->links()}}
+        </div>
+    </div>
   </div>
   
 </div>

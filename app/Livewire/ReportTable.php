@@ -17,6 +17,22 @@ class ReportTable extends Component
     #[Validate('required|min:5|max:50')] 
     public $status = '';
     public $id;
+    public $sortDirection="ASC";
+    public $sortColumn ="renters_name";
+    public $perPage = 10;
+
+    public function doSort($column){
+        if($this->sortColumn === $column){
+            $this->sortDirection = ($this->sortDirection === 'ASC')? 'DESC':'ASC';
+            return;
+        }
+        $this->sortColumn = $column;
+        $this->sortDirection = 'ASC';
+    }
+    public function updatingSearch()
+    {
+        $this->resetPage(); // Reset pagination when search input is updated
+    }
     public function edit($id){
         $this->id = $id;
     }
@@ -52,7 +68,7 @@ class ReportTable extends Component
                 'reports.created_at as date'
             )
             ->orderByRaw("CASE WHEN reports.status = 'Solved' THEN 1 ELSE 0 END")
-            ->orderBy('date', 'asc');        
+            ->orderBy($this->sortColumn, $this->sortDirection);
         // Filter based on the search search
         if (!empty($this->search)) {
             $query->where('users.name', 'like', '%' . $this->search . '%')
@@ -65,7 +81,7 @@ class ReportTable extends Component
                 
         }
 
-        $reports = $query->Paginate(10);
+        $reports = $query->paginate($this->perPage);
 
         return view('livewire.admin.report-table', compact('reports'));
     }

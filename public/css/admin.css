@@ -42,7 +42,24 @@ a:focus {
 #mobileLogo {
 display: none;
 }
-
+  /* Webkit-based browsers */
+#sidebar::-webkit-scrollbar {
+  width: 4px;
+  background-color: gray;
+}
+                      
+#sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* A subtle dark color */
+  border-radius: 10px;
+}
+                      
+#sidebar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.5); /* Darker on hover */
+}
+                      
+#sidebar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
 #sidebar {
   width: 250px;
   position: fixed;

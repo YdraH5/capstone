@@ -10,22 +10,40 @@ class UserTable extends Component
 {
     use WithPagination;
     public $search;
+    public $sortDirection="ASC";
+    public $sortColumn ="name";
+    public $perPage = 10;
+
+    public function doSort($column){
+        if($this->sortColumn === $column){
+            $this->sortDirection = ($this->sortDirection === 'ASC')? 'DESC':'ASC';
+            return;
+        }
+        $this->sortColumn = $column;
+        $this->sortDirection = 'ASC';
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage(); // Reset pagination when search input is updated
+    }
     public function render()
     {
-        $users = User::query()->select(
+        $user = User::select(
             'name',
             'email',
             'role',
             DB::raw('DATE_FORMAT(created_at, "%b-%d-%Y") as date')
-        );
+        )->orderBy($this->sortColumn, $this->sortDirection);
         if ($this->search) {
-            $users->where('name', 'like', '%' . $this->search . '%')
+            $user->where('name', 'like', '%' . $this->search . '%')
                   ->orWhere('email', 'like', '%' . $this->search . '%')
                   ->orWhere('role', 'like', '%' . $this->search . '%')
                   ->orWhere('created_at', 'like', '%' . $this->search . '%');
         }
+        $users = $user->paginate($this->perPage);
         return view('livewire.admin.user-table', [
-            'users' => $users->paginate(10),
+            'users' => $users
         ]);
     }
 }

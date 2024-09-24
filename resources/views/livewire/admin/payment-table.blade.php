@@ -14,17 +14,10 @@
                     <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
                 </svg>
             </div>
-            <!-- Send Bills Button -->
-            <div class="flex justify-end">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-2 rounded-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out"
-                wire:click="send()"
-                >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
-                </svg>
-                    <span>Send Rent Bill</span>
-                </button>
-            </div>
+            <!-- button to add payment -->
+            <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-payment'})"title ="Add appartment">
+                @include('buttons.add')
+            </button> 
         </div>
         
         <!-- Table -->
@@ -37,13 +30,43 @@
                 @endif
                 <thead>
                     <tr class="bg-indigo-500 text-white uppercase text-sm">
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">USERNAME</th>
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">AMOUNT</th>
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">Room Info</th>
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">CATEGORY</th>
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">PAYMENT METHOD</th>
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">STATUS</th>
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">DATE</th>
+                        <th wire:click="doSort('user_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                            <div class="inline-flex items-center justify-center">
+                            Name
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="user_name" />
+                        </th>                        
+                        <th wire:click="doSort('amount')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                            <div class="inline-flex items-center justify-center">
+                            Amount
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="amount" />
+                        </th>
+                        <th wire:click="doSort('building_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                            <div class="inline-flex items-center justify-center">
+                            Room info
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="building_name" />
+                        </th>
+                        <th wire:click="doSort('category')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                            <div class="inline-flex items-center justify-center">
+                            Category
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="category" />
+                        </th>                        
+                        <th wire:click="doSort('payment_method')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                            <div class="inline-flex items-center justify-center">
+                            Payment method
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="payment_method" />
+                        </th>                        
+                        <th wire:click="doSort('status')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                            <div class="inline-flex items-center justify-center">
+                            Status
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="status" />
+                        </th>
+                        <th wire:click="doSort('date')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                            <div class="inline-flex items-center justify-center">
+                            Date
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="date" />
+                        </th>
+                        <th class="py-3 px-4 text-center border-b border-indigo-600">Actions</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -56,11 +79,41 @@
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->payment_method }}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->status }}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->date }}</td>
+                         <td class="py-3 px-4 text-center border-b border-gray-300">
+                            <div class="flex justify-center gap-1"> 
+                                <button wire:click="showReceipt('{{ asset($payment->receipt) }}','{{$payment->id}}','{{$payment->status}}')"
+                                    x-data x-on:click="$dispatch('open-modal',{name:'view-receipt'})"
+                                    @if($payment->payment_method === 'stripe'||$payment->status === 'unpaid') disabled title="disabled" @endif
+                                    >
+                                    @include('components.view-icon')
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                     @endforeach   
                 </tbody>
             </table>       
         </div>
+        <x-modal name="view-receipt" title="Receipt">
+        <x-slot name="body">
+            <div class="p-4 flex flex-col items-center">
+                @if($currentReceipt)
+                <img src="{{ $currentReceipt }}" alt="Receipt Image" style="max-height: 400px; max-width: 100%;">
+                @endif
+                <div class="flex justify-end py-2">
+                    <button wire:click ="close()"x-on:click="$dispatch('close-modal',{name:'view-receipt'})" type="button"
+                        class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mr-4">Close</button>
+                    @if($currentStatus === 'approval')
+                    <button type="button"
+                        class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
+                        wire:click="approve({{ $payment_id }})"
+                        x-on:click="$dispatch('close-modal',{name:'view-receipt'})">Approve
+                    </button>
+                    @endif
+                </div>
+            </div>
+        </x-slot>
+    </x-modal>
         <div>
         {{ $payments->links()}}
         </div>

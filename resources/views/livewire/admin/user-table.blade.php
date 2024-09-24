@@ -18,12 +18,30 @@
         <table class="min-w-full mx-2 border-collapse ">
             <thead>
                 <tr class="bg-indigo-500 text-white uppercase text-sm">
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Name</th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Email</th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Role</th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Date Created</th>
+                    <th wire:click="doSort('name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                        Name
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="name" />
+                    </th>
+                    <th wire:click="doSort('email')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                        Email
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="email" />
+                    </th>
+                    <th wire:click="doSort('Role')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                        Role
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="role" />
+                    </th>
+                    <th wire:click="doSort('date')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                        Date Created
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="date" />
+                    </th>
                 </tr>
             </thead>
+
+
             <tbody>
                 @foreach($users as $user)
                 <tr class="hover:bg-indigo-100 ">
@@ -41,8 +59,20 @@
         </table>   
     </div>  
 
-    <!-- Pagination -->
+<!-- Pagination -->
+<div class="py-4">
+    <div class="flex items-center mb-3">
+        <label for="perPage" class="mr-2 mt-2 text-sm font-medium text-gray-700">Per Page:</label>
+        <select id="perPage" wire:model.live="perPage" class="border border-gray-300 rounded px-2 py-1 h-8 w-20 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+            <option value="" disabled selected>Select</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+        </select>
+    </div>
     <div class="mt-4">
-        {{ $users->links('components.pagination') }}  
+    {{ $users->links()}}
     </div>
 </div>
+
+

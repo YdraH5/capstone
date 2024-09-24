@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Appartment;
 use App\Models\Category;
 use App\Models\Reservation;
+use App\Models\DueDate;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Dompdf\Dompdf;
@@ -13,6 +15,8 @@ use App\Mail\Contract;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Mail\ReservationSuccess;
+
 
 class RenterController extends Controller
 {
@@ -22,7 +26,7 @@ class RenterController extends Controller
     
         // Fetch the reservation and payment information
         $reserve_date = DB::table('reservations')
-            ->join('payments', 'payments.reservation_id', '=', 'reservations.id')
+            ->leftjoin('payments', 'payments.reservation_id', '=', 'reservations.id')
             ->join('apartment', 'reservations.apartment_id', '=', 'apartment.id')
             ->join('categories', 'categories.id', '=', 'apartment.category_id')
             ->join('buildings', 'buildings.id', '=', 'apartment.building_id')
@@ -55,10 +59,129 @@ class RenterController extends Controller
         // Pass both the reservation data and the success message
         return view('renters.home', [
             'reservations' => $reserve_date,
+            'due_dates' => DueDate::where('user_id', $user->id)->where('status','not paid')->get(), // Execute the query to get results
             'success' => 'Payment has been successful'
         ]);
     }
+    public function pay(Request $request){
+        $data = $request->validate([
+            'apartment_id' => 'required|numeric',
+            'user_id' => 'required|numeric',
+            'due_id' => 'required|numeric',
+            'amount_due' => 'required|numeric',
+            'payment_method' => 'required|string',
+        ]);
     
+        if ($data['payment_method'] === 'gcash') {
+            return $this->handleGcashPayment($data, $request);
+        } else {
+            return $this->handleStripePayment($data);
+        }
+    }
+    private function handleGcashPayment(array $data, Request $request) {
+
+        $request->validate([
+            'receipt' => 'required|image|mimes:png,jpg,jpeg', // Making receipt nullable but validated if present
+        ]);
+        $data['payment_status'] = 'paid';
+
+        // Handle the image upload
+        if ($request->hasFile('receipt')) {
+            $file = $request->file('receipt');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $path = 'uploads/receipts/';
+            $file->move($path, $filename);
+            $data['receipt'] = $path . $filename;
+        }
+        $payment = Payment::create([
+            'apartment_id' => $data['apartment_id'],
+            'user_id' => $data['user_id'],
+            'amount' => $data['amount_due'],
+            'category' => 'Rent Fee',
+            'payment_method' => 'gcash',
+            'status' => 'approval',
+            'receipt' => $data['receipt'],
+        ]);
+        DueDate::where('id', $data['due_id'])->update([
+            'status' => 'Waiting for approval',
+            'payment_id'=> $payment->id,
+        ]);
+    
+        return redirect()->route('renters.home')->with('success', 'Your payment is under verification by our admin.');
+    }
+    private function handleStripePayment(array $data) {
+        $stripe = new \Stripe\StripeClient('sk_test_51PSmA3DXXNLXbAhja04flayIKgxlLKafmgY0BG8j3asXy3rZKDHladG5yY8204bV1JcnBxNic09F7IpMtTrivJAw00lD4MswJX');
+
+    
+        $categ = DB::table('apartment')
+            ->where('id', $data['apartment_id'])
+            ->select('category_id', 'id')
+            ->first();
+    
+        $category = Category::find($categ->category_id);
+    
+        $session = $stripe->checkout->sessions->create([
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'php',
+                    'product_data' => [
+                        'name' => 'Rental Fee',
+                    ],
+                    'unit_amount' => $data['amount_due'] * 100,
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('renters.paid', [], true) . "?session_id={CHECKOUT_SESSION_ID}",
+            'cancel_url' => route('renters.home', ['apartment' => $categ->id], true),
+            'metadata' => [
+                'user_id' => (string) $data['user_id'], // Cast to string
+                'due_id' => (string) $data['due_id'], // Cast to string
+                'apartment_id' => (string) $data['apartment_id'], // Cast to string
+                'amount_due' => (string) $data['amount_due'], // Cast to string
+            ],
+        ]);
+        
+    
+        return redirect($session->url);
+    }
+    public function paymentSuccess(Request $request) {
+        $stripe = new \Stripe\StripeClient('sk_test_51PSmA3DXXNLXbAhja04flayIKgxlLKafmgY0BG8j3asXy3rZKDHladG5yY8204bV1JcnBxNic09F7IpMtTrivJAw00lD4MswJX');
+        $session_id = $request->get('session_id');
+
+        try {
+            $session = $stripe->checkout->sessions->retrieve($session_id);
+        } catch (\Exception $e) {
+            return back()->withErrors('Payment confirmation failed.');
+        }
+
+        if ($session && $session->payment_status === 'paid') {
+            $data = [
+                'user_id' => $session->metadata->user_id,
+                'due_id' => $session->metadata->due_id,
+                'apartment_id' => $session->metadata->apartment_id,
+                'amount_due' => $session->metadata->amount_due,
+                'payment_method' => 'stripe',
+            ];
+                $payment = Payment::create([
+                    'apartment_id' => $data['apartment_id'],
+                    'user_id' => $data['user_id'],
+                    'amount' => $data['amount_due'],
+                    'category' => 'Rental fee',
+                    'transaction_id' => $session->id,
+                    'status' => 'paid',
+                    'payment_method' => 'stripe',
+                ]);
+                DueDate::where('id', $data['due_id'])->update([
+                    'status' => 'Paid',
+                    'payment_id'=> $payment->id,
+                ]);
+
+                return redirect()->route('renters.home')->with('success', 'Payment success.');
+            }
+
+        return back()->withErrors('Payments failed');
+    } 
     // Function to check if the end date is within the next month
     public function isNextMonth(Carbon $endDate)
     {

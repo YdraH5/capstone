@@ -88,11 +88,11 @@
                             </div>
 
                             <div class="flex justify-end space-x-4 mt-8">
-                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
-                                    Submit
-                                </button>
                                 <button x-on:click="$dispatch('close-modal', {name:'extend'})" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg">
                                     Close
+                                </button>
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                                    Submit
                                 </button>
                             </div>
                         </form>
@@ -103,40 +103,105 @@
                 </div>
             </div>
 
-            <!-- Payment Information -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <h3 class="text-2xl font-bold mb-4">Payment Information</h3>
-                    <p><strong>Next Payment Due:</strong> Oct 1, 2024</p>
-                    <p><strong>Amount Due:</strong> $1,500</p>
-                    <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg">Make a Payment</button>
-                </div>
-            </div>
+    <!-- Payment Information -->
+    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-">
+        <div class="p-6 bg-white border-b border-gray-200 ">
+            <h3 class="text-2xl font-bold mb-4">Payment Information</h3>
+            @foreach($due_dates as $index => $due)
+    @if($due->status !== 'Paid')
+        <p><strong class="px-4">Next Payment Due:</strong>{{ date('F jS Y', strtotime($due->payment_due_date)) }}</p>
+        <p><strong class="px-4">Amount Due:</strong>₱{{ number_format($due->amount_due, 2) }}</p>
+        <p><strong class="px-4">Status:</strong>{{ strtoupper($due->status) }}</p>
+        <button 
+            class="mt-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg mb-8"
+            x-data 
+            x-on:click="$dispatch('open-modal', {name:'pay-bill-{{$index}}'})">
+            Pay
+        </button>
+
+        <x-modal name="pay-bill-{{$index}}" title="Pay Rent">
+            <x-slot:body>
+                <form action="{{ route('renters.pay') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <input type="number" value="{{ Auth::user()->id }}" name="user_id" hidden>
+                    <input type="number" value="{{ $due->id }}" name="due_id" hidden>
+                    <input type="number" value="{{ $reservation->apartment_id }}" name="apartment_id" hidden>
+                    <label class="block font-medium text-gray-700">Amount:</label>
+                    <input type="number" readonly min="1" name="amount_due" value="{{ $due->amount_due }}" placeholder="Amount"
+                        class="text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
+
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="paymentMethod-{{$index}}">Payment Method</label>
+                    <div class="relative">
+                        <select class="shadow appearance-none border rounded w-full py-2 pr-10 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="paymentMethod-{{$index}}" name="payment_method" onchange="toggleImageUpload('{{ $index }}')">
+                            <option value="" disabled selected hidden>Select Payment Method</option>
+                            <option value="gcash">Gcash</option>
+                            <option value="stripe">Stripe</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 10l5 5 5-5H7z" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="mb-4" id="gcashUpload-{{$index}}" style="display: none;">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="gcashReceipt-{{$index}}">Upload Gcash Receipt</label>
+                        <input type="file" name="receipt" id="gcashReceipt-{{$index}}"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+
+                        <div class="mb-4" id="gcashDetails-{{$index}}">
+                            <p class="text-gray-700 text-sm font-bold mb-2">Scan the QR code below or note down the Gcash number for payment:</p>
+                            <img src="{{ asset('images/GCASH.jpg') }}" alt="GCash QR Code" class="mb-2" style="max-width: 350px; max-height: 350px;">
+                            <p class="text-gray-700 font-semibold">GCash Number: 09123456789</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-4 mt-8">
+                        <button x-on:click="$dispatch('close-modal', {name:'pay-bill-{{$index}}'})" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg">
+                            Close
+                        </button>
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </x-slot:body>
+        </x-modal>
+    @else
+        <p class="text-green-600"><strong class="px-4">Payment Updated:</strong></p>
+    @endif
+@endforeach
+
+
+        </div>
+    </div>
 
             <!-- Maintenance Requests -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+            <!-- <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h3 class="text-2xl font-bold mb-4">Maintenance Requests</h3>
                     <p><strong>Current Request:</strong> Leaky faucet in kitchen - Status: In Progress</p>
                     <p><strong>Submitted On:</strong> Sept 10, 2024</p>
                     <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg">Submit New Request</button>
                 </div>
-            </div>
-
-            <!-- Announcements -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <h3 class="text-2xl font-bold mb-4">Announcements</h3>
-                    <ul>
-                        <li><strong>Sept 12, 2024:</strong> Maintenance will be conducted in the common areas from 10 AM - 2 PM.</li>
-                        <li><strong>Sept 5, 2024:</strong> Fire alarm testing is scheduled for Sept 20, 2024. Please be prepared for brief interruptions.</li>
-                        <li><strong>Aug 28, 2024:</strong> New recycling policies have been implemented. Please check your email for details.</li>
-                    </ul>
-                </div>
-            </div>
+            </div> -->
 
         </div>
     </div>
+    <script>
+    function toggleImageUpload(index) {
+        var paymentMethod = document.getElementById("paymentMethod-" + index).value;
+        var gcashUpload = document.getElementById("gcashUpload-" + index);
+        if (paymentMethod === "gcash") {
+            gcashUpload.style.display = "block";
+        } else {
+            gcashUpload.style.display = "none";
+        }
+    }
+</script>
+
     @endforeach
 @stop
 </x-renter-layout>
