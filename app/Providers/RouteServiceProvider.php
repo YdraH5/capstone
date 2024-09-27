@@ -18,6 +18,8 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/dashboard';
+    public const OWNER = 'owner/dashboard';
+
     public const RENTER = 'renters/home';
     public const RESERVE = 'reserve/wait';
     public const DEFAULT = 'visitors/index';

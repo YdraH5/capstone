@@ -7,6 +7,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SubmitReportController;
 use App\Http\Controllers\NotifyMeController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\OwnerDashboardController;
 use App\Http\Controllers\RenterController;
 use Illuminate\Support\Facades\Route;
 
@@ -75,6 +76,58 @@ Route::group(['middleware' => ['auth','verified' ,'sessionTimeout']], function (
         })->name('admin.occupants.index');
     });
     
+    //route group for owner pages
+    Route::group(['middleware' => ['isOwner']], function () {
+        Route::get('/owner/dashboard', [OwnerDashboardController::class, 'index'])->name('owner.dashboard');
+        Route::controller(ImageController::class)->group(function() {
+            Route::get('/owner/categories/{categoryId}/upload', 'index');
+            Route::get('/owner/categories/{categoryId}/edit', 'edit');
+            Route::post('/owner/categories/{categoryId}/description', 'description');
+            Route::post('/owner/categories/{categoryId}/upload', 'store');
+            Route::get('/owner/category-image/{categoryImageId}/delete', 'delete');
+        });
+        // ROUTE TO USERS DATA TABLE
+        Route::get('/owner/users', function () {
+            return view('/owner/users');
+        })->name('owner.users.index');
+
+        // ROUTE TO MANAGING APARTMENT CATEGORIES
+        Route::get('/owner/categories', function () {
+            return view('/owner/categories');
+        })->name('owner.categories.index');
+
+        // ROUTE TO REPORTS INDEX PAGE FOR owner
+        Route::get('/owner/reports', function () {
+            return view('/owner/reports');
+        })->name('owner.reports.index');
+
+        // ROUTE TO APARTMENT CONTROL PAGE FOR owner
+        Route::get('/owner/apartment', function () {
+            return view('/owner/apartment');
+        })->name('owner.apartment.index');
+
+        // ROUTE TO PAYMENT CONTROL PAGE FOR owner
+        Route::get('/owner/payments', function () {
+            return view('/owner/payments');
+        })->name('owner.payments.index');
+
+        // ROUTE TO RESERVATION MANAGEMENT FOR owner
+        Route::get('/owner/reservations', function () {
+            return view('/owner/reservations');
+        })->name('owner.reserve.index');
+
+        // ROUTE TO BUILDING MANAGEMENT FOR owner
+        Route::get('/owner/building', function () {
+            return view('/owner/building');
+        })->name('owner.building.index');
+
+        // ROUTE TO BUILDING MANAGEMENT FOR owner
+        Route::get('/owner/occupants', function () {
+            return view('/owner/occupants');
+        })->name('owner.occupants.index');
+    });
+
+
     // ROUTING group for reserved users only users who have pending reservation have access here
     Route::group(['middleware' => ['isReserve','verified']], function () {
         Route::get('/reserve/edit',[ReservationController::class,'edit'])->name('reserve.edit');

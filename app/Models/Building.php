@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Building extends Model
 {
     public $table = 'buildings';
 
-    use HasFactory,LogsActivity;
+    use HasFactory,SoftDeletes, LogsActivity;
+    
     protected $fillable = [
         'name',
         'units',
@@ -19,10 +22,10 @@ class Building extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['name', 'units', 'parking_space']) // Specify fields to log
+            ->logAll() // Log all attributes, not just the specified ones
             ->useLogName('building') // Optional: name the log
-            ->logOnlyDirty() // Optional: log only when changes are made
-            ->dontSubmitEmptyLogs(); // Optional: prevent logging if no fields changed
+            ->logOnlyDirty() // Continue to track changes
+            ->dontSubmitEmptyLogs(); // Prevent empty logs if nothing is detected to be logged
     }
 }
 

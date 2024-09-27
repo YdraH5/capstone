@@ -1,7 +1,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<x-app-layout>
+<x-owner-layout>
   <div class="py-6">
     <div class="min-w-full mx-auto">
       <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -140,4 +140,4 @@
   </div>
   @stop
 
-</x-app-layout>
+</x-owner-layout>

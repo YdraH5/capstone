@@ -222,6 +222,7 @@ class ApartmentTable extends Component
             ->join('categories', 'categories.id', '=', 'apartment.category_id')
             ->join('buildings','buildings.id', '=', 'apartment.building_id')
             ->leftJoin('users', 'users.id', '=', 'apartment.renter_id')
+            ->whereNull('buildings.deleted_at')
             ->orderBy($this->sortColumn, $this->sortDirection);
         // Filter based on the search
         if (!empty($this->search)) {

@@ -18,7 +18,7 @@ class ReportTable extends Component
     public $status = '';
     public $id;
     public $sortDirection="ASC";
-    public $sortColumn ="renters_name";
+    public $sortColumn ="name";
     public $perPage = 10;
 
     public function doSort($column){

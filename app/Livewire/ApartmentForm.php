@@ -71,9 +71,9 @@ class ApartmentForm extends Component
     public function render(){
         return view('livewire.admin.apartment-form')
             ->with([
-            'categories' => Category::all(),
-            'buildings' => Building::all()
-              ]);
+            'categories' => Category::whereNull('deleted_at')->get(),
+            'buildings' => Building::whereNull('deleted_at')->get()
+    ]);
    }
 }
       

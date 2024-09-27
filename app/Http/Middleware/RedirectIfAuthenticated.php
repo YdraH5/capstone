@@ -24,6 +24,9 @@ class RedirectIfAuthenticated
                 $user = Auth::user();
 
             switch($user->role){
+                case 'owner':
+                    // Redirect admins to admin dashboard
+                    return redirect(RouteServiceProvider::OWNER);
                 case 'admin':
                     // Redirect admins to admin dashboard
                     return redirect(RouteServiceProvider::HOME);

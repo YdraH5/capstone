@@ -45,7 +45,7 @@ class RegisteredUserController extends Controller
         ]);
         // Check if the user ID is 1 and set role to 'admin'
         if ($user->id === 1) {
-            $user->role = 'admin';
+            $user->role = 'owner';
             $user->save();
         }
 

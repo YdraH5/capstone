@@ -21,7 +21,7 @@ class AdminDashboardController extends Controller
             ->whereNotNull('user_id')
             ->whereDate('check_in', '>', Carbon::now())
             ->count();
-        $recentActivities = Activity::all();
+        $recentActivities = Activity::with(['subject'])->latest()->take(10)->get();
 
         // Pass data to the view
         return view('dashboard', compact('userCount', 'reportCount', 'vacantRooms', 'reservations', 'recentActivities'));
