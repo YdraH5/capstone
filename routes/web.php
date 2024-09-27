@@ -93,6 +93,7 @@ Route::group(['middleware' => ['auth','verified' ,'sessionTimeout']], function (
         Route::post('/renters/extend',[RenterController::class,'extend'])->name('renters.extend');
         Route::post('/renters/pay',[RenterController::class,'pay'])->name('renters.pay');
         Route::get('/renters/paid',[RenterController::class,'paymentSuccess'])->name('renters.paid');
+        Route::get('/renters/downloadContract/{user_id}/{apartment_id}/{reservation_id}', [RenterController::class, 'downloadContract'])->name('renters.downloadContract');
 
 
         Route::get('/renters/payment', function () {
@@ -116,6 +117,7 @@ Route::get('/payment-success', [ReservationController::class, 'paymentSuccess'])
 Route::get('/', function () {
     return view('/visitors/index');
 })->name('welcome')->middleware('guest');
+Route::get('/visitors/index', [VisitorPageController::class, 'index'])->name('visitors.index');
 
 
 // 

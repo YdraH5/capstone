@@ -86,12 +86,7 @@ class ApartmentTable extends Component
             ],
             // Custom rule to check if the apartment count exceeds the max units
             'building_id' => [
-                'required',
-                function ($attribute, $value, $fail) use ($currentCount, $maxUnits) {
-                    if ($currentCount >= $maxUnits) {
-                        $fail("The maximum number of units ($maxUnits) for this building has been reached.");
-                    }
-                },
+                'required'
             ],
         ]);
          // Find the apartment record by its ID

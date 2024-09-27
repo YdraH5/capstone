@@ -28,6 +28,9 @@ class VerifyEmailController extends Controller
             case 'admin':
                 // Redirect admins to admin dashboard
                 return redirect()->intended(RouteServiceProvider::HOME.'?verified=1');
+            case 'owner':
+                // Redirect admins to admin dashboard
+                return redirect()->intended(RouteServiceProvider::HOME.'?verified=1');
             case 'renter':
                 // Redirect customers to customer dashboard
                 return redirect()->intended(RouteServiceProvider::RENTER.'?verified=1');
