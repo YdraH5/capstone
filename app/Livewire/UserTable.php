@@ -42,8 +42,20 @@ class UserTable extends Component
                   ->orWhere('created_at', 'like', '%' . $this->search . '%');
         }
         $users = $user->paginate($this->perPage);
-        return view('livewire.admin.user-table', [
-            'users' => $users
-        ]);
+        
+          // Conditionally render the correct view based on user role
+        if (auth()->user()->role === 'admin') {
+            return view('livewire.admin.user-table', [
+                'users' => $users
+            ]);
+        } elseif (auth()->user()->role === 'owner') {
+            return view('livewire.owner.user-table', [
+                'users' => $users,
+                'userAdmin' =>User::whereNull('role')->get()
+            ]);
+        } else {
+            // Handle if user doesn't have the right role
+            abort(403, 'Unauthorized action.');
+        }
     }
 }

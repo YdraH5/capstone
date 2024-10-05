@@ -17,7 +17,7 @@ class ImageController extends Controller
     $category = Category::findorFail($categoryId);
 
     $categoryImages = Images::where('category_id',$categoryId)->get();
-    return view('/admin/category-images/index',compact('category','categoryImages'));
+    return view('/owner/category-images/index',compact('category','categoryImages'));
   }
   
   public function store(Request $request,int $categoryId)

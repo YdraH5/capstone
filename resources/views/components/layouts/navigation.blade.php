@@ -53,24 +53,6 @@
         </li>
         <li class="mb-4">
           <div class="hidden sm:-my-px sm:ms-10 sm:flex hover:text-black"> 
-            <!-- Category Icon -->
-            @include('components.category-icon')
-            <x-nav-link wire:navigate :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.index')">
-              {{ __('Categories') }}
-            </x-nav-link>
-          </div>
-        </li>
-        <li class="mb-4">
-          <div class="hidden sm:-my-px sm:ms-10 sm:flex hover:text-black"> 
-            <!-- Reservation Icon -->
-            @include('components.apartment-icon')
-            <x-nav-link wire:navigate :href="route('admin.building.index')" :active="request()->routeIs('admin.building.index')">
-              {{ __('Buildings') }}
-            </x-nav-link>
-          </div>
-        </li>
-        <li class="mb-4">
-          <div class="hidden sm:-my-px sm:ms-10 sm:flex hover:text-black"> 
             <!-- Report Icon -->
             @include('components.report-icon')
             <x-nav-link wire:navigate :href="route('admin.reports.index')" :active="request()->routeIs('admin.reports.index')">
@@ -181,19 +163,7 @@
                   @include('components.occupant-icon') 
                   Aparment
               </x-responsive-nav-link>
-
-              <x-responsive-nav-link  href="{{ route('admin.categories.index') }}" 
-                  :active="request()->routeIs('admin.categories.index')" 
-                  class="flex items-center px-4 py-2 text-white ">
-                  @include('components.category-icon') 
-                  Categories
-              </x-responsive-nav-link>
-              <x-responsive-nav-link  href="{{ route('admin.building.index') }}" 
-                  :active="request()->routeIs('admin.building.index')" 
-                  class="flex items-center px-4 py-2 text-white ">
-                  @include('components.apartment-icon') 
-                  Building
-              </x-responsive-nav-link>
+              
               <x-responsive-nav-link  href="{{ route('admin.reports.index') }}" 
                   :active="request()->routeIs('admin.reports.index')" 
                   class="flex items-center px-4 py-2 text-white ">

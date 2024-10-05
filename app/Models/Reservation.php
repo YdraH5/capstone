@@ -17,7 +17,8 @@ class Reservation extends Model
         'user_id',
         'check_in',
         'rental_period',
-        'total_price'
+        'total_price',
+        'status'
         ];
         public function user()
         {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Appartment;
 use App\Models\Payment;
 use App\Models\Category;
+use App\Models\User;
 use App\Models\Reservation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -78,6 +79,7 @@ class ReservationController extends Controller
             'check_in' => $data['check_in'],
             'rental_period' => $data['rental_period'],
             'total_price' => $data['total_price'],
+            'status' => 'Pending',
         ]);
     
         Payment::create([
@@ -193,6 +195,7 @@ class ReservationController extends Controller
                 'rental_period' => $session->metadata->rental_period,
                 'total_price' => $session->metadata->total_price,
                 'payment_method' => 'stripe',
+                'status' => 'Approved'
             ];
 
             $reservation = Reservation::create($data);
@@ -231,6 +234,44 @@ class ReservationController extends Controller
 
         return back()->withErrors('Reservation could not be created.');
     }    
+    public function cancel($reservationId)
+    {
+        $reservation = DB::table('reservations')->where('id', $reservationId)->first();
+        if ($reservation) {
+            // Get the creation time and current time
+            $createdDate = strtotime($reservation->created_at);
+            $currentDate = strtotime(now());
+            $threeDaysInSeconds = 3 * 24 * 60 * 60;
+            
+            // Check if less than 3 days have passed since the reservation was created
+            if ($currentDate - $createdDate <= $threeDaysInSeconds) {
+                // Allow cancellation
+            $reserve = Reservation::find($reservationId);
+            Reservation::where('id', $reservationId)
+                ->where('user_id', $reserve->user_id) 
+                ->update(['status' => 'canceled']);
+            // update apartment status tp available
+            Appartment::where('id', $reserve->apartment_id)
+                ->where('status', '!=', 'Available')
+                ->update(['status' => 'Available']);
+            // update the user role back to default NULL
+            User::where('id', $reserve->user_id)
+                ->update(['role' => null]);
+            // update payment status to refund
+            Payment::where('reservation_id', $reserve->id)
+                ->where('user_id', $reserve->user_id) 
+                ->update(['status' => 'Refund']);
+
+                return redirect()->route('welcome')->with('success', 'Cancelation of reservation is under review by our admins, please wait for approval.');
+            } else {
+                // Too late to cancel
+                return redirect()->route('reserve.wait')->with('error', 'Cancellation period has expired. Reservations can only be canceled within 3 days of creation.');
+            }
+        }
+    
+        return redirect()->route('reserve.wait')->with('error', 'Reservation not found.');
+    }
+    
     public function waiting(Request $request)
     {
         $user = auth()->user();
@@ -241,10 +282,13 @@ class ReservationController extends Controller
             ->select(
                 'reservations.check_in',
                 'reservations.apartment_id',
+                'reservations.created_at',
                 'payments.status',
+                'reservations.status as reserve_status',
                 'reservations.id as reservation_id'
             )
             ->where('reservations.user_id', $user->id) // Note: Prefixed 'user_id' with 'reservations.'
+            ->whereNot('reservations.status','canceled')
             ->limit(1)
             ->get();
     

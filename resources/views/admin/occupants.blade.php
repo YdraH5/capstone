@@ -1,4 +1,4 @@
-@section('title', 'Apartment Management')
+@section('title', 'Occupants Management')
 
 <x-app-layout>
     @section('content')

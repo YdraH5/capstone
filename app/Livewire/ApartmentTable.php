@@ -46,7 +46,7 @@ class ApartmentTable extends Component
     public $sortDirection="ASC";
     public $sortColumn ="room_number";
     public $perPage = 10;
-
+    public $renter_id;
     public function doSort($column){
         if($this->sortColumn === $column){
             $this->sortDirection = ($this->sortDirection === 'ASC')? 'DESC':'ASC';
@@ -96,9 +96,10 @@ class ApartmentTable extends Component
         $apartment->update([
             'category_id' => $this->category_id,
             'building_id' => $this->building_id,
-            // 'price' => $this->price,
             'status' => $this->status,
             'room_number' => $this->room_number,
+            'renter_id' => $this->status === 'Available' ? null : $this->renter_id
+
         ]);
 
         $this->reset();
@@ -158,8 +159,11 @@ class ApartmentTable extends Component
     {
         // Validation
         $this->validate([
+            'email' => 'required|exists:users,email',
             'check_in' => 'required',
             'rental_period' => 'required',
+        ], [
+            'email.exists' => 'The email address does not exist in our records.',
         ]);
     
         // Wrap everything in a database transaction
@@ -222,7 +226,6 @@ class ApartmentTable extends Component
             ->join('categories', 'categories.id', '=', 'apartment.category_id')
             ->join('buildings','buildings.id', '=', 'apartment.building_id')
             ->leftJoin('users', 'users.id', '=', 'apartment.renter_id')
-            ->whereNull('buildings.deleted_at')
             ->orderBy($this->sortColumn, $this->sortDirection);
         // Filter based on the search
         if (!empty($this->search)) {
@@ -230,7 +233,7 @@ class ApartmentTable extends Component
                 $query->where('users.name', 'like', '%' . $this->search . '%')
                 ->orWhere('categories.name', 'like', '%' . $this->search . '%')
                 ->orWhere('apartment.status', 'like', '%' . $this->search . '%')
-                ->orwhere('users.role')
+                ->orWhere('users.name', 'like', '%' . $this->search . '%')
                 ->orWhere('apartment.room_number', 'like', '%' . $this->search . '%')
                 ->orWhere('apartment.building_id', 'like', '%' . $this->search . '%')
                 ->orWhere('categories.price', 'like', '%' . $this->search . '%');
@@ -239,12 +242,26 @@ class ApartmentTable extends Component
     
         // Execute the query and return the results
         $apartments = $query->paginate($this->perPage);
+        $categories = Category::all();
+        $buildings = Building::all();
     
-        return view('livewire.admin.apartment-table', [
-            'apartment' => $apartments, // Make sure this matches in the view
-            'categories' => Category::all(),
-            'buildings' => Building::all()
-        ]);
+         // Conditionally render the correct view based on user role
+        if (auth()->user()->role === 'admin') {
+            return view('livewire.admin.apartment-table', [
+                'apartment' => $apartments, // Ensure this matches the variable name in your Blade view
+                'categories' => $categories,
+                'buildings' => $buildings,
+            ]);
+        } elseif (auth()->user()->role === 'owner') {
+            return view('livewire.owner.apartment-table', [
+                'apartment' => $apartments, 
+                'categories' => $categories,
+                'buildings' => $buildings,
+            ]);
+        } else {
+            // Handle if user doesn't have the right role
+            abort(403, 'Unauthorized action.');
+        }
     }
     
 

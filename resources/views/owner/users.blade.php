@@ -3,7 +3,7 @@
 @section('content')
 <x-owner-layout>
 
-
+    @livewire('add-admin')
     <div class="py-4 ">
         <div class="min-w-full mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg ">

@@ -22,28 +22,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // specify landing page 
-Route::group(['middleware' => ['auth','verified' ,'sessionTimeout']], function () {
+Route::group(['middleware' => ['auth','verified']], function () {
 
     Route::group(['middleware' => ['isAdmin']], function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-  
-        Route::controller(ImageController::class)->group(function() {
-            Route::get('/admin/categories/{categoryId}/upload', 'index');
-            Route::get('/admin/categories/{categoryId}/edit', 'edit');
-            Route::post('/admin/categories/{categoryId}/description', 'description');
-            Route::post('/admin/categories/{categoryId}/upload', 'store');
-            Route::get('/admin/category-image/{categoryImageId}/delete', 'delete');
-        });
+
         // ROUTE TO USERS DATA TABLE
         Route::get('/admin/users', function () {
             return view('/admin/users');
         })->name('admin.users.index');
-
-        // ROUTE TO MANAGING APARTMENT CATEGORIES
-        Route::get('/admin/categories', function () {
-            return view('/admin/categories');
-        })->name('admin.categories.index');
 
         // ROUTE TO REPORTS INDEX PAGE FOR ADMIN
         Route::get('/admin/reports', function () {
@@ -64,11 +52,6 @@ Route::group(['middleware' => ['auth','verified' ,'sessionTimeout']], function (
         Route::get('/admin/reservations', function () {
             return view('/admin/reservations');
         })->name('admin.reserve.index');
-
-        // ROUTE TO BUILDING MANAGEMENT FOR ADMIN
-        Route::get('/admin/building', function () {
-            return view('/admin/building');
-        })->name('admin.building.index');
 
         // ROUTE TO BUILDING MANAGEMENT FOR ADMIN
         Route::get('/admin/occupants', function () {
@@ -161,7 +144,7 @@ Route::get('/contract', [ReservationController::class, 'contract'])->name('email
 
 Route::get('/reserve/{apartment}/index',[ReservationController::class,'index'])->name('reserve.index')->middleware(['auth', 'verified']);
 Route::post('/reserve/create',[ReservationController::class,'create'])->name('reserve.create')->middleware(['auth', 'verified']);
-Route::post('/reserve/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservation.cancel');
+Route::get('/reserve/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reserve.cancel');
 Route::get('/payment-success', [ReservationController::class, 'paymentSuccess'])->name('reserve.payment_success')->middleware(['auth', 'verified']);
 });
 

@@ -4,9 +4,11 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Payment;
+use App\Models\Appartment;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\DueDate;
+use App\Models\Reservation;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
 
@@ -15,8 +17,8 @@ class PaymentTable extends Component
     use WithPagination;
     public $search;
     public $page = 'validation';
-    public $sortDirection="ASC";
-    public $sortColumn ="user_name";
+    public $sortDirection="DESC";
+    public $sortColumn ="created_at";
     public $perPage = 10;
     public $currentReceipt;
     public $payment_id;
@@ -49,19 +51,64 @@ class PaymentTable extends Component
         $this->currentStatus =null;
         $this->reset(['currentReceipt','payment_id','currentStatus']); // Reset specific property
     }
-    public function approve(){
+    public function approve($payment_id){
 
         // Retrieve the specific payment record    
-    
+        $payment = Payment::where('id',$payment_id)->first();
         // Update the status of the payment record
-        Payment::where('id' ,$this->payment_id)
-        ->update(['status'=>'Paid']);
-        
-        DueDate::where('payment_id', $this->payment_id)
-        ->update(['status'=>'Paid']);
+        if($payment->category === 'Lease')
+        {
+            Payment::where('id' ,$payment_id)
+            ->update(['status'=>'Paid']);
+
+            DueDate::where('payment_id', $payment_id)
+            ->update(['status'=>'Paid']);
+            
+        }
+        elseif($payment->category === 'Reservation fee')
+        {
+            Payment::where('id' ,$payment_id)
+            ->update(['status'=>'Paid']);
+            Reservation::where('id',$payment->reservation_id)
+            ->update(['status'=>'Approved']);
+             // Update apartment status
+            Appartment::where('id', $payment->apartment_id)
+            ->update(['status' => 'Reserved',
+                    'renter_id' => $payment->user_id]);
+                    
+                }
+       
         // Retrieve user information
         session()->flash('success', 'Payment Accepted'); // Set the success flash message
         }
+    public function reject($payment_id){
+        
+        // Retrieve the specific payment record    
+        $payment = Payment::where('id',$payment_id)->first();
+        // Update the status of the payment record
+        if($payment->category === 'Lease')
+        {
+            // Update the status of the payment record
+            Payment::where('id' ,$payment_id)
+            ->update(['status'=>'Rejected']);
+            DueDate::where('payment_id', $payment_id)
+            ->update(['status'=>'Rejected']);
+        }
+        elseif($payment->category === 'Reservation fee')
+        {
+            Appartment::where('id', $payment->apartment_id)
+            ->update([
+                'status' => 'Available',
+                'renter_id' => null // Clear the renter_id since the reservation is rejected
+            ]);
+            Payment::where('id' ,$payment_id)
+            ->update(['status'=>'Rejected']);
+            Reservation::where('id',$payment->reservation_id)
+            ->update(['status'=>'Rejected']);
+        }     
+            // Retrieve user information
+        session()->flash('success', 'Payment Rejected'); // Set the success flash message
+            }
     public function send()
     {
         // Get all apartments where the renter_id is set
@@ -101,12 +148,12 @@ class PaymentTable extends Component
                 'payments.category',
                 'payments.amount',
                 'payments.receipt',
+                'payments.created_at',
                 'payments.transaction_id',
                 'payments.payment_method',
                 'payments.status',
                 'buildings.name as building_name',
                 'apartment.room_number',
-                DB::raw('DATE_FORMAT(apartment.created_at, "%b-%d-%Y") as date'),
             )
             ->leftJoin('users', 'users.id', '=', 'payments.user_id')
             ->leftJoin('apartment', 'apartment.id', '=', 'payments.apartment_id')
@@ -130,7 +177,18 @@ class PaymentTable extends Component
         // Execute the query and return the results
         $payments = $query->paginate($this->perPage);
     
-        return view('livewire.admin.payment-table', compact('payments'));
+
+          // Conditionally render the correct view based on user role
+          if (auth()->user()->role === 'admin') {
+            return view('livewire.admin.payment-table', compact('payments'));
+
+        } elseif (auth()->user()->role === 'owner') {
+            return view('livewire.owner.payment-table', compact('payments'));
+
+        } else {
+            // Handle if user doesn't have the right role
+            abort(403, 'Unauthorized action.');
+        }
     }
     
     

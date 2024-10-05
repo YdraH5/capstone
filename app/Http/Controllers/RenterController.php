@@ -59,7 +59,7 @@ class RenterController extends Controller
         // Pass both the reservation data and the success message
         return view('renters.home', [
             'reservations' => $reserve_date,
-            'due_dates' => DueDate::where('user_id', $user->id)->where('status','not paid')->get(), // Execute the query to get results
+            'due_dates' => DueDate::where('user_id', $user->id)->whereIn('status',['not paid','Rejected','approval'])->get(), // Execute the query to get results
             'success' => 'Payment has been successful'
         ]);
     }
@@ -81,10 +81,11 @@ class RenterController extends Controller
     private function handleGcashPayment(array $data, Request $request) {
 
         $request->validate([
-            'receipt' => 'required|image|mimes:png,jpg,jpeg', // Making receipt nullable but validated if present
+            'receipt' => 'required|image|mimes:png,jpg,jpeg',
         ]);
+    
         $data['payment_status'] = 'paid';
-
+    
         // Handle the image upload
         if ($request->hasFile('receipt')) {
             $file = $request->file('receipt');
@@ -93,6 +94,7 @@ class RenterController extends Controller
             $file->move($path, $filename);
             $data['receipt'] = $path . $filename;
         }
+    
         $payment = Payment::create([
             'apartment_id' => $data['apartment_id'],
             'user_id' => $data['user_id'],
@@ -102,6 +104,7 @@ class RenterController extends Controller
             'status' => 'approval',
             'receipt' => $data['receipt'],
         ]);
+    
         DueDate::where('id', $data['due_id'])->update([
             'status' => 'Waiting for approval',
             'payment_id'=> $payment->id,
@@ -109,6 +112,7 @@ class RenterController extends Controller
     
         return redirect()->route('renters.home')->with('success', 'Your payment is under verification by our admin.');
     }
+    
     private function handleStripePayment(array $data) {
         $stripe = new \Stripe\StripeClient('sk_test_51PSmA3DXXNLXbAhja04flayIKgxlLKafmgY0BG8j3asXy3rZKDHladG5yY8204bV1JcnBxNic09F7IpMtTrivJAw00lD4MswJX');
 
@@ -193,8 +197,8 @@ class RenterController extends Controller
         // Check if the end date is in the next month
         return $endDate->month === $nextMonthDate->month && $endDate->year === $nextMonthDate->year;
     }
-    
-    public function resend(int $user_id, int $apartment_id, int $reservation){
+    public function downloadContract(int $user_id, int $apartment_id, int $reservation) {
+        // ... Your existing code to generate the PDF ...
         $user = Auth::user();
         $reservation_info = Reservation::find($reservation);
         $apartment = Appartment::find($apartment_id);
@@ -203,7 +207,6 @@ class RenterController extends Controller
         // Calculate the end date by adding the rental period (in months)
         $start_date = Carbon::parse($reservation_info->check_in);
         $end_date = $start_date->copy()->addMonths($reservation_info->rental_period);
-    
         $data = [
             'tenant_name' => $user->name,
             'landlord_name' => 'Rose Denolo Nillos',
@@ -226,13 +229,28 @@ class RenterController extends Controller
     
         // Output the PDF as a string
         $pdfOutput = $dompdf->output();
-    
-        // Send the email with the PDF attached
-        Mail::to($user->email)->send(new Contract($data, $pdfOutput));
-    
-        return redirect(route('renters.home'))
-            ->with('success', 'Contract was sent to the email registered.');
+        return response()->stream(
+            function() use ($dompdf) {
+                echo $dompdf->output();
+            },
+            200,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="contract.pdf"',
+            ]
+        );
     }
+    // public function resend(int $user_id, int $apartment_id, int $reservation){
+    
+    
+    
+    
+    //     // Send the email with the PDF attached
+    //     Mail::to($user->email)->send(new Contract($data, $pdfOutput));
+    
+    //     return redirect(route('renters.home'))
+    //         ->with('success', 'Contract was sent to the email registered.');
+    // }
     
     public function extend(Request $request){
         // Validate request data

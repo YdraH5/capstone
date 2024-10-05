@@ -66,10 +66,10 @@ class ApartmentForm extends Component
             'status' => $this->status,
             'room_number' => $this->room_number,
         ]);
-        return redirect()->route('admin.apartment.index')->with('success', 'Adding apartment room success');
+        return redirect()->route('owner.apartment.index')->with('success', 'Adding apartment room success');
     }
     public function render(){
-        return view('livewire.admin.apartment-form')
+        return view('livewire.owner.apartment-form')
             ->with([
             'categories' => Category::whereNull('deleted_at')->get(),
             'buildings' => Building::whereNull('deleted_at')->get()

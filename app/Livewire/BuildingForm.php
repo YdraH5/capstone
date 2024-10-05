@@ -28,11 +28,11 @@ class BuildingForm extends Component
             'units'=>$this->units,
             'parking_space'=>$this->parking_space
         ]);
-        return redirect()->route('admin.building.index')->with('success', 'Adding building success');
+        return redirect()->route('owner.building.index')->with('success', 'Adding building success');
 
     }
     public function render()
     {
-        return view('livewire.admin.building-form');
+        return view('livewire.owner.building-form');
     }
 }

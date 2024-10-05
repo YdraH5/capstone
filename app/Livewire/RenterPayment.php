@@ -20,12 +20,11 @@ class RenterPayment extends Component
         switch($this->page){
             case 'history':
             $payments = Payment::where('user_id',$user->id)
-                ->where('status','paid')->get();
+            ->get();
                 break;
             case 'to pay':
             $payments = Payment::where('user_id', $user->id)
                 ->where('created_at', '<=', $currentDate)
-                ->where('status','unpaid')
                 ->get();
                 break;
         }

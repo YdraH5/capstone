@@ -151,19 +151,26 @@
     }
      // Function to get today's date and the date one week from now
      function setMinCheckInDate() {
-            var today = new Date();
-            var oneWeekFromNow = new Date();
-            
-            // Add 7 days to the current date for the minimum allowed date
-            oneWeekFromNow.setDate(today.getDate() + 7);
+    var today = new Date();
+    var oneWeekFromNow = new Date();
+    var thirtyDaysFromNow = new Date();
 
-            // Format the dates as yyyy-mm-dd
-            var minDate = today.toISOString().split('T')[0];
-            var minAllowedDate = oneWeekFromNow.toISOString().split('T')[0];
+    // Add 7 days to the current date for the minimum allowed date
+    oneWeekFromNow.setDate(today.getDate() + 7);
 
-            // Set the min attribute to today's date or one week from now
-            document.getElementById('checkin').setAttribute('min', minAllowedDate);
-        }
+    // Add 30 days to the current date for the maximum allowed date
+    thirtyDaysFromNow.setDate(today.getDate() + 35);
+
+    // Format the dates as yyyy-mm-dd
+    var minAllowedDate = oneWeekFromNow.toISOString().split('T')[0];
+    var maxAllowedDate = thirtyDaysFromNow.toISOString().split('T')[0];
+
+    // Set the min attribute to one week from now
+    document.getElementById('checkin').setAttribute('min', minAllowedDate);
+    // Set the max attribute to thirty days from now
+    document.getElementById('checkin').setAttribute('max', maxAllowedDate);
+}
+
 
         // Call the function on page load
         window.onload = setMinCheckInDate;

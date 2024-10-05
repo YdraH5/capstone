@@ -60,8 +60,7 @@
                             Total AMount
                             <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="total_price" />
                         </th> 
-                        <th class="py-3 px-4 text-center border-b border-indigo-600">Action</th>
-                    </tr>
+\                    </tr>
                 </thead>
                 <tbody>
                     @foreach($reservations as $reservation)
@@ -71,39 +70,27 @@
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->building_name}}-{{$reservation->room_number}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->check_in_date}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->rental_period}} Months</td>
-                        @if($reservation->status === 'approval')
-                        <td class="text-center border border-black-900 bg-yellow-100">Need approval</td>
-                        @else
-                        <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->status}}</td>
-                        @endif
+                        
+                        <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->reservation_status}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">₱{{ number_format($reservation->total_price, 2) }}</td>
-                        <td class="py-3 px-4 text-center border-b border-gray-300">
-                            <button wire:click="showReceipt('{{ asset($reservation->receipt) }}','{{$reservation->categ_id}}', '{{ $reservation->status }}', '{{ $reservation->reservation_id }}')"
-                                x-data x-on:click="$dispatch('open-modal',{name:'view-receipt'})"
-                                @if($reservation->payment_method === 'stripe') disabled 
-                                @endif 
-                                >
-                                @include('components.view-icon')
-                            </button>
-                        </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
         <div class="mt-4">
-            {{ $reservations->links('components.pagination') }}
+            {{ $reservations->links() }}
         </div>
     </div>
-    <x-modal name="view-receipt" title="Receipt">
+    <x-modal name="view-reipt" title="Receipt">
         <x-slot name="body">
             <div class="p-4 flex flex-col items-center">
                 @if($currentReceipt)
                 <img src="{{ $currentReceipt }}" alt="Receipt Image" style="max-height: 400px; max-width: 100%;">
                 @endif
                 <div class="flex justify-end py-2">
-                    <button wire:click ="close()"x-on:click="$dispatch('close-modal',{name:'view-receipt'})" type="button"
-                        class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mr-4">Close</button>
+                    <button wire:click ="reject({{$id}})"x-on:click="$dispatch('close-modal',{name:'view-receipt'})" type="button"
+                        class="bg-red-400 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-4 ">Reject</button>
                     @if($currentStatus === 'approval')
                     <button type="button"
                         class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"

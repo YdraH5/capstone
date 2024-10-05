@@ -57,7 +57,7 @@ class ReserveTable extends Component
     }
 
     public function approve($id)
-{
+    {
     // Count available apartments
     $available = DB::table('apartment')
         ->where('category_id', $this->categ_id)
@@ -94,8 +94,43 @@ class ReserveTable extends Component
     Mail::to($user->email)->send(new ReservationSuccess($dataemail));
     $this->modal = true;
     }
-}
-
+    }
+    public function reject($id)
+    {
+        // Retrieve the specific payment record
+        $payment = Payment::where('reservation_id', $id)->first();
+    
+        if ($payment) {
+            // Update the status of the payment record to 'rejected'
+            $payment->update(['status' => 'Rejected']);
+    
+            // Update the apartment status to 'Available' and remove the renter_id
+            Appartment::where('id', $payment->apartment_id)
+                ->update([
+                    'status' => 'Available',
+                    'renter_id' => null // Clear the renter_id since the reservation is rejected
+                ]);
+            
+            // Retrieve user information
+            $user = DB::table('users')->where('id', $payment->user_id)->first();
+    
+            // Set the flash message to indicate rejection
+            session()->flash('error', 'The reservation has been rejected');
+    
+            // Prepare email data
+            $dataemail = [
+                'name' => $user->name,
+                'payment' => $payment->amount,
+            ];
+    
+            // Send email notification to user about the rejection
+    
+            $this->modal = true;
+        } else {
+            session()->flash('error', 'Payment record not found.');
+        }
+    }
+    
     public function render()
     {
         // Base query with necessary joins
@@ -118,6 +153,7 @@ class ReserveTable extends Component
                 'reservations.rental_period',
                 'reservations.id as reservation_id',
                 'reservations.total_price',
+                'reservations.status as reservation_status',
                 'payments.receipt',
                 'payments.payment_method',
                 'payments.status'
@@ -149,8 +185,16 @@ class ReserveTable extends Component
 
         // Paginate the results
         $reservations = $query->paginate($this->perPage);
+                 // Conditionally render the correct view based on user role
+                 if (auth()->user()->role === 'admin') {
+                    return view('livewire.admin.reserve-table', compact('reservations'));
 
-        // Return view with the reservations data
-        return view('livewire.admin.reserve-table', compact('reservations'));
+                } elseif (auth()->user()->role === 'owner') {
+                    return view('livewire.owner.reserve-table', compact('reservations'));
+
+                } else {
+                    // Handle if user doesn't have the right role
+                    abort(403, 'Unauthorized action.');
+                }
     }
 }

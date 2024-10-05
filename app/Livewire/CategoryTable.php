@@ -62,7 +62,7 @@ class CategoryTable extends Component
     public function render()
     {
         $categories = Category::cursorPaginate(10);
-        return view('livewire.admin.category-table', [
+        return view('livewire.owner.category-table', [
             'categories' => $categories,
         ]);    }
 }

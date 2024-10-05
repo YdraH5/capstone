@@ -44,12 +44,18 @@ class ReportTable extends Component
         $update = DB::table('reports')
                     ->where('id', $this->id)
                     ->update(['status' => $this->status]);
-            if ($update) {
                 $this->reset(); // Reset the component if the update was successful
-                 return redirect()->route('admin.reports.index')->with('success', 'Report Action submitted successfully');
+                if (auth()->user()->role === 'admin') {
+                    return redirect()->route('admin.reports.index')->with('success', 'Report Action submitted successfully');
+
+                } elseif (auth()->user()->role === 'owner') {
+                    return redirect()->route('owner.reports.index')->with('success', 'Report Action submitted successfully');
+
                 } else {
-                    return redirect()->back()->withInput()->withErrors(['status' => 'Failed to update status']); 
-            }                
+                    // Handle if user doesn't have the right role
+                    abort(403, 'Unauthorized action.');
+                }
+                           
     }
     public function render()
     {
@@ -84,5 +90,15 @@ class ReportTable extends Component
         $reports = $query->paginate($this->perPage);
 
         return view('livewire.admin.report-table', compact('reports'));
+        if (auth()->user()->role === 'admin') {
+            return view('livewire.admin.report-table', compact('reports'));
+
+        } elseif (auth()->user()->role === 'owner') {
+            return view('livewire.owner.report-table', compact('reports'));
+
+        } else {
+            // Handle if user doesn't have the right role
+            abort(403, 'Unauthorized action.');
+        }
     }
 }

@@ -58,7 +58,7 @@
         </strong> and shall end on <strong>{{ \Carbon\Carbon::parse($data['rental_period'])->format('F j, Y') }}</strong>.
     </p>
     <p>
-        <strong>2. MONTHLY RENTAL:</strong> The LESSEE shall pay the monthly rent of <strong>₱{{ number_format($data['rent_amount'], 2) }}</strong>, due on the 1st of each month at the residence of the LESSOR or via bank transfer.
+        <strong>2. MONTHLY RENTAL:</strong> The LESSEE shall pay the monthly rent of <strong>{{ number_format($data['rent_amount'], 2) }} pesos</strong>, due on the 1st of each month at the residence of the LESSOR or via bank transfer.
     </p>
     <p>
         <strong>3. USE OF PREMISES:</strong> The premises shall be used strictly for residential purposes. No business or commercial activity is allowed.

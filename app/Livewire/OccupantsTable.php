@@ -40,10 +40,40 @@ class OccupantsTable extends Component
     public function isSend(){
         $this->isSend = true;
     }
+    public function out($apartment_id){
+        $apartment = Appartment::where('id',$apartment_id)->first();
+
+        Appartment::where('id', $apartment_id)
+            ->update([
+                'status' => 'Available',
+                'renter_id' => null // Clear the renter_id since the reservation is rejected
+            ]);
+        User::where('id',$apartment->renter_id)
+        ->update(['role'=>'departed']);
+        return redirect()->route('admin.occupants.index')->with('success', 'Renter removed to the apartment successfully');
+
+    }
     public function send()
     {
         $this->validate([
-            'payment_due_date' => 'required'
+            'payment_due_date' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    // Extract the month and year from the provided date
+                    $dueMonth = \Carbon\Carbon::parse($value)->month;
+                    $dueYear = \Carbon\Carbon::parse($value)->year;
+    
+                    // Check if a bill has already been sent for this month and year
+                    $existingDueDate = DueDate::whereMonth('payment_due_date', $dueMonth)
+                        ->whereYear('payment_due_date', $dueYear)
+                        ->exists();
+    
+                    if ($existingDueDate) {
+                        $fail('Bills for this month and year have already been sent.');
+                    }
+                },
+            ],
         ]);
     
         // Get all apartments where the renter_id is set
@@ -109,6 +139,7 @@ class OccupantsTable extends Component
                 'apartment.id',
                 'categories.name as categ_name',
                 'apartment.room_number',
+                'apartment.id as apartment_id',
                 'categories.price',
                 'buildings.name as building_name',
                 DB::raw('DATE_FORMAT(apartment.created_at, "%b-%d-%Y") as date')
@@ -133,12 +164,25 @@ class OccupantsTable extends Component
         // Execute the query and return the results
         $apartments = $query->paginate($this->perPage);
         $due_dates = DueDate::whereIn('user_id', $apartments->pluck('user_id'))->get()->keyBy('user_id');
-        return view('livewire.admin.occupants-table', [
-            'apartment' => $apartments, // Make sure this matches in the view
-            'categories' => Category::all(),
-            'due_dates' => $due_dates, // Ensure this is fetched correctly
-            'buildings' => Building::all()
-        ]);
+        
+        if (auth()->user()->role === 'admin') {
+            return view('livewire.admin.occupants-table', [
+                'apartment' => $apartments, // Make sure this matches in the view
+                'categories' => Category::all(),
+                'due_dates' => $due_dates, // Ensure this is fetched correctly
+                'buildings' => Building::all()
+            ]);
+        } elseif (auth()->user()->role === 'owner') {
+            return view('livewire.owner.occupants-table', [
+                'apartment' => $apartments, // Make sure this matches in the view
+                'categories' => Category::all(),
+                'due_dates' => $due_dates, // Ensure this is fetched correctly
+                'buildings' => Building::all()
+            ]);
+        } else {
+            // Handle if user doesn't have the right role
+            abort(403, 'Unauthorized action.');
+        }
     }
     
 }

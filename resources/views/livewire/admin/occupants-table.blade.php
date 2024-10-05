@@ -91,10 +91,13 @@
                     </th>
                     <th wire:click="doSort('status')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
                         <div class="inline-flex items-center justify-center">
-                            Rent Fee
+                            Lease Status
                             <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="status" />
                         </div>
-                    </th>                     
+                    </th>    
+                    <th class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        Action
+                    </th>                   
                     <!-- <th class="py-3 px-4 text-center border-b border-indigo-600">Actions</th> -->
                 </tr>
             </thead>
@@ -119,16 +122,26 @@
                         Payment Updated
                     @endif
                     </td>
-                    <!-- <td class="py-3 px-4 text-center border-b border-gray-300">
+                    <td class="py-3 px-4 text-center border-b border-gray-300">
                         <div class="flex justify-center gap-1"> 
-                                <button wire:click="showReceipt('{{ asset($apartments->receipt) }}','{{$apartments->due_id}}','{{$apartments->status}}')"
-                                x-data x-on:click="$dispatch('open-modal',{name:'view-receipt'})"
-                                @if($apartments->payment_method === 'stripe'||$apartments->payment_method === null) disabled title="disabled" @endif
-                                >
-                                @include('components.view-icon')
-                            </button>
+                        <button x-data x-on:click="$dispatch('open-modal',{name:'out-modal'})">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M22 10.5h-6m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM4 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 10.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                            </svg>
+                        </button>
+
+                        <x-modal name="out-modal" title="Departure">
+                            <x-slot name="body">
+                                <p>Are the renters leaving the apartment today?</p>
+                                <div class="flex justify-end space-x-2">
+                                    <button x-on:click="$dispatch('close-modal',{name:'out-modal'})" class="bg-gray-500 text-white px-4 py-2 rounded">No</button>
+                                    <button wire:click="out({{ $apartments->apartment_id }})" class="bg-blue-500 text-white px-4 py-2 rounded">Yes</button>
+                                    </div>
+                            </x-slot>
+                        </x-modal>
+
                         </div>
-                    </td> -->
+                    </td>
                 </tr>
                 @endforeach  
             </tbody>

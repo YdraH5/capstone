@@ -79,7 +79,6 @@
                                             <select wire:model="status" class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
                                                 <option value="" disabled selected hidden>Status</option>
                                                 <option value="Pending">Pending</option>
-                                                <option value="Sent Labor">Sent Labor</option>
                                                 <option value="Ongoing">Ongoing</option>
                                                 <option value="Fixed">Fixed</option>
                                             </select>

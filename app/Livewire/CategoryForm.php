@@ -30,13 +30,13 @@ class CategoryForm extends Component
             $this->only(['name', 'price','description'])
         );
         $this->reset();
-        return redirect()->route('admin.categories.index')->with('success','Adding category success');
+        return redirect()->route('owner.categories.index')->with('success','Adding category success');
     }
     public function update(){
         dd($this->id);
     }
     public function render()
     {
-        return view('livewire.admin.category-form');
+        return view('livewire.owner.category-form');
     }
 }

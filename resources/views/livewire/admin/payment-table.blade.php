@@ -15,7 +15,7 @@
                 </svg>
             </div>
             <!-- button to add payment -->
-            <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-payment'})"title ="Add appartment">
+            <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-payment'})"title ="Add Payment"{{$open=true;}}>
                 @include('buttons.add')
             </button> 
         </div>
@@ -60,10 +60,10 @@
                             Status
                             <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="status" />
                         </th>
-                        <th wire:click="doSort('date')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <th wire:click="doSort('created_at')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
                             <div class="inline-flex items-center justify-center">
                             Date
-                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="date" />
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="created_at" />
                         </th>
                         <th class="py-3 px-4 text-center border-b border-indigo-600">Actions</th>
 
@@ -78,7 +78,7 @@
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->category }}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->payment_method }}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->status }}</td>
-                        <td class="py-3 px-4 text-center border-b border-gray-300">{{ $payment->date }}</td>
+                        <td class="py-3 px-4 text-center border-b border-gray-300">{{ \Carbon\Carbon::parse($payment->created_at)->format('F j, Y')}}</td>
                          <td class="py-3 px-4 text-center border-b border-gray-300">
                             <div class="flex justify-center gap-1"> 
                                 <button wire:click="showReceipt('{{ asset($payment->receipt) }}','{{$payment->id}}','{{$payment->status}}')"
@@ -101,9 +101,9 @@
                 <img src="{{ $currentReceipt }}" alt="Receipt Image" style="max-height: 400px; max-width: 100%;">
                 @endif
                 <div class="flex justify-end py-2">
-                    <button wire:click ="close()"x-on:click="$dispatch('close-modal',{name:'view-receipt'})" type="button"
-                        class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mr-4">Close</button>
-                    @if($currentStatus === 'approval')
+                    <button wire:click ="reject({{$payment_id}})"x-on:click="$dispatch('close-modal',{name:'view-receipt'})" type="button"
+                    class="bg-red-400 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-4 ">Reject</button>
+                    @if($currentStatus === 'approval'||$currentStatus === 'Rejected' )
                     <button type="button"
                         class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
                         wire:click="approve({{ $payment_id }})"
@@ -114,6 +114,15 @@
             </div>
         </x-slot>
     </x-modal>
+        <div class="flex items-center mb-3">
+            <label for="perPage" class="mr-2 mt-2 text-sm font-medium text-gray-700">Per Page:</label>
+            <select id="perPage" wire:model.live="perPage" class="border border-gray-300 rounded px-2 py-1 h-8 w-20 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="" disabled selected>Select</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+            </select>
+        </div>
         <div>
         {{ $payments->links()}}
         </div>
