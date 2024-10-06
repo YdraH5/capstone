@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('apartment_id')->references('id')->on('apartment');
-            $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('apartment_id')->references('id')->on('apartment')->onDelete('cascade');
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->date('check_in');
             $table->integer('rental_period');
             $table->integer('total_price');
+            $table->string('status')->nullable();
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

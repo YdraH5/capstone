@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('buildings', function (Blueprint $table) {
-            $table->softDeletes();
+        Schema::create('buildings', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
+            $table->integer('units');
+            $table->integer('parking_space');
+            $table->softDeletes(); 
+            $table->timestamps();
         });
     }
 
@@ -21,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('buildings', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
+        Schema::dropIfExists('buildings');
     }
 };

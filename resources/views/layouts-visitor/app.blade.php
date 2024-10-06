@@ -8,36 +8,34 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
     <style>
-            /* Webkit-based browsers */
-    ::-webkit-scrollbar {
-        width: 8px;
-        background-color: black;
-    }
+    /* For Chrome, Edge, and Safari */
+::-webkit-scrollbar {
+    width: 4px; /* Width of the scrollbar */
+}
 
-    ::-webkit-scrollbar-thumb {
-        background-color: rgba(0, 0, 0, 0.3); /* A subtle dark color */
-        border-radius: 10px;
-    }
+/* Track (background of the scrollbar) */
+::-webkit-scrollbar-track {
+    background: #1a73e8; /* Light gray background */
+    border-radius: 10px;
+}
 
-    ::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(0, 0, 0, 0.5); /* Darker on hover */
-            
-    }
+/* Handle (scrollbar itself) */
+::-webkit-scrollbar-thumb {
+    background-color: #1a73e8; /* Green handle */
+    border-radius: 10px; /* Rounded scrollbar */
+    border: 3px solid #e0e0e0; /* Padding to create space between handle and track */
+}
 
-    ::-webkit-scrollbar-track {
-        background-color: transparent;
-    }
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #1a73e8; /* Darker green on hover */
+}
 
-    /* Firefox */
-    * {
-        scrollbar-width: thin;
-        scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
-    }
-
-    /* Smooth scrolling */
-    html {
-        scroll-behavior: smooth;
-    }
+/* For Firefox */
+* {
+    scrollbar-width: thin; /* Make scrollbar thin */
+    scrollbar-color: #1a73e8 #e0e0e0; /* Green handle with light gray background */
+}
 
         #image-modal {
     display: none;
@@ -66,6 +64,46 @@
     color: white;
     cursor: pointer;
 }
+#carousel {
+    position: relative;
+}
+
+#carousel-image {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+}
+
+#prev-button, #next-button {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5rem;
+    transition: background-color 0.3s ease;
+}
+
+#prev-button:hover, #next-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+#carousel-image {
+    transition: opacity 0.3s ease-in-out;
+    opacity: 1;
+}
+
+.fade-out {
+    opacity: 0;
+}
+
+.fade-in {
+    opacity: 1;
+}
+ /* Example styles for active link */
+ .nav-link.active h6 {
+        color: #1a73e8; /* Active link color */
+    }
 
     </style>
     <!-- Scripts -->
@@ -88,47 +126,29 @@
     @livewireScripts
     
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-        const seeMoreButtonOverview = document.getElementById('see-more-button');
-        const seeLessButtonOverview = document.getElementById('see-less-button');
-        const hiddenItemsOverview = document.querySelectorAll('#overview-section .hidden');
+   document.addEventListener('DOMContentLoaded', function () {
+    const seeMoreButton = document.getElementById('see-more-button-establishments');
+    const seeLessButton = document.getElementById('see-less-button-establishments');
+    const hiddenEstablishments = document.querySelectorAll('.hidden-establishments');
 
-        seeMoreButtonOverview.addEventListener('click', () => {
-            hiddenItemsOverview.forEach(item => {
-                item.classList.remove('hidden');
-            });
-            seeMoreButtonOverview.classList.add('hidden');
-            seeLessButtonOverview.classList.remove('hidden');
+    seeMoreButton.addEventListener('click', function () {
+        hiddenEstablishments.forEach(function (establishment) {
+            establishment.classList.remove('hidden');
         });
-
-        seeLessButtonOverview.addEventListener('click', () => {
-            hiddenItemsOverview.forEach(item => {
-                item.classList.add('hidden');
-            });
-            seeMoreButtonOverview.classList.remove('hidden');
-            seeLessButtonOverview.classList.add('hidden');
-        });
-
-        const seeMoreButtonEstablishments = document.getElementById('see-more-button-establishments');
-        const seeLessButtonEstablishments = document.getElementById('see-less-button-establishments');
-        const hiddenItemsEstablishments = document.querySelectorAll('#near-establishments .hidden');
-
-        seeMoreButtonEstablishments.addEventListener('click', () => {
-            hiddenItemsEstablishments.forEach(item => {
-                item.classList.remove('hidden');
-            });
-            seeMoreButtonEstablishments.classList.add('hidden');
-            seeLessButtonEstablishments.classList.remove('hidden');
-        });
-
-        seeLessButtonEstablishments.addEventListener('click', () => {
-            hiddenItemsEstablishments.forEach(item => {
-                item.classList.add('hidden');
-            });
-            seeMoreButtonEstablishments.classList.remove('hidden');
-            seeLessButtonEstablishments.classList.add('hidden');
-        });
+        seeMoreButton.classList.add('hidden');
+        seeLessButton.classList.remove('hidden');
     });
+
+    seeLessButton.addEventListener('click', function () {
+        hiddenEstablishments.forEach(function (establishment) {
+            establishment.classList.add('hidden');
+        });
+        seeMoreButton.classList.remove('hidden');
+        seeLessButton.classList.add('hidden');
+    });
+});
+
+
 
         document.addEventListener("DOMContentLoaded", function () {
         const modal = document.getElementById("image-modal");
@@ -152,6 +172,73 @@
             }
         });
     });
+    document.addEventListener('DOMContentLoaded', function () {
+    const images = [
+        "images/NRNBUILDING3.png",
+        "images/NRNBUILDING1.png",
+        "images/NRNBUILDING2.png",
+        "images/NRNBUILDING.png",
+        "images/NRNPARKING.png"
+    ];
+
+    let currentIndex = 0;
+    const carouselImage = document.getElementById('carousel-image');
+    const prevButton = document.getElementById('prev-button');
+    const nextButton = document.getElementById('next-button');
+    let autoSlideInterval;
+    const autoSlideDelay = 3000; // 3 seconds
+
+    // Function to update the carousel image with sliding effect
+    function updateImage(index, direction = 'next') {
+        const slideDirection = (direction === 'next') ? 'slide-left' : 'slide-right';
+        const exitDirection = (direction === 'next') ? 'exit-left' : 'exit-right';
+
+        carouselImage.classList.add(exitDirection); // Slide current image out
+        setTimeout(() => {
+            carouselImage.src = images[index];
+            carouselImage.classList.remove(exitDirection);
+            carouselImage.classList.add(slideDirection); // Slide new image in
+        }, 300); // Time for slide-out transition
+
+        setTimeout(() => {
+            carouselImage.classList.remove(slideDirection); // Remove class after sliding in
+        }, 600); // Time for slide-in transition
+    }
+
+    // Previous button click event
+    prevButton.addEventListener('click', function () {
+        currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+        updateImage(currentIndex, 'prev');
+        resetAutoSlide();
+    });
+
+    // Next button click event
+    nextButton.addEventListener('click', function () {
+        currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+        updateImage(currentIndex, 'next');
+        resetAutoSlide();
+    });
+
+    // Automatic slide functionality
+    function startAutoSlide() {
+        autoSlideInterval = setInterval(() => {
+            currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+            updateImage(currentIndex, 'next');
+        }, autoSlideDelay);
+    }
+
+    // Reset auto slide after manual interaction
+    function resetAutoSlide() {
+        clearInterval(autoSlideInterval);
+        startAutoSlide();
+    }
+
+    // Start the auto slide when the page loads
+    startAutoSlide();
+});
+
+
+
     </script>
     <script src="https://unpkg.com/flowbite@1.4.0/dist/flowbite.js"></script>
 </body>

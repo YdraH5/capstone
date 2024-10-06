@@ -1,10 +1,10 @@
 
   
-<nav x-data="{ open: false }" class="bg-yellow-800 text-white sticky top-0 z-50">
+<nav x-data="{ open: false }" class="bg-slate-200 text-white sticky top-0 z-50 text-black">
   <!-- Primary Navigation Menu -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="min-w-full mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
-          <div class="flex">
+          <div class="flex justify-end">
               <!-- Logo -->
               <div class="logo shrink-0 flex items-center">
                   <a href="{{ route('welcome') }}">
@@ -12,23 +12,28 @@
                   </a>
               </div>
 
-              <!-- Navigation Links -->
-              <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <x-nav-link href="{{ route('welcome') }}#overview-section" :active="request()->fullUrlIs(route('welcome') . '#overview-section')">
-                  {{ __('Overview') }}
+              <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex text-black py-4" id="navLinks">
+                <x-nav-link href="{{ route('welcome') }}#overview" class="nav-link">
+                    <h6 class="font-light text-lg">Overview</h6>
                 </x-nav-link>
                 
-                <x-nav-link href="{{ route('welcome') }}#near-establishments" :active="request()->fullUrlIs(route('welcome') . '#near-establishments')">
-                  {{ __('Establishments') }}
+                <x-nav-link href="{{ route('welcome') }}#about_us" class="nav-link">
+                    <h6 class="font-light text-lg">About Us</h6>
                 </x-nav-link>
 
-                <x-nav-link href="{{ route('welcome') }}#apartments" :active="request()->fullUrlIs(route('welcome') . '#apartments')">
-                  {{ __('Rooms') }}
+                <x-nav-link href="{{ route('welcome') }}#near-establishments" class="nav-link">
+                    <h6 class="font-light text-lg">Establishments</h6>
                 </x-nav-link>
-                {{-- <x-nav-link  :href="route('mail')" :active="request()->routeIs('mail')">
-                  {{ __('Email') }}
-                </x-nav-link> --}}
+
+                <x-nav-link href="{{ route('welcome') }}#rooms" class="nav-link">
+                    <h6 class="font-light text-lg">Rooms</h6>
+                </x-nav-link>
+
+                <x-nav-link href="{{ route('welcome') }}#location" class="nav-link">
+                    <h6 class="font-light text-lg">Location</h6>
+                </x-nav-link>
               </div>
+
               {{--container for login and register  --}}
               @if(Auth::check())
               <div class="inline-flex text-black absolute top-4 right-2 space-x-reverse space-y-0 hidden sm:flex sm:items-center sm:ms-6">                    
@@ -92,7 +97,7 @@
           </div> 
       </div> 
   </div>
-  <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+  <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden overflow-y-auto">
     <div class="pt-2 pb-3 space-y-1">
       @if(Auth::check())
         <!-- Authentication -->
@@ -106,15 +111,24 @@
           </x-responsive-nav-link>
       </form>
       @endif
-        <x-responsive-nav-link href="{{ route('welcome') }}#overview-section" :active="request()->fullUrlIs(route('welcome') . '#overview-section')">
+        <x-responsive-nav-link href="{{ route('welcome') }}#overview" class="nav-link">
         {{ __('Overview') }}
         </x-responsive-nav-link>
 
-        <x-responsive-nav-link href="{{ route('welcome') }}#near-establishments" :active="request()->fullUrlIs(route('welcome') . '#near-establishments')">
+        <x-responsive-nav-link href="{{ route('welcome') }}#about_us" class="nav-link">
+          {{ __('About Us') }}
+        </x-responsive-nav-link>
+
+        <x-responsive-nav-link href="{{ route('welcome') }}#near-establishments" class="nav-link">
           {{ __('Establishment') }}
         </x-responsive-nav-link>
-        <x-responsive-nav-link href="{{ route('welcome') }}#apartments" :active="request()->fullUrlIs(route('welcome') . '#apartments')">
-            {{ __('Rooms') }}
+
+        <x-responsive-nav-link href="{{ route('welcome') }}#rooms" class="nav-link">
+          {{ __('Rooms') }}
+        </x-responsive-nav-link>
+
+        <x-responsive-nav-link href="{{ route('welcome') }}#location" class="nav-link">
+          {{ __('Location') }}
         </x-responsive-nav-link>
         @if(!Auth::check())
         <x-responsive-nav-link wire:navigate :href="route('login')" :active="request()->routeIs('auth.login')">
@@ -137,3 +151,30 @@
     </div>
   </div>
 </nav>
+<script>
+      // Function to check current URL and highlight the active link
+      function highlightActiveLink() {
+        // Get the current URL hash (e.g., #overview, #about_us)
+        const currentHash = window.location.hash;
+
+        // Remove 'active' class from all nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+
+        // Add 'active' class to the link that matches the current hash
+        if (currentHash) {
+            const activeLink = document.querySelector(`a[href="{{ route('welcome') }}${currentHash}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+        }
+    }
+
+    // Initial highlighting when the page loads
+    highlightActiveLink();
+
+    // Re-run the function whenever the URL hash changes
+    window.addEventListener('hashchange', highlightActiveLink);
+
+</script>

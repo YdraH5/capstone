@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('due_dates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('renter_id')->references('id')->on('users');
-            $table->foreignId('apartment_id')->references('id')->on('apartment');
-            $table->decimal('amount',15,2)->unsigned()->default(0);
-            $table->date('due_date');
+            $table->foreignId('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('payment_id')->nullable()->onDelete('cascade');
+            $table->foreign('payment_id')->references('id')->on('payments')->onDelete('cascade');
+            $table->integer('amount_due');
+            $table->date('payment_due_date');
+            $table->string('status');
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

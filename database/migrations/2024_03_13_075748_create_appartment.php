@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('apartment', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('category_id')->references('id')->on('categories');
+           $table->id();
+            $table->foreignId('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->integer('room_number');
             $table->unsignedBigInteger('renter_id')->nullable();
-            $table->foreign('renter_id')->references('id')->on('users');
-            $table->integer('price');
+            $table->foreign('renter_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('building_id')->references('id')->on('buildings')->onDelete('cascade');
             $table->string('status');
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

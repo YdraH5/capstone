@@ -16,15 +16,17 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->integer('price');
             $table->text('description');
+            $table->softDeletes(); 
             $table->timestamps();
         });
         Schema::create('category_images', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('category_id')->onDelete('cascade');
             $table->string('image');    
-            $table->text('description')->nullable();       
+            $table->text('description')->nullable();  
+            $table->softDeletes();      
             $table->timestamps();
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 
