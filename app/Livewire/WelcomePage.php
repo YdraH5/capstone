@@ -12,11 +12,10 @@ class WelcomePage extends Component
     public $roomTypeFilter;
     public $images =[];
     public $apartments;
-    public function viewDetail($id){
-        $this->selected_id = $id;
-        $this->viewDetailModal = true;
+    public function viewDetails($categoryId)
+    {
+        return redirect()->route('visitors.display', ['apartment' => $categoryId]);
     }
-
     public function closeModal(){
         $this->viewDetailModal = false;
         $this->selected_id = null;

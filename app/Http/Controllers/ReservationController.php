@@ -19,8 +19,16 @@ use App\Mail\Contract;
 class ReservationController extends Controller
 {
     public $price;
-    public function index($apartment){
-       
+    public function index($apartment, Request $request){
+
+        $checkin = $request->query('checkin');
+        $rentalPeriod = $request->query('rentalPeriod');
+        $floorNumber = $request->query('floorNumber');
+        $adults = $request->query('adults');
+        $children = $request->query('children');
+        $infants = $request->query('infants');
+        $pets = $request->query('pets');
+
         $apartment = DB::table('apartment')
         ->rightjoin('categories', 'categories.id', '=', 'apartment.category_id')
         ->leftjoin('users', 'users.id', '=', 'apartment.renter_id')
@@ -30,9 +38,9 @@ class ReservationController extends Controller
         ->get();
         
         foreach ($apartment as $id)
-        $categories = Category::all()->where('id',$id->categ_id);
+        $category = Category::all()->where('id',$id->categ_id);
 
-        return view('reserve.index',['apartment'=>$apartment,'category'=>$categories]);
+        return view('reserve.index', compact('apartment','category', 'checkin', 'rentalPeriod', 'floorNumber', 'adults', 'children', 'infants', 'pets'));
     }
     public function create(Request $request) {
         $data = $request->validate([

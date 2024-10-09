@@ -109,73 +109,99 @@
                 @endif
             </div>
 
-            <!-- Payment Information -->
-            <div class="bg-white rounded-lg shadow-lg mb-6 p-6">
+           <!-- Payment Information Table -->
+           <div class="bg-white rounded-lg shadow-lg mb-6 p-6">
                 <h3 class="text-2xl font-bold mb-4">Payment Information</h3>
-                @foreach($due_dates as $index => $due)
-                    @if($due->status !== 'Paid')
-                    <div class="mb-4 border p-4 rounded-lg bg-gray-50">
-                        <p><strong class="font-semibold">Next Payment Due:</strong> {{ date('F jS Y', strtotime($due->payment_due_date)) }}</p>
-                        <p><strong class="font-semibold">Amount Due:</strong> ₱{{ number_format($due->amount_due, 2) }}</p>
-                        <p><strong class="font-semibold">Status:</strong> {{ strtoupper($due->status) }}</p>
-                        <button 
-                            class="mt-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg"
-                            x-data 
-                            x-on:click="$dispatch('open-modal', {name:'pay-bill-{{$index}}'})">
-                            Pay
-                        </button>
-
-                        <x-modal name="pay-bill-{{$index}}" title="Pay Rent">
-                            <x-slot:body>
-                                <form action="{{ route('renters.pay') }}" method="post" enctype="multipart/form-data">
-                                    @csrf
-                                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                    <input type="hidden" name="due_id" value="{{ $due->id }}">
-                                    <input type="hidden" name="apartment_id" value="{{ $reservation->apartment_id }}">
-                                    
-                                    <label class="block font-medium text-gray-700">Amount:</label>
-                                    <input type="number" readonly min="1" name="amount_due" value="{{ $due->amount_due }}" placeholder="Amount"
-                                        class="mt-1 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
-
-                                    <label class="block text-gray-700 text-sm font-bold mb-2 mt-4" for="paymentMethod-{{$index}}">Payment Method</label>
-                                    <div class="relative">
-                                        <select class="shadow appearance-none border rounded w-full py-2 pr-10 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            id="paymentMethod-{{$index}}" name="payment_method" onchange="toggleImageUpload('{{ $index }}')">
-                                            <option value="" disabled selected hidden>Select Payment Method</option>
-                                            <option value="gcash">Gcash</option>
-                                            <option value="stripe">Stripe</option>
-                                        </select>
-                                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                            <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7l9 9 9-9" />
-                                            </svg>
-                                        </div>
-                                    </div>
-
-                                    <div id="imageUpload-{{$index}}" style="display:none;">
-                                        <label class="block mt-4 text-gray-700">Upload Proof of Payment</label>
-                                        <input type="file" name="receipt" class="mt-1">
-                                        <div class="mb-4" id="gcashDetails" >
-                                            <p class="text-gray-700 text-sm font-bold mb-2">Scan the QR code below or note down the Gcash number foebr payment:</p>
-                                            <img src="{{ asset('images/GCASH.jpg') }}" alt="GCash QR Code" class="mb-2">
-                                            <p class="text-gray-700 font-semibold">GCash Number: 09123456789</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="flex justify-end space-x-4 mt-8">
-                                        <button x-on:click="$dispatch('close-modal', {name:'pay-bill-{{$index}}'})" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg">
-                                            Close
-                                        </button>
-                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                @if($due_dates->isEmpty())
+                    <p class="text-gray-700">No payment dues at the moment.</p>
+                @else
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">Next Payment Due</th>
+                                <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">Amount Due</th>
+                                <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">Status</th>
+                                <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                            @foreach($due_dates as $index => $due)
+                                @if($due->status !== 'Paid')
+                                <tr class="hover:bg-gray-100">
+                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                                        {{ date('F jS Y', strtotime($due->payment_due_date)) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                                        ₱{{ number_format($due->amount_due, 2) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                                        <span class="text-red-500 font-semibold">{{ strtoupper($due->status) }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                                        <button 
+                                            class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg"
+                                            x-data 
+                                            x-on:click="$dispatch('open-modal', {name:'pay-bill-{{$index}}'})">
                                             Pay
                                         </button>
-                                    </div>
-                                </form>
-                            </x-slot:body>
-                        </x-modal>
-                    </div>
-                    @endif
-                @endforeach
+
+                                        <x-modal name="pay-bill-{{$index}}" title="Pay Rent">
+                                            <x-slot:body>
+                                                <form action="{{ route('renters.pay') }}" method="post" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                                    <input type="hidden" name="due_id" value="{{ $due->id }}">
+                                                    <input type="hidden" name="apartment_id" value="{{ $reservation->apartment_id }}">
+                                                    
+                                                    <label class="block font-medium text-gray-700">Amount:</label>
+                                                    <input type="number" readonly min="1" name="amount_due" value="{{ $due->amount_due }}" placeholder="Amount"
+                                                        class="mt-1 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
+
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2 mt-4" for="paymentMethod-{{$index}}">Payment Method</label>
+                                                    <div class="relative">
+                                                        <select class="shadow appearance-none border rounded w-full py-2 pr-10 pl-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                            id="paymentMethod-{{$index}}" name="payment_method" onchange="toggleImageUpload('{{ $index }}')">
+                                                            <option value="" disabled selected hidden>Select Payment Method</option>
+                                                            <option value="gcash">Gcash</option>
+                                                            <option value="stripe">Stripe</option>
+                                                        </select>
+                                                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                                            <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7l9 9 9-9" />
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+
+                                                    <div id="imageUpload-{{$index}}" style="display:none;">
+                                                        <label class="block mt-4 text-gray-700">Upload Proof of Payment</label>
+                                                        <input type="file" name="receipt" class="mt-1">
+                                                        <div class="mb-4" id="gcashDetails" >
+                                                            <p class="text-gray-700 text-sm font-bold mb-2">Scan the QR code below or note down the Gcash number for payment:</p>
+                                                            <img src="{{ asset('images/GCASH.jpg') }}" alt="GCash QR Code" class="mb-2">
+                                                            <p class="text-gray-700 font-semibold">GCash Number: 09123456789</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex justify-end space-x-4 mt-8">
+                                                        <button x-on:click="$dispatch('close-modal', {name:'pay-bill-{{$index}}'})" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg">
+                                                            Close
+                                                        </button>
+                                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                                                            Pay
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </x-slot:body>
+                                        </x-modal>
+                                    </td>
+                                </tr>
+                                @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                @endif
             </div>
         </div>
     </div>

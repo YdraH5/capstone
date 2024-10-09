@@ -156,11 +156,10 @@ Route::get('/', function () {
 Route::get('/visitors/index', [VisitorPageController::class, 'index'])->name('visitors.index');
 
 
-// 
 Route::get('/reserve/wait',[ReservationController::class,'waiting'])->name('reserve.wait')->middleware('isReserve');        
 
 // route to see the full details for a certain apartment
-Route::get('visitors/{apartment}/detail',[VisitorPageController::class,'display'])->name('visitors.display');
+Route::get('livewire/{apartment}/view-detail',[VisitorPageController::class,'display'])->name('visitors.display');
 
 // all types of user that is currently logged in should have access in profile module to update or delete their profile
 Route::group(['middleware' => ['auth']], function () {

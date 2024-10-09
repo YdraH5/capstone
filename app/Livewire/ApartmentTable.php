@@ -7,9 +7,12 @@ use App\Models\Category;
 use App\Models\User;
 use App\Models\Building;
 use App\Models\Reservation;
+use App\Models\DueDate;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
+use Carbon\Carbon;
+
 use Illuminate\Validation\Rule;
 
 class ApartmentTable extends Component
@@ -156,55 +159,83 @@ class ApartmentTable extends Component
 
     // function to update user role and apartment information,and to create reservation
     public function saveRenter()
-    {
-        // Validation
-        $this->validate([
-            'email' => 'required|exists:users,email',
-            'check_in' => 'required',
-            'rental_period' => 'required',
-        ], [
-            'email.exists' => 'The email address does not exist in our records.',
+{
+    // Validation
+    $this->validate([
+        'email' => 'required|exists:users,email',
+        'check_in' => 'required|date',
+        'rental_period' => 'required|integer|min:1',
+    ], [
+        'email.exists' => 'The email address does not exist in our records.',
+    ]);
+
+    // Wrap everything in a database transaction
+    DB::beginTransaction();
+
+    try {
+        // Find the apartment and user
+        $apartment = Appartment::find($this->apartment_id);
+        $user = User::find($this->user_id);
+
+        // Update the apartment record
+        $apartment->update([
+            'renter_id' => $this->user_id,
+            'status' => 'Rented',
         ]);
-    
-        // Wrap everything in a database transaction
-        DB::beginTransaction();
-    
-        try {
-            // Find the apartment and user
-            $apartment = Appartment::find($this->apartment_id);
-            $user = User::find($this->user_id);
-    
-            // Update the apartment record
-            $apartment->update([
-                'renter_id' => $this->user_id,
-                'status' => 'Rented',
+
+        // Create the reservation
+        $reservation = Reservation::create([
+            'apartment_id' => $this->apartment_id,
+            'user_id' => $this->user_id,
+            'check_in' => $this->check_in,
+            'rental_period' => $this->rental_period,
+            'total_price' => 0, // Assuming price calculation is handled elsewhere
+        ]);
+
+        // Set the initial due date to the same day of the check-in date
+        $checkInDate = Carbon::parse($this->check_in);
+        $dayOfMonth = $checkInDate->day; // Get the day of the check-in
+        $dueDate = $checkInDate->copy(); // Initialize with the check-in date
+
+        $category = Appartment::find($apartment->id);
+        $price = Category::find($category->category_id);
+
+        // Loop to create due dates for each month based on the rental period
+        for ($i = 0; $i < $this->rental_period; $i++) {
+            // Adjust due date to the same day in the next month
+            $dueDate->addMonth()->day($dayOfMonth);
+
+            // Check if the day doesn't exceed the last day of the month (e.g., no February 30)
+            if ($dueDate->day != $dayOfMonth) {
+                $dueDate->day = $dueDate->copy()->endOfMonth()->day; // Set to the last valid day
+            }
+
+            DueDate::create([
+                'user_id' => $user->id,
+                'payment_due_date' => $dueDate->copy(),
+                'amount_due' => $price->price, // Assuming this is the monthly rent
+                'status' => 'not paid',
             ]);
-    
-            // Create the reservation
-            Reservation::create([
-                'apartment_id' => $this->apartment_id,
-                'user_id' => $this->user_id,
-                'check_in' => $this->check_in,
-                'rental_period' => $this->rental_period,
-                'total_price' => 0,
-            ]);
-    
-            // Update the user's role
-            $user->update(['role' => 'renter']);
-    
-            // Commit the transaction if all operations succeed
-            DB::commit();
-    
-            // Reset the form values
-            $this->reset();
-            session()->flash('success', 'Adding renter successful.');
-            
-        } catch (\Exception $e) {
-            // Rollback the transaction if something fails
-            DB::rollback();
-            session()->flash('error', 'Something went wrong ' . $e->getMessage());
         }
+
+        // Update the user's role
+        $user->update(['role' => 'renter']);
+
+        // Commit the transaction if all operations succeed
+        DB::commit();
+
+        // Reset the form values
+        $this->reset();
+        session()->flash('success', 'Adding renter successful.');
+
+    } catch (\Exception $e) {
+        // Rollback the transaction if something fails
+        DB::rollback();
+        session()->flash('error', 'Something went wrong: ' . $e->getMessage());
     }
+}
+
+    
     public function updatingSearch()
     {
         $this->resetPage(); // Reset pagination when search input is updated

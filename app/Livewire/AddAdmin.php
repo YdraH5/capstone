@@ -37,8 +37,9 @@ class AddAdmin extends Component
         
     }
     public function saveAdmin(){
-        User::where('id',$this->user_id)->update(['role','admin']);
-        redirect()->route('reserve.wait')->with('success', 'Adding admin account success.');    }
+        User::where('id',$this->user_id)->update(['role'=>'admin']);
+        return redirect()->route('owner.users.index')->with('success', 'Adding admin account success.');
+    }
     
     public function render()
     {

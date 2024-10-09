@@ -2,7 +2,7 @@
     <!-- Search Bar -->
     <div class="flex items-center gap-4 mb-4 p-2 bg-gray-50 rounded-lg shadow-sm">
         <div class="flex gap-2 text-gray-700">
-            <h1 class="text-2xl font-semibold text-black">Reports</h1>
+            <h1 class="text-2xl font-semibold text-black">Complaints</h1>
         </div>
         <div class="relative w-1/2 ml-auto">
             <input id="search-input" wire:model.debounce.300ms.live="search" type="search" placeholder="Search..."
@@ -24,7 +24,7 @@
                 <tr class="bg-indigo-500 text-white uppercase text-sm">
                     <th wire:click="doSort('user_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
                         <div class="inline-flex items-center justify-center">
-                        Name
+                        Complainants
                         <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="name" />
                     </th>
                     <th wire:click="doSort('building_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
@@ -34,7 +34,7 @@
                     </th>
                     <th wire:click="doSort('report_category')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
                         <div class="inline-flex items-center justify-center">
-                        Report Category
+                        Complaints Category
                         <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="report_category" />
                     </th>
                     <th wire:click="doSort('description')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">

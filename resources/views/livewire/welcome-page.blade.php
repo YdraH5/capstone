@@ -120,7 +120,7 @@
         </h3>
         <hr class="w-1/2 border-t-2 border-gray-300 mb-4">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-w-full">
                 @foreach ($categories as $category)
                 <div class="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:bg-slate-200">
                     <div id="default-carousel-{{$category->category_id}}" class="relative" data-carousel="static">
@@ -158,7 +158,10 @@
                             <h6 class="text-lg sm:text-xl font-semibold text-gray-700 mr-2">Price:</h6>
                             <p class="text-md sm:text-lg text-gray-800">₱{{ number_format($category->price, 2) }}/month</p>
                         </div>
-                        <a href="{{ route('visitors.display', ['apartment' => $category->category_id]) }}" class="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition duration-300">View Details</a>
+                        <button wire:click="viewDetails({{ $category->category_id }})" 
+                                class="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition duration-300">
+                            View Details
+                        </button>
                     </div>
                 </div>
                 @endforeach

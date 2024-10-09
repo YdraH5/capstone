@@ -56,7 +56,7 @@
             <!-- Report Icon -->
             @include('components.report-icon')
             <x-nav-link wire:navigate :href="route('admin.reports.index')" :active="request()->routeIs('admin.reports.index')">
-              {{ __('Reports') }}
+              {{ __('Complaints') }}
             </x-nav-link>
           </div>
         </li>
@@ -161,14 +161,14 @@
                   :active="request()->routeIs('admin.occupants.index')" 
                   class="flex items-center px-4 py-2 text-white ">
                   @include('components.occupant-icon') 
-                  Aparment
+                  Occupants
               </x-responsive-nav-link>
               
               <x-responsive-nav-link  href="{{ route('admin.reports.index') }}" 
                   :active="request()->routeIs('admin.reports.index')" 
                   class="flex items-center px-4 py-2 text-white ">
                   @include('components.report-icon') 
-                  Reports
+                  Complaints
               </x-responsive-nav-link>
               
               <x-responsive-nav-link  href="{{ route('admin.reserve.index') }}" 

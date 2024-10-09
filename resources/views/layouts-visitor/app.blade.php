@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
     <style>
+        
     /* For Chrome, Edge, and Safari */
 ::-webkit-scrollbar {
     width: 4px; /* Width of the scrollbar */
@@ -16,14 +17,14 @@
 /* Track (background of the scrollbar) */
 ::-webkit-scrollbar-track {
     background: #1a73e8; /* Light gray background */
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 /* Handle (scrollbar itself) */
 ::-webkit-scrollbar-thumb {
     background-color: #1a73e8; /* Green handle */
     border-radius: 10px; /* Rounded scrollbar */
-    border: 3px solid #e0e0e0; /* Padding to create space between handle and track */
+    border: 1px solid #e0e0e0; /* Padding to create space between handle and track */
 }
 
 /* Handle on hover */
@@ -34,7 +35,7 @@
 /* For Firefox */
 * {
     scrollbar-width: thin; /* Make scrollbar thin */
-    scrollbar-color: #1a73e8 #e0e0e0; /* Green handle with light gray background */
+    scrollbar-color: gray #e0e0e0; /* Green handle with light gray background */
 }
 
         #image-modal {

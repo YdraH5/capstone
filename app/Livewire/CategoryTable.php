@@ -17,9 +17,17 @@ class CategoryTable extends Component
     #[Validate('required|min:5|max:50')] 
     public $name = '';
  
-    #[Validate('required|min:10|max:200')] 
-    public $description = '';
-
+    public $features = [
+        'pax'=>'',
+        'cr' => false,
+        'livingRoom' => false,
+        'kitchen' => false,
+        'balcony' => false,
+        'aircon' => false,
+        'bed' => false,
+        'parking' => false,
+        'otherText' => '',
+    ];
     #[Validate('required|numeric')] 
     public $price = '';
     public function edit($id){
@@ -29,21 +37,43 @@ class CategoryTable extends Component
         $this->editCategory = Category::find($id);
         $this->name = $this->editCategory->name;
         $this->price = $this->editCategory->price;
-        $this->description = $this->editCategory->description;
+        $this->features = json_decode($this->editCategory->description, true);
+         // Ensure defaults if decoding fails
+         if (json_last_error() !== JSON_ERROR_NONE) {
+            $this->features = [
+                'pax'=> '',
+                'cr' => false,
+                'livingRoom' => false,
+                'kitchen' => false,
+                'balcony' => false,
+                'aircon' => false,
+                'bed' => false,
+                'parking' => false,
+                'otherText' => '',
+            ];
+        }
+
     }
-    public function update(){
-            $this->validate();
-             // Find the apartment record by its ID
-            $category = Category::find($this->id);
+    public function update()
+    {
+        $this->validate([
+            'name' => 'required|max:50|unique:categories,name,' . $this->id,
+            'price' => 'required|numeric',
+        ]);
     
-            // Update the apartment record with the new data
+        // Encode features back to JSON
+        $descriptionJson = json_encode($this->features);
+    
+        $category = Category::find($this->id);
+        if ($category) {
             $category->update([
                 'name' => $this->name,
                 'price' => $this->price,
-                'description' => $this->description,
+                'description' => $descriptionJson, // Store JSON-encoded features
             ]);
-            
-            $this->reset();
+        }
+        
+        $this->reset();
             // Reset the component state
             session()->flash('success', 'Category updated successfully.');
     }

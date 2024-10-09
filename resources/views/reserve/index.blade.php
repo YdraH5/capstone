@@ -44,7 +44,7 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="checkin">
                     Check-In Date
                 </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="checkin" type="date" name="check_in">
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="checkin" type="date" name="check_in"value="{{$checkin}}">
                 <x-input-error :messages="$errors->get('check_in')" class="mt-2" />
             </div>
             <div class="mb-4">
@@ -55,7 +55,7 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="checkout">
                     Rental Period(months)
                 </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="rental_period" type="number" min="1"name="rental_period">
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="rental_period" type="number" min="1"name="rental_period"value="{{$rentalPeriod}}">
                 <x-input-error :messages="$errors->get('rental_period')" class="mt-2" />
             </div>
 

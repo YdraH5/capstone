@@ -11,42 +11,6 @@
                 <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
             </svg>
         </div>
-            <!-- Send Bills Button -->
-            <div class="flex justify-end">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-2 rounded-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out"
-                x-data x-on:click="$dispatch('open-modal',{name:'send-bill'})"
-                {{$isSend = true;}}
-                >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
-                </svg>
-                    <span>Send Rent Bill</span>
-                </button>
-            </div>
-            @if($isSend)
-            <x-modal name="send-bill" title="Set Due Date">
-                <x-slot:body>
-                <!-- Form -->
-                    <form id="modalForm" class="space-y-4" wire:submit.prevent="send">
-                        <label class="block font-medium opacity-70">Due Date</label>
-                        <input type="date" wire:model="payment_due_date" class="mt-2 text-gray-600 focus:outline-none focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 w-full h-10 pl-3 border border-gray-300 rounded-md">
-                        @error('payment_due_date') <span class="error text-red-900">{{ $message }}</span> @enderror
-                          <!-- Action Buttons -->
-                        <div class="flex items-center justify-between py-4">
-                            <button x-on:click="$dispatch('close-modal', {name: 'add-renter'})" 
-                                    class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-md">
-                                Close
-                            </button>
-                            <button type="submit" 
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">
-                                Submit
-                            </button>
-
-                        </div>
-                    </form>
-                </x-slot:body>
-            </x-modal>
-            @endif
     </div>
     <!-- Table -->
     <div class="overflow-x-auto bg-white shadow-lg">

@@ -74,7 +74,7 @@
             <!-- Report Icon -->
             @include('components.report-icon')
             <x-nav-link wire:navigate :href="route('owner.reports.index')" :active="request()->routeIs('owner.reports.index')">
-              {{ __('Reports') }}
+              {{ __('Complaints') }}
             </x-nav-link>
           </div>
         </li>
@@ -198,7 +198,7 @@
                   :active="request()->routeIs('owner.reports.index')" 
                   class="flex items-center px-4 py-2 text-white ">
                   @include('components.report-icon') 
-                  Reports
+                  Complaints
               </x-responsive-nav-link>
               
               <x-responsive-nav-link  href="{{ route('owner.reserve.index') }}" 

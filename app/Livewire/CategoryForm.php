@@ -18,17 +18,35 @@ class CategoryForm extends Component
 
     #[Validate('require')] 
     public $id;
+        // Array to hold selected features
+    public $features = [
+        'pax' =>'',
+        'livingRoom' => false,
+        'cr' => false,
+        'balcony' => false,
+        'kitchen' => false,
+        'aircon'=>false,
+        'bed'=>false,
+        'parking'=>false,
+        'otherText' => '', // Text input for specifying other features
+        'other' => false, // Checkbox for Other
+        ];   
     public function save()
     {
         $this->validate([
             'name' => 'required|max:50|unique:categories,name',
             'price' => 'required|numeric',
-            'description' => 'required|max:190'
         ]); 
- 
-        Category::create(
-            $this->only(['name', 'price','description'])
-        );
+
+        // Encode the features array as JSON
+        $featuresJson = json_encode($this->features);
+
+        Category::create([
+            'name' => $this->name,
+            'price' => $this->price,
+            'description' => $featuresJson, // Store JSON-encoded features
+        ]);
+        
         $this->reset();
         return redirect()->route('owner.categories.index')->with('success','Adding category success');
     }

@@ -43,8 +43,60 @@
                     ₱{{ number_format($category->price, 2) }}/month
                   </td>
                   <td class="py-3 px-4 text-center border-b border-gray-300">
-                    {{$category->description}}
+                    @php
+                        // Decode the JSON-encoded description
+                        $features = json_decode($category->description, true);
+
+                        // Check for JSON errors
+                        if (json_last_error() !== JSON_ERROR_NONE) {
+                            $features = []; // Reset to empty array if JSON decoding fails
+                        }
+                    @endphp
+
+                    @if (is_array($features) && !empty($features))
+                        @php
+                            // Initialize an array to hold feature descriptions
+                            $featureDescriptions = [];
+                            // Construct feature descriptions based on selected features
+                            if ($features['cr']) {
+                                $featureDescriptions[] = 'a CR';
+                            }
+                            if ($features['livingRoom']) {
+                                $featureDescriptions[] = 'a Living Room';
+                            }
+                            if ($features['kitchen']) {
+                                $featureDescriptions[] = 'a Kitchen';
+                            }
+                            if ($features['balcony']) {
+                                $featureDescriptions[] = 'a Balcony';
+                            }
+                            if ($features['aircon']) {
+                                $featureDescriptions[] = 'a Aircon';
+                            }
+                            if ($features['bed']) {
+                                $featureDescriptions[] = 'a Bed';
+                            }
+                            if ($features['parking']) {
+                                $featureDescriptions[] = 'a Parking Space';
+                            }
+                            if (!empty($features['otherText'])) {
+                                $featureDescriptions[] = 'Other: ' . $features['otherText'];
+                            }
+                            $guests = isset($features['pax']) ? $features['pax'] : 'unknown number of guests';
+                            // If there are features, include them in the sentence, otherwise end with capacity
+                            if (!empty($featureDescriptions)) {
+                                $descriptionText = 'This apartment has a maximum tenant capacity of ' . $guests . ' and includes ' . implode(', ', $featureDescriptions) . '.';
+                            } else {
+                                $descriptionText = 'This apartment has a maximum tenant capacity of ' . $guests . '.';
+                            }
+                        @endphp
+
+                        {{ $descriptionText }}
+                    @else
+                        No features available.
+                    @endif
                   </td>
+
                   <td class="py-3 px-4 text-center border-b border-gray-300">
                     <div class="flex justify-center items-center">
                       <a wire:navigate href="{{url('owner/categories/'.$category->id.'/upload')}}" class="text-blue-500">
@@ -54,7 +106,7 @@
                       </a>
                     </div>
                   </td>
-                  <td class="py-3 px-4 text-center border-b border-gray-300">
+                  <td class="py-3 px-4 border-b border-gray-300">
                     <div class="flex justify-center items-center">
                       <button
                           x-data="{ id: {{$category->id}} }"
@@ -66,29 +118,70 @@
                           @if ($isEditing)
                           <x-modal name="edit-category" title="Edit Category">
                               <x-slot:body>
-                                  <form wire:submit.prevent="update">
+                              <form id="modalForm"  class="overflow-y-auto max-h-[400px]" wire:submit.prevent="update">
+                                  <div class="">
+                                      <!-- Category Name -->
                                       <div>
-                                          <input type="hidden"wire:model="id">
-                                          <label label="block font-medium">Category Name</label>
-                                          <input type="text" wire:model="name" placeholder="Name"class="text-black focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
+                                          <label class="block font-medium opacity-70">Category Name</label>
+                                          <input type="text" wire:model="name" class="text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center  text-sm border-gray-300 rounded border" placeholder="Category Name">
                                           @error('name') <span class="error text-red-900">{{ $message }}</span> @enderror 
                                       </div>
+                                      
+                                      <!-- Price -->
                                       <div>
-                                        <label class="block font-medium opacity-70">Price</label>
-                                        <input type="number" wire:model="price" placeholder="Price" class="text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
-                                        @error('price') <span class="error text-red-900">{{ $message }}</span> @enderror 
+                                          <label class="block font-medium opacity-70">Price</label>
+                                          <input type="number" wire:model="price" placeholder="Price" class="text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center  text-sm border-gray-300 rounded border">
+                                          @error('price') <span class="error text-red-900">{{ $message }}</span> @enderror 
                                       </div>
+
+                                      <!-- Number of Pax -->
                                       <div>
-                                          <label class="block font-medium">Description</label>
-                                          <textarea rows="4" class="text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-32 flex items-center pl-3 text-sm border-gray-300 rounded border"wire:model="description" placeholder="Write apartment description here"></textarea>
-                                          @error('description') <span class="error text-red-900">{{ $message }}</span> @enderror 
+                                          <label class="block mt-4">Max Number of Tenants</label>
+                                          <input type="number" wire:model="features.pax" placeholder="Pax" class="text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center  text-sm border-gray-300 rounded border" min="1">
+                                          @error('features.pax') <span class="error text-red-900">{{ $message }}</span> @enderror
                                       </div>
+
+                                      <!-- Features Checkboxes (2-column layout) -->
+                                      <div class="grid grid-cols-2 mt-1">
+                                          <label class="block">
+                                              <input type="checkbox" wire:model="features.cr"> CR
+                                          </label>
+                                          <label class="block">
+                                              <input type="checkbox" wire:model="features.livingRoom"> Living Room
+                                          </label>
+                                          <label class="block">
+                                              <input type="checkbox" wire:model="features.kitchen"> Kitchen
+                                          </label>
+                                          <label class="block">
+                                              <input type="checkbox" wire:model="features.aircon"> Aircon
+                                          </label>
+                                          <label class="block">
+                                              <input type="checkbox" wire:model="features.bed"> Wooden Bed
+                                          </label>
+                                          <label class="block">
+                                              <input type="checkbox" wire:model="features.parking"> Parking Space
+                                          </label>
+                                          <label class="block">
+                                              <input type="checkbox" wire:model="features.balcony"> Balcony
+                                          </label>
+                                          <label class="block">
+                                              <input type="checkbox" wire:model="features.other"> Other
+                                          </label>
+                                      </div>
+
+                                      <!-- Other Text Input -->
+                                      <div>
+                                          <input type="text" wire:model="features.otherText" placeholder="Specify other features" class="mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center  text-sm border-gray-300 rounded border" />
+                                          @error('features.otherText') <span class="error text-red-900">{{ $message }}</span> @enderror
+                                      </div>
+
+                                      <!-- Submit & Close Buttons -->
                                       <div class="flex items-center justify-between py-8">
                                           <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-                                          <button  x-on:click="$dispatch('close-modal',{name:'add-apartment'})" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Close
-                                          </button>
+                                          <button x-on:click="$dispatch('close-modal',{name:'add-apartment'})" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Close</button>
                                       </div>
-                                  </form>
+                                  </div>
+                              </form>
                               </x-slot:body>
                           </x-modal>
                           @endif

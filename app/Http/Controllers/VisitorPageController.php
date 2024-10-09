@@ -12,21 +12,19 @@ class VisitorPageController extends Controller
     // for viewing full details
     public function display(Category $apartment) {
         // Get category details
-        // dd($apartment);
+        $categ_id = $apartment->id;
         $category = DB::table('categories')
             ->where('id', $apartment->id)
             ->first();
-    
         // Get apartments with the specified category ID and status 'Available'
         $apartments = DB::table('apartment')
             ->leftJoin('users', 'users.id', '=', 'apartment.renter_id')
-            ->leftJoin('categories', 'categories.id', '=', 'apartment.category_id')
-            ->select('categories.name as categ_name', 'categories.description', 'categories.price', 'apartment.id', 'apartment.status')
+            ->Join('categories', 'categories.id', '=', 'apartment.category_id')
+            ->select('categories.name as categ_name','categories.id as categ_id', 'categories.description', 'categories.price', 'apartment.id', 'apartment.status','apartment.room_number')
             ->where('apartment.category_id', $apartment->id)
             ->where('apartment.status', 'Available')
-            ->limit(1)
             ->get();
-    
+        
         // Count available apartments
         $available = DB::table('apartment')
             ->where('category_id', $apartment->id)
@@ -52,6 +50,7 @@ class VisitorPageController extends Controller
                     'description' => $category->description,
                     'id' => 0, // Dummy ID for handling in view
                     'price' => $category->price,
+                    'room_number'=>$apartments->room_number,
                     'status' => 'Unavailable',
                     'categ_id' => $category->id,
                 ]
@@ -60,7 +59,9 @@ class VisitorPageController extends Controller
         }
     
         return view('visitors.detail', [
-            'apartment' => $apartments,
+            'room_available'=>$apartments,
+            'apartment' => $apartment,
+            'categ_id' => $categ_id,
             'images' => $images,
             'available' => $available
         ]);
