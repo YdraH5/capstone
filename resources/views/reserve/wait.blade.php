@@ -23,35 +23,6 @@
                 <button id="doneButton" class="hidden bg-blue-500 text-white px-4 py-2 rounded mt-4">Go to renters page</button>
             </a>
 
-            <!-- Note about cancellation policy -->
-            <p class="text-red-500 text-sm mt-4">*Note: Reservation can only be canceled or refunded within 3 days of the reservation was submitted date.</p>
-
-            <!-- Cancel reservation button (hidden if more than 3 days have passed since creation) -->
-                <!-- Cancel reservation button (hidden if more than 3 days have passed since creation) -->
-                <button id="cancelButton" class="bg-red-500 text-white px-4 py-2 rounded"
-                    x-data x-on:click="$dispatch('open-modal',{name:'reserve-cancel'})">
-                    Cancel Reservation
-                </button>
-
-                <x-modal name="reserve-cancel" title="Are you sure you want to cancel this reservation?">
-                    <x-slot name="body">
-                        <p class="mb-4">
-                            Please note that once you cancel this reservation, the room you reserved will become available for others to book. 
-                            This action is irreversible, and you will need to make a new reservation if you wish to book the room again. This action will redirect you to the home page.
-                        </p>
-                        <div class="flex justify-end space-x-2">
-                            <!-- Close Button -->
-                            <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded" onclick="Livewire.emit('closeModal')">
-                                Keep Reservation
-                            </button>
-                            <!-- Cancel Reservation Button -->
-                            <a href="{{ route('reserve.cancel', $reservation->reservation_id) }}">
-                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Cancel Reservation</button>
-                            </a>
-                        </div>
-                    </x-slot>
-                </x-modal>
-
         </div>
     </div>
     @endif

@@ -75,10 +75,18 @@
                     <td class="py-3 px-4 text-center border-b border-gray-300">
 
                     @if(\App\Models\DueDate::where('user_id', $apartments->user_id)
-                                            ->where('status', 'not paid')
+                        ->where('status', 'not paid')
+                        ->where(function ($query) {
+                            $query->where('payment_due_date', '<', now()) // Past due dates
+                                  ->orWhere('payment_due_date', '=', now()->format('Y-m-d')); // Today's due date
+                        })
                                             ->count() > 0)
                         {{ \App\Models\DueDate::where('user_id', $apartments->user_id)
                                             ->where('status', 'not paid')
+                                            ->where(function ($query) {
+                                                $query->where('payment_due_date', '<', now())
+                                                    ->orWhere('payment_due_date', '=', now()->format('Y-m-d'));
+                                            })
                                             ->count() }} Unpaid Months
                     @else
                         Payment Updated

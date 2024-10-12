@@ -6,6 +6,7 @@ use App\Models\Appartment;
 use App\Models\Payment;
 use App\Models\Category;
 use App\Models\User;
+use App\Models\DueDate;
 use App\Models\Reservation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -311,61 +312,97 @@ class ReservationController extends Controller
         return view('reserve.edit');
     }
     public function update(int $user_id, int $apartment_id, int $reservation)
-{
-    // Update user role to renter
-    $update_user = DB::table('users')
-        ->where('id', $user_id)
-        ->update(['role' => 'renter']);
+    {
+        // Start a database transaction
+        DB::beginTransaction();
     
-    // Update apartment details
-    $update_apartment = DB::table('apartment')
-        ->where('id', $apartment_id)
-        ->update(['renter_id' => $user_id, 'status' => 'Rented']);
-
-    // If there was an error updating the user or apartment, return error response
-    if ($update_user && $update_apartment === false) {
-        return response()->json(['error' => 'Failed to update user role'], 500);
-    } else {
-        // Lease contract data
-        $user = Auth::user();
-        $reservation_info = Reservation::find($reservation);
-        $apartment = Appartment::find($apartment_id);
-        $price = Category::find($apartment->category_id);
-        
-        // Calculate start and end dates
-        $start_date = \Carbon\Carbon::parse($reservation_info->check_in);
-        $end_date = $start_date->copy()->addMonths($reservation_info->rental_period); // Add months to start date
-
-        $data = [
-            'tenant_name' => $user->name,
-            'landlord_name' => 'Rose Denolo Nillos',
-            'address' => 'Mission Hills, Barangay Milibili, Roxas City, Capiz',
-            'start_date' => $start_date->format('Y-m-d'),
-            'rental_period' => $end_date->format('Y-m-d'), // Include calculated end date
-            'rent_amount' => $price->price,
-        ];
-
-        // Render the HTML content from the Blade view to generate the PDF
-        $html = view('emails.contract', compact('data'))->render();
-
-        // Initialize DomPDF
-        $pdfOptions = new Options();
-        $pdfOptions->set('isRemoteEnabled', true);
-        $dompdf = new Dompdf($pdfOptions);
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-
-        // Output the PDF as a string
-        $pdfOutput = $dompdf->output();
-
-        // Send the email with the PDF attached
-        Mail::to($user->email)->send(new Contract($data, $pdfOutput));
-
-        return redirect(route('renters.home'))
-            ->with('success', 'Hi! Welcome to the renters dashboard. Enjoy your stay in NRN Building. Please let us know if there are any problems. Our Lease contract was sent to your registered email please download the PDF file.');
+        try {
+            // Update user role to renter
+            $update_user = DB::table('users')
+                ->where('id', $user_id)
+                ->update(['role' => 'renter']);
+            
+            // Update apartment details
+            $update_apartment = DB::table('apartment')
+                ->where('id', $apartment_id)
+                ->update(['renter_id' => $user_id, 'status' => 'Rented']);
+    
+            // If there was an error updating the user or apartment, throw an exception
+            if (!$update_user || !$update_apartment) {
+                throw new \Exception('Failed to update user role or apartment');
+            }
+    
+            // Lease contract data
+            $user = Auth::user();
+            $reservation_info = Reservation::find($reservation);
+            $apartment = Appartment::find($apartment_id);
+            $price = Category::find($apartment->category_id);
+            
+            // Calculate start date and rental period
+            $start_date = \Carbon\Carbon::parse($reservation_info->check_in);
+            $rental_period = $reservation_info->rental_period;
+    
+            // Loop to create due dates for each month based on the rental period
+            for ($i = 0; $i < $rental_period; $i++) {
+                // Create due date for each month
+                $dueDate = $start_date->copy()->addMonths($i);
+                $dayOfMonth = $start_date->day;
+    
+                // Check if the day exceeds the last day of the month
+                if ($dueDate->day != $dayOfMonth) {
+                    $dueDate->day = $dueDate->copy()->endOfMonth()->day; // Set to the last valid day
+                }
+    
+                DueDate::create([
+                    'user_id' => $user->id,
+                    'payment_due_date' => $dueDate,
+                    'amount_due' => $price->price, // Monthly rent
+                    'status' => 'not paid',
+                ]);
+            }
+    
+            // Prepare data for email
+            $end_date = $start_date->copy()->addMonths($rental_period); // Add months to start date
+    
+            $data = [
+                'tenant_name' => $user->name,
+                'landlord_name' => 'Rose Denolo Nillos',
+                'address' => 'Mission Hills, Barangay Milibili, Roxas City, Capiz',
+                'start_date' => $start_date->format('Y-m-d'),
+                'rental_period' => $end_date->format('Y-m-d'), // Include calculated end date
+                'rent_amount' => $price->price,
+            ];
+    
+            // Render the HTML content from the Blade view to generate the PDF
+            $html = view('emails.contract', compact('data'))->render();
+    
+            // Initialize DomPDF
+            $pdfOptions = new Options();
+            $pdfOptions->set('isRemoteEnabled', true);
+            $dompdf = new Dompdf($pdfOptions);
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+    
+            // Output the PDF as a string
+            $pdfOutput = $dompdf->output();
+    
+            // Send the email with the PDF attached
+            Mail::to($user->email)->send(new Contract($data, $pdfOutput));
+    
+            // Commit the transaction if all operations succeed
+            DB::commit();
+    
+            return redirect(route('renters.home'))
+                ->with('success', 'Hi! Welcome to the renters dashboard. Enjoy your stay in NRN Building. Please let us know if there are any problems. Our Lease contract was sent to your registered email; please download the PDF file.');
+    
+        } catch (\Exception $e) {
+            // Roll back the transaction if any error occurs
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+    
 
         
 }

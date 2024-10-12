@@ -1,6 +1,6 @@
 
   
-<nav x-data="{ open: false }" class="bg-white text-white sticky top-0 z-50 text-black">
+<nav x-data="{ open: false }" class="bg-slate-100 text-white sticky top-0 z-50 text-black">
   <!-- Primary Navigation Menu -->
   <div class="min-w-full mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">

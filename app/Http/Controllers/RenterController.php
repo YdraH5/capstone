@@ -59,11 +59,11 @@ class RenterController extends Controller
         // Pass both the reservation data and the success message
         return view('renters.home', [
             'reservations' => $reserve_date,
-            'due_dates' => DueDate::where('user_id', $user->id)->whereIn('status',['not paid','Rejected','approval'])->get(), // Execute the query to get results
+            'due_dates' => DueDate::where('user_id', $user->id)->get(), // Execute the query to get results
             'success' => 'Payment has been successful'
         ]);
     }
-    public function pay(Request $request){
+    public function pay(Request $request) {
         $data = $request->validate([
             'apartment_id' => 'required|numeric',
             'user_id' => 'required|numeric',
@@ -72,12 +72,38 @@ class RenterController extends Controller
             'payment_method' => 'required|string',
         ]);
     
+        // Check the payment method and handle accordingly
         if ($data['payment_method'] === 'gcash') {
             return $this->handleGcashPayment($data, $request);
+        } elseif ($data['payment_method'] === 'cash') {
+            return $this->handleCashPayment($data);
         } else {
             return $this->handleStripePayment($data);
         }
     }
+    private function handleCashPayment(array $data) {
+        $data['payment_status'] = 'paid'; // Initial status before admin approval
+    
+        // Create a payment record with status 'approval'
+        $payment = Payment::create([
+            'apartment_id' => $data['apartment_id'],
+            'user_id' => $data['user_id'],
+            'amount' => $data['amount_due'],
+            'category' => 'Rent Fee',
+            'payment_method' => 'cash',
+            'status' => 'approval', // Status set for admin approval
+            'receipt' => null, // No receipt needed for cash payments
+        ]);
+    
+        // Update the due date status
+        DueDate::where('id', $data['due_id'])->update([
+            'status' => 'Waiting for approval',
+            'payment_id' => $payment->id,
+        ]);
+    
+        return redirect()->route('renters.home')->with('success', 'Your payment is under verification by our admin.');
+    }
+        
     private function handleGcashPayment(array $data, Request $request) {
 
         $request->validate([
@@ -112,6 +138,7 @@ class RenterController extends Controller
     
         return redirect()->route('renters.home')->with('success', 'Your payment is under verification by our admin.');
     }
+    
     
     private function handleStripePayment(array $data) {
         $stripe = new \Stripe\StripeClient('sk_test_51PSmA3DXXNLXbAhja04flayIKgxlLKafmgY0BG8j3asXy3rZKDHladG5yY8204bV1JcnBxNic09F7IpMtTrivJAw00lD4MswJX');

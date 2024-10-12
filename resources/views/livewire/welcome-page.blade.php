@@ -171,15 +171,15 @@
     </div>
     <hr class="w-full border-t-2 border-gray-300 mt-1">
     
-        <div id="location" class="text-black flex flex-col items-center justify-center p-5 text-center my-2 ">
-            <h3 class="font-heavy text-2xl mb-1 text-black">
-            NRN Building Location
-            </h3>
-            <hr class="w-1/3 border-t-2 border-gray-300 mb-4">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3908.8019578203007!2d122.76057597408091!3d11.56605044413493!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a5f3009ecc8dab%3A0x145584f32319a34c!2sMission%20Hills%20Ave%2C%20Roxas%20City%2C%20Capiz!5e0!3m2!1sen!2sph!4v1728137691267!5m2!1sen!2sph"width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-            <br/><a class="addmaps" href="https://goo.gl/maps/mffvTWWDzYZ8pcXe9" id="get-map-data">
-            </a>
-        </div>
+    <div id="location" class="text-black flex flex-col items-center justify-center p-5 text-center my-2 ">
+        <h3 class="font-heavy text-2xl mb-1 text-black">
+        NRN Building Location
+        </h3>
+        <hr class="w-1/3 border-t-2 border-gray-300 mb-4">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3908.8019578203007!2d122.76057597408091!3d11.56605044413493!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a5f3009ecc8dab%3A0x145584f32319a34c!2sMission%20Hills%20Ave%2C%20Roxas%20City%2C%20Capiz!5e0!3m2!1sen!2sph!4v1728137691267!5m2!1sen!2sph"width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+        <br/><a class="addmaps" href="https://goo.gl/maps/mffvTWWDzYZ8pcXe9" id="get-map-data">
+        </a>
+    </div>
     <hr class="w-full border-t-2 border-gray-300">
     <div class="bg-white py-8">
         <div class="text-center">

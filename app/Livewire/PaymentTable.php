@@ -56,7 +56,7 @@ class PaymentTable extends Component
         // Retrieve the specific payment record    
         $payment = Payment::where('id',$payment_id)->first();
         // Update the status of the payment record
-        if($payment->category === 'Lease')
+        if($payment->category === 'Rent Fee')
         {
             Payment::where('id' ,$payment_id)
             ->update(['status'=>'Paid']);

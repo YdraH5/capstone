@@ -24,7 +24,7 @@
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex hover:text-black">
                     <x-nav-link wire:navigate :href="route('renters.report')" :active="request()->routeIs('renters.report')">
-                       {{ __('Report') }}
+                       {{ __('Complain') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                     {{ __('Payment') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link wire:navigate :href="route('renters.report')" :active="request()->routeIs('renters.report')">
-                    {{ __('Report') }}
+                    {{ __('Complain') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
