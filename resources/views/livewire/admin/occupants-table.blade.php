@@ -13,90 +13,95 @@
         </div>
     </div>
     <!-- Table -->
+       <!-- Success Message -->
+    @if (session('success'))
+        <div class="alert alert-success text-green-700 mb-4 p-4 bg-green-100 rounded-lg">
+            {{ session('success') }}
+        </div>    
+    @endif
     <div class="overflow-x-auto bg-white shadow-lg">
-        <table class="min-w-full mx-2 border-collapse">
-            <thead> 
-                @if (session('success'))
-                <div class="alert alert-success text-green-700">
-                    {{ session('success') }}
-                </div>    
-                @endif
-                
-                <tr class="bg-indigo-500 text-white uppercase text-sm">
-                    <th wire:click="doSort('renters_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
-                        <div class="inline-flex items-center justify-center">
-                            Name
-                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="renters_name" />
-                        </div>
-                    </th>  
-                    <th wire:click="doSort('phone_number')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
-                        <div class="inline-flex items-center justify-center">
-                            Phone number
-                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="phone_number" />
-                        </div>
-                    </th>  
-                    <th wire:click="doSort('email')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
-                        <div class="inline-flex items-center justify-center">
-                            Email
-                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="email" />
-                        </div>
-                    </th>                     
-                    <th wire:click="doSort('categ_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
-                        <div class="inline-flex items-center justify-center">
-                            Room Type
-                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="categ_name" />
-                        </div>
-                    </th>                     
-                    <th wire:click="doSort('building_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
-                        <div class="inline-flex items-center justify-center">
-                            Room Info
-                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="building_name" />
-                        </div>
-                    </th>
-                    <th wire:click="doSort('status')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
-                        <div class="inline-flex items-center justify-center">
-                            Lease Status
-                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="status" />
-                        </div>
-                    </th>    
-                    <th class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
-                        Action
-                    </th>                   
-                    <!-- <th class="py-3 px-4 text-center border-b border-indigo-600">Actions</th> -->
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($apartment as $apartments)
-                <tr class="hover:bg-indigo-100">
-                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->renters_name}}</td>
-                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->phone_number}}</td>
-                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->email}}</td>
-                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->categ_name}}</td>
-                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->building_name}}-{{$apartments->room_number}}
-                    </td>
-                    <td class="py-3 px-4 text-center border-b border-gray-300">
+    <table class="min-w-full mx-2 border-collapse">
+        <thead> 
+ 
+            <tr class="bg-indigo-500 text-white uppercase text-sm">
+                <!-- Table Headers -->
+                <th wire:click="doSort('renters_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                    <div class="inline-flex items-center justify-center">
+                        Name
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="renters_name" />
+                    </div>
+                </th>  
+                <th wire:click="doSort('phone_number')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                    <div class="inline-flex items-center justify-center">
+                        Phone number
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="phone_number" />
+                    </div>
+                </th>  
+                <th wire:click="doSort('email')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                    <div class="inline-flex items-center justify-center">
+                        Email
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="email" />
+                    </div>
+                </th>                     
+                <th wire:click="doSort('categ_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                    <div class="inline-flex items-center justify-center">
+                        Room Type
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="categ_name" />
+                    </div>
+                </th>                     
+                <th wire:click="doSort('building_name')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                    <div class="inline-flex items-center justify-center">
+                        Room Info
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="building_name" />
+                    </div>
+                </th>
+                <th wire:click="doSort('status')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                    <div class="inline-flex items-center justify-center">
+                        Lease Status
+                        <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="status" />
+                    </div>
+                </th>    
+                <th class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                    Action
+                </th>                   
+            </tr>
+        </thead>
+        <tbody>
+            @php
+            use App\Models\DueDate;
+            use Carbon\Carbon;
+            @endphp
+            @foreach($apartment as $apartments)
+            <tr class="hover:bg-indigo-100">
+                <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->renters_name}}</td>
+                <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->phone_number}}</td>
+                <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->email}}</td>
+                <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->categ_name}}</td>
+                <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->building_name}}-{{$apartments->room_number}}</td>
+                <td class="py-3 px-4 text-center border-b border-gray-300">
+                    @php
+                        $unpaidDues = DueDate::where('user_id', $apartments->user_id)
+                            ->where('status', 'not paid')
+                            ->where(function ($query) {
+                                $query->where('payment_due_date', '<', now())
+                                    ->orWhere('payment_due_date', '=', now()->format('Y-m-d'));
+                            })->get();
+                        $unpaidMonthsCount = $unpaidDues->count();
+                    @endphp
 
-                    @if(\App\Models\DueDate::where('user_id', $apartments->user_id)
-                        ->where('status', 'not paid')
-                        ->where(function ($query) {
-                            $query->where('payment_due_date', '<', now()) // Past due dates
-                                  ->orWhere('payment_due_date', '=', now()->format('Y-m-d')); // Today's due date
-                        })
-                                            ->count() > 0)
-                        {{ \App\Models\DueDate::where('user_id', $apartments->user_id)
-                                            ->where('status', 'not paid')
-                                            ->where(function ($query) {
-                                                $query->where('payment_due_date', '<', now())
-                                                    ->orWhere('payment_due_date', '=', now()->format('Y-m-d'));
-                                            })
-                                            ->count() }} Unpaid Months
+                    @if($unpaidMonthsCount > 0)
+                        <a href="#" x-data x-on:click="$dispatch('open-modal',{name:'unpaid-modal-{{ $apartments->user_id }}'})" class="text-red-600 hover:underline hover:text-red-800">
+                            {{ $unpaidMonthsCount }} Unpaid Months
+                        </a>
                     @else
-                        Payment Updated
+                        <a href="#" x-data x-on:click="$dispatch('open-modal',{name:'paid-modal-{{ $apartments->user_id }}'})" class="text-green-600 hover:underline hover:text-green-800">
+                            Payment Updated
+                        </a>
                     @endif
+                </td>
 
-                    </td>
-                    <td class="py-3 px-4 text-center border-b border-gray-300">
-                        <div class="flex justify-center gap-1"> 
+                <td class="py-3 px-4 text-center border-b border-gray-300">
+                    <div class="flex justify-center gap-1">
                         <button x-data x-on:click="$dispatch('open-modal',{name:'out-modal'})">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M22 10.5h-6m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM4 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 10.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
@@ -109,18 +114,86 @@
                                 <div class="flex justify-end space-x-2">
                                     <button x-on:click="$dispatch('close-modal',{name:'out-modal'})" class="bg-gray-500 text-white px-4 py-2 rounded">No</button>
                                     <button wire:click="out({{ $apartments->apartment_id }})" class="bg-blue-500 text-white px-4 py-2 rounded">Yes</button>
-                                    </div>
+                                </div>
                             </x-slot>
                         </x-modal>
+                    </div>
+                </td>
+            </tr>
+                            
+            <!-- Unpaid Modal -->
+            <x-modal name="unpaid-modal-{{ $apartments->user_id }}" title="Overdue for {{ $apartments->renters_name }}">
+                <x-slot name="body">
+                    <div class="space-y-4">
+                        @foreach($unpaidDues as $due)
+                            @php
+                                $dueDate = Carbon::parse($due->getAttribute('payment_due_date'));
+                                $formattedDueDate = $dueDate->format('F j, Y');
+                                $status = ucfirst($due->getAttribute('status'));
+                                $daysOverdue = $dueDate->diffInDays(now());
+                                $amountDue = number_format($due->getAttribute('amount_due'), 2);
+                            @endphp
+                            <div class="p-4 border border-gray-300 rounded-lg bg-gray-50">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold text-gray-700">Due Date:</span>
+                                    <span class="text-gray-900">{{ $formattedDueDate }}</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-semibold text-gray-700">Amount:</span>
+                                    <span class="text-black">₱{{ $amountDue }}</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-semibold text-gray-700">Status:</span>
+                                    <span class="text-black">{{ $status }}</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-semibold text-gray-700">Days Overdue:</span>
+                                    <span class="text-red-600">{{ $daysOverdue }} days overdue</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
 
-                        </div>
-                    </td>
-                </tr>
-                @endforeach  
-            </tbody>
+                    <!-- Send Email Button -->
+                    <div class="flex justify-end space-x-2 mt-4">
+                    <button wire:click="sendReminderEmail({{ $apartments->user_id }}, {{ $unpaidDues->isNotEmpty() ? $daysOverdue : 0 }})"
+                            class="bg-blue-500 text-white px-4 py-2 rounded relative">
+                        <!-- Default Button Text -->
+                        <span wire:loading.remove wire:target="sendReminderEmail">Send Reminder</span>
 
+                        <!-- Loading State (shown when clicked) -->
+                        <span wire:loading wire:target="sendReminderEmail">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 flex inline-flex animate-spin">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v3m6 3a6 6 0 1 1-12 0 6 6 0 0 1 12 0z" />
+                            </svg>
+                            Sending...
+                        </span>
+                    </button>
+
+
+                        <button x-on:click="$dispatch('close-modal',{name:'unpaid-modal-{{ $apartments->user_id }}'})" class="bg-gray-500 text-white px-4 py-2 rounded">Close</button>
+                    </div>
+                </x-slot>
+            </x-modal>
+
+            <!-- Paid Modal -->
+            <x-modal name="paid-modal-{{ $apartments->user_id }}" title="Payment Status for {{ $apartments->renters_name }}">
+                <x-slot name="body">
+                    <div class="p-4 border border-gray-300 rounded-lg bg-gray-50">
+                        <p class="text-center text-green-600">All payments are up to date for {{ $apartments->renters_name }}.</p>
+                    </div>
+
+                    <div class="flex justify-end space-x-2 mt-4">
+                        <button x-on:click="$dispatch('close-modal',{name:'paid-modal-{{ $apartments->user_id }}'})" class="bg-gray-500 text-white px-4 py-2 rounded">Close</button>
+                    </div>
+                </x-slot>
+            </x-modal>
+
+            @endforeach
+        </tbody>
     </table>
-    
+
+
     </div>
 
     <div class="py-4">

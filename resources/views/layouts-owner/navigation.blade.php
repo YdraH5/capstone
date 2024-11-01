@@ -55,7 +55,9 @@
           <div class="hidden sm:-my-px sm:ms-10 sm:flex hover:text-black"> 
             <!-- Category Icon -->
             @include('components.category-icon')
-            <x-nav-link wire:navigate :href="route('owner.categories.index')" :active="request()->routeIs('owner.categories.index')">
+            <x-nav-link wire:navigate :href="route('owner.categories.index')"     
+            :active="in_array(request()->route()->getName(), ['owner.categories.index', 'images.index'])"
+            >
               {{ __('Categories') }}
             </x-nav-link>
           </div>
@@ -179,7 +181,7 @@
                   :active="request()->routeIs('owner.occupants.index')" 
                   class="flex items-center px-4 py-2 text-white ">
                   @include('components.occupant-icon') 
-                  Aparment
+                  Occupants
               </x-responsive-nav-link>
 
               <x-responsive-nav-link  href="{{ route('owner.categories.index') }}" 

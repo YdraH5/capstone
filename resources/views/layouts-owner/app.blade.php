@@ -19,7 +19,7 @@
     <body class="bg-smokewhite">
        
            
-        @include('components.layouts.navigation')
+        @include('layouts-owner.navigation')
         <!-- Page Heading -->
  
         @if (isset($header))

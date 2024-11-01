@@ -91,7 +91,7 @@
                 <div class="flex justify-end py-2">
                     <button wire:click ="reject({{$id}})"x-on:click="$dispatch('close-modal',{name:'view-receipt'})" type="button"
                         class="bg-red-400 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-4 ">Reject</button>
-                    @if($currentStatus === 'approval')
+                    @if($currentStatus === 'pending')
                     <button type="button"
                         class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
                         wire:click="approve({{ $id }})"

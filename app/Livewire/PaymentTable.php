@@ -11,7 +11,8 @@ use App\Models\DueDate;
 use App\Models\Reservation;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PaymentAccepted;
 class PaymentTable extends Component
 {
     use WithPagination;
@@ -51,36 +52,91 @@ class PaymentTable extends Component
         $this->currentStatus =null;
         $this->reset(['currentReceipt','payment_id','currentStatus']); // Reset specific property
     }
-    public function approve($payment_id){
-
-        // Retrieve the specific payment record    
-        $payment = Payment::where('id',$payment_id)->first();
-        // Update the status of the payment record
-        if($payment->category === 'Rent Fee')
-        {
-            Payment::where('id' ,$payment_id)
-            ->update(['status'=>'Paid']);
-
-            DueDate::where('payment_id', $payment_id)
-            ->update(['status'=>'Paid']);
-            
+    public function approve($payment_id)
+    {
+        // Retrieve the specific payment record
+        $payment = Payment::find($payment_id);
+    
+        // Check if payment exists
+        if (!$payment) {
+            return redirect()->back()->with('error', 'Payment record not found.');
         }
-        elseif($payment->category === 'Reservation fee')
-        {
-            Payment::where('id' ,$payment_id)
-            ->update(['status'=>'Paid']);
-            Reservation::where('id',$payment->reservation_id)
-            ->update(['status'=>'Approved']);
-             // Update apartment status
+    
+        // Retrieve user data associated with the payment
+        $user = User::find($payment->user_id);
+    
+        // Check if the user exists
+        if (!$user) {
+            return redirect()->back()->with('error', 'User associated with this payment not found.');
+        }
+    
+        // Update the status of the payment and handle the different payment categories
+        if ($payment->category === 'Rent Fee') {
+            // Update the payment and due date status to 'paid'
+            $this->updatePaymentAndDueDate($payment_id);
+    
+            // Send payment accepted email for rent fee
+            $this->sendPaymentAcceptedEmail($user, $payment);
+    
+        } elseif ($payment->category === 'Reservation fee') {
+            // Update payment status to 'paid'
+            $this->updatePaymentStatus($payment_id, 'paid');
+    
+            // Update reservation status to 'approved'
+            Reservation::where('id', $payment->reservation_id)
+                ->update(['status' => 'approved']);
+    
+            // Update the apartment status to 'Reserved' and set the renter_id
             Appartment::where('id', $payment->apartment_id)
-            ->update(['status' => 'Reserved',
-                    'renter_id' => $payment->user_id]);
-                    
-                }
-       
-        // Retrieve user information
-        session()->flash('success', 'Payment Accepted'); // Set the success flash message
+                ->update([
+                    'status' => 'Reserved',
+                    'renter_id' => $payment->user_id
+                ]);
+             // Update the user role to 'reserve'
+            User::where('id', $payment->user_id)
+            ->update([
+                'role' => 'reserve',
+            ]);
+    
+            // Send payment accepted email for reservation fee
+            $this->sendPaymentAcceptedEmail($user, $payment);
         }
+    
+        // Set the success flash message
+        session()->flash('success', 'Payment Accepted');
+
+    }
+    
+    private function updatePaymentAndDueDate($payment_id)
+    {
+        // Update payment status
+        Payment::where('id', $payment_id)->update(['status' => 'paid']);
+    
+        // Update due date status
+        DueDate::where('payment_id', $payment_id)->update(['status' => 'paid']);
+    }
+    
+    private function updatePaymentStatus($payment_id, $status)
+    {
+        // Update the payment status
+        Payment::where('id', $payment_id)->update(['status' => $status]);
+    }
+    
+    private function sendPaymentAcceptedEmail($user, $payment)
+    {
+        // Fetch the due date if it exists, particularly for Rent Fee category
+        $dueDate = DueDate::where('payment_id', $payment->id)->first();
+    
+        // Send an email notification
+        Mail::to($user->email)->send(new PaymentAccepted([
+            'name' => $user->name,
+            'payment' => $payment->amount,
+            'category' => $payment->category,
+            'payment_method' => $payment->payment_method,
+            'payment_due_date' => $dueDate ? $dueDate->payment_due_date : null, // Add due date if applicable
+        ]));
+    }
+    
     public function reject($payment_id){
         
         // Retrieve the specific payment record    

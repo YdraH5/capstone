@@ -55,7 +55,7 @@ class RenterController extends Controller
     
             return $reservation;
         });
-    
+        
         // Pass both the reservation data and the success message
         return view('renters.home', [
             'reservations' => $reserve_date,
@@ -91,13 +91,13 @@ class RenterController extends Controller
             'amount' => $data['amount_due'],
             'category' => 'Rent Fee',
             'payment_method' => 'cash',
-            'status' => 'approval', // Status set for admin approval
+            'status' => 'pending', // Status set for admin approval
             'receipt' => null, // No receipt needed for cash payments
         ]);
     
         // Update the due date status
         DueDate::where('id', $data['due_id'])->update([
-            'status' => 'Waiting for approval',
+            'status' => 'pending',
             'payment_id' => $payment->id,
         ]);
     
@@ -127,12 +127,12 @@ class RenterController extends Controller
             'amount' => $data['amount_due'],
             'category' => 'Rent Fee',
             'payment_method' => 'gcash',
-            'status' => 'approval',
+            'status' => 'pending',
             'receipt' => $data['receipt'],
         ]);
     
         DueDate::where('id', $data['due_id'])->update([
-            'status' => 'Waiting for approval',
+            'status' => 'pending',
             'payment_id'=> $payment->id,
         ]);
     

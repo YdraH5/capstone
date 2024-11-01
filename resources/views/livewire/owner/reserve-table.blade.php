@@ -70,7 +70,7 @@
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->building_name}}-{{$reservation->room_number}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->check_in_date}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->rental_period}} Months</td>
-                        @if($reservation->status === 'approval')
+                        @if($reservation->status === 'pending')
                         <td class="text-center border border-black-900 bg-yellow-100">Need approval</td>
                         @else
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->status}}</td>
@@ -94,7 +94,7 @@
                 <div class="flex justify-end py-2">
                     <button wire:click ="close()"x-on:click="$dispatch('close-modal',{name:'view-receipt'})" type="button"
                         class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mr-4">Close</button>
-                    @if($currentStatus === 'approval')
+                    @if($currentStatus === 'pending')
                     <button type="button"
                         class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
                         wire:click="approve({{ $id }})"

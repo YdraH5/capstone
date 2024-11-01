@@ -99,7 +99,7 @@ class ReservationController extends Controller
             'category' => 'Reservation fee',
             'transaction_id' => null,
             'payment_method' => 'gcash',
-            'status' => 'approval',
+            'status' => 'pending',
             'receipt' => $data['receipt'],
         ]);
     

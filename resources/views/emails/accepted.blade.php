@@ -1,0 +1,1 @@
+<p>Dear {{$data['name']}},</p> <p>Your payment {{$data['payment']}} was accepted and verified by our admin. This is a receipt/proof that you paid your {{$data['category']}} for {{$data['payment_due_date']}}</p> <p></p> <p>Best regards,</p> <p>The NRN Building Team</p> <p><img src="{{ asset('images/NRN LOGO.png') }}" alt="NRN Building Logo" style="width:150px;height:auto;"></p> 

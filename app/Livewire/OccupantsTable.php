@@ -11,6 +11,10 @@ use App\Models\DueDate;
 use App\Models\Building;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendReminder;
+
 
 class OccupantsTable extends Component
 {
@@ -25,6 +29,7 @@ class OccupantsTable extends Component
     public $currentStatus;
     public $modal = false;
     public $due_id;
+    public $open = false;
     public function doSort($column){
         if($this->sortColumn === $column){
             $this->sortDirection = ($this->sortDirection === 'ASC')? 'DESC':'ASC';
@@ -125,7 +130,53 @@ class OccupantsTable extends Component
         $this->currentStatus =null;
         $this->reset(['currentReceipt','due_id','currentStatus']); // Reset specific property
     }
+    public function sendReminderEmail($user_id,$daysOverdue)
+    {
+        $user = User::find($user_id);
+        
+        // Check if user exists
+        if (!$user) {
+            session()->flash('error', 'User not found.');
+            return;
+        }
 
+        // Retrieve all unpaid dues
+        $unpaidDues = DueDate::where('user_id', $user_id)
+            ->where('status', 'not paid')
+            ->where(function ($query) {
+                $query->where('payment_due_date', '<', now())
+                      ->orWhere('payment_due_date', '=', now()->format('Y-m-d'));
+            })->get();
+
+        // Check if there are unpaid dues
+        if ($unpaidDues->isEmpty()) {
+            session()->flash('error', 'No unpaid dues found.');
+            return;
+        }
+        // Prepare dues data
+        $duesData = $unpaidDues->map(function($due) {
+
+            return [
+                'amount' => number_format($due->amount_due, 2),
+                'date' => Carbon::parse($due->payment_due_date)->format('F j, Y'),
+
+            ];
+        });
+
+         // Prepare email data
+         $emailData = [
+            'name' => $user->name,
+            'dues' => $duesData,
+            'daysOverdue' => $daysOverdue,
+        ];
+
+        // Send the email
+        Mail::to($user->email)->send(new SendReminder($emailData));
+    
+        return redirect()->route('admin.occupants.index')->with('success', 'Reminder email sent successfully to ' . $user->name);
+
+    }
+    
     public function render()
     {
             // Start the query with the Apartment model and join the necessary relationships

@@ -96,7 +96,7 @@
         </h3>
         <!-- Features List -->
         <ul class="mt-4 text-gray-700 list-disc pl-5">
-            <!-- List each feature as bullet points -->
+            <!-- List each feature as bullet points -->s
             @if (!empty($featureDescriptions))
                 @foreach ($featureDescriptions as $feature)
                     <li>{{ $feature }}</li>

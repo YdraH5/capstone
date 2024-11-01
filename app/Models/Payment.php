@@ -37,7 +37,10 @@ class Payment extends Model
         {
             return $this->belongsTo(Appartment::class);
         }
-
+        public function dueDate()
+        {
+            return $this->hasOne(DueDate::class, 'payment_id');
+        }
         public function getActivitylogOptions(): LogOptions
         {
             return LogOptions::defaults()

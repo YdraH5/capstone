@@ -63,7 +63,7 @@ Route::group(['middleware' => ['auth','verified']], function () {
     Route::group(['middleware' => ['isOwner']], function () {
         Route::get('/owner/dashboard', [OwnerDashboardController::class, 'index'])->name('owner.dashboard');
         Route::controller(ImageController::class)->group(function() {
-            Route::get('/owner/categories/{categoryId}/upload', 'index');
+            Route::get('/owner/categories/{categoryId}/upload', 'index')->name('images.index');
             Route::get('/owner/categories/{categoryId}/edit', 'edit');
             Route::post('/owner/categories/{categoryId}/description', 'description');
             Route::post('/owner/categories/{categoryId}/upload', 'store');

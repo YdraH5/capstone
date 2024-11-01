@@ -116,56 +116,60 @@
     <div class="bg-white-200 py-8">
         <div id="rooms" class="text-black flex flex-col items-center justify-center p-5 text-center my-2 ">
         <h3 class="font-heavy text-2xl mb-1 text-black"id="reserve">
-        Our Popular Apartments We Recommend for You
+        Apartments We Recommend for You
         </h3>
         <hr class="w-1/2 border-t-2 border-gray-300 mb-4">
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-w-full">
-                @foreach ($categories as $category)
-                <div class="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:bg-slate-200">
-                    <div id="default-carousel-{{$category->category_id}}" class="relative" data-carousel="static">
-                        <!-- Carousel wrapper -->
-                        <div class="overflow-hidden relative h-56 sm:h-64 xl:h-80 2xl:h-96 ">
-                            @foreach ($images[$category->category_id] as $image)
-                            <div class="hidden duration-200 ease-in-out" data-carousel-item>
-                                <img src="{{ asset($image->image) }}" style="width:100%;height:100%;" class="block absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2 clickable-image" alt="...">
-                            </div>
-                            @endforeach
-                        </div>
-                        <!-- Slider indicators -->
-                        <div class="flex absolute bottom-5 left-1/2 transform -translate-x-1/2 space-x-3 z-30">
-                            @for ($i = 0; $i < $images[$category->category_id]->count(); $i++)
-                                <button type="button" class="w-3 h-3 rounded-full bg-yellow-100" aria-current="false" aria-label="Slide {{$i+1}}" data-carousel-slide-to="{{$i}}"></button>
-                            @endfor
-                        </div>
-                        <!-- Slider controls -->
-                        <button type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-                            <span class="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-yellow-100/30 group-hover:bg-yellow-100/50 group-focus:ring-4 group-focus:ring-white">
-                                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-                            </span>
-                        </button>
-                        <button type="button" class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-                            <span class="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-yellow-100/30 group-hover:bg-yellow-100/50 group-focus:ring-4 group-focus:ring-white">
-                                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                            </span>
-                        </button>
-                    </div>
-                    <!-- Description -->
-                    <div class="p-2 sm:p-6">
-                        <h3 class="text-xl sm:text-2xl font-semibold mb-2 text-gray-700">{{ $category->category_name }}</h3>
-                        <p class="text-gray-600 mb-4">{{ $category->description }}</p>
-                        <div class="flex items-center mb-4">
-                            <h6 class="text-lg sm:text-xl font-semibold text-gray-700 mr-2">Price:</h6>
-                            <p class="text-md sm:text-lg text-gray-800">₱{{ number_format($category->price, 2) }}/month</p>
-                        </div>
-                        <button wire:click="viewDetails({{ $category->category_id }})" 
-                                class="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition duration-300">
-                            View Details
-                        </button>
-                    </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-w-full px-8">
+    @foreach ($categories as $category)
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:bg-slate-200">
+        <div id="default-carousel-{{$category->category_id}}" class="relative group" data-carousel="static">
+            <!-- Carousel wrapper -->
+            <div class="overflow-hidden relative h-56 sm:h-64 xl:h-80 2xl:h-96 shadow-md">
+                @foreach ($images[$category->category_id] as $image)
+                <div class="hidden duration-200 ease-in-out" data-carousel-item>
+                    <img src="{{ asset($image->image) }}" style="width:100%;height:100%;" class="block absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2 clickable-image" alt="...">
                 </div>
                 @endforeach
             </div>
+            <!-- Slider indicators -->
+            <div class="flex absolute bottom-5 left-1/2 transform -translate-x-1/2 space-x-3 z-30">
+                @for ($i = 0; $i < $images[$category->category_id]->count(); $i++)
+                    <button type="button" class="w-2 h-2 rounded-full bg-white" aria-current="false" aria-label="Slide {{$i+1}}" data-carousel-slide-to="{{$i}}"></button>
+                @endfor
+            </div>
+            <!-- Slider controls -->
+            <button type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group-hover:opacity-100 opacity-0 transition-opacity" data-carousel-prev>
+                <span class="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-yellow-100/30 group-hover:bg-yellow-100/50 group-focus:ring-4 group-focus:ring-white">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </span>
+            </button>
+            <button type="button" class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group-hover:opacity-100 opacity-0 transition-opacity" data-carousel-next>
+                <span class="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-yellow-100/30 group-hover:bg-yellow-100/50 group-focus:ring-4 group-focus:ring-white">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </span>
+            </button>
+        </div>
+        <!-- Description -->
+        <div class="p-2 sm:p-6">
+            <h3 class="text-left text-xl sm:text-2xl font-semibold mb-2 text-gray-700">{{ $category->category_name }}</h3> <!-- Left-aligned text -->
+            <div class="flex items-center mb-4">
+                <h6 class="text-lg sm:text-xl font-semibold text-gray-700 mr-2">Price:</h6>
+                <p class="text-md sm:text-lg text-gray-800">₱{{ number_format($category->price, 2) }}/month</p>
+            </div>
+            <button wire:click="viewDetails({{ $category->category_id }})" 
+                    class="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition duration-300">
+                View Details
+            </button>
+        </div>
+    </div>
+    @endforeach
+</div>
+
+
         </div>
     </div>
     </div>

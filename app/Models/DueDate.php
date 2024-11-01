@@ -16,13 +16,14 @@ class DueDate extends Model
         'payment_due_date',
         'status'
     ];
+    
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function payments()
+    public function payment()
     {
-        return $this->belongsTo(Payment::class);
+        return $this->belongsTo(Payment::class, 'payment_id', 'id');
     }
 }
