@@ -204,7 +204,7 @@ class RenterController extends Controller
                     'payment_method' => 'stripe',
                 ]);
                 DueDate::where('id', $data['due_id'])->update([
-                    'status' => 'Paid',
+                    'status' => 'paid',
                     'payment_id'=> $payment->id,
                 ]);
 
