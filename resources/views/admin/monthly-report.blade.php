@@ -1,17 +1,16 @@
-@section('title', 'Complain Management')
+@section('title', 'Occupants Management')
 
-@section('content')
-<x-owner-layout>
-
+<x-app-layout>
+    @section('content')
+        
     <div class="py-4">
         <div class="min-w-full mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg ">
                 <div class="flex flex-col">
-                   @livewire('report-table')   
+                    @livewire('generate-report')   
                 </div>
             </div>
         </div>
     </div>
-    
-    @stop           
-</x-owner-layout>
+    @endsection
+</x-app-layout>

@@ -78,6 +78,15 @@
             </x-nav-link>
           </div>
         </li>
+        <li class="mb-4">
+          <div class="hidden sm:-my-px sm:ms-10 sm:flex hover:text-black"> 
+            <!-- Payments Icon -->
+            @include('components.megaphone-icon')
+            <x-nav-link wire:navigate :href="route('admin.announcement.index')" :active="request()->routeIs('admin.announcement.index')">
+              {{ __('Announcements') }}
+            </x-nav-link>
+          </div>
+        </li>
       </ul>
         <!-- Footer -->
       <footer class="p-1 bg-[#212529] text-gray-400 border-t border-gray-600">
@@ -176,6 +185,13 @@
                   class="flex items-center px-4 py-2 text-white ">
                   @include('components.calendar-icon') 
                   Reserves
+              </x-responsive-nav-link>
+
+              <x-responsive-nav-link  href="{{ route('admin.announcement.index') }}" 
+                  :active="request()->routeIs('admin.Announcement.index')" 
+                  class="flex items-center px-4 py-2 text-white ">
+                  @include('components.megaphone-icon') 
+                  Announcements
               </x-responsive-nav-link>
               <x-responsive-nav-link  href="{{ route('admin.payments.index') }}" 
                   :active="request()->routeIs('admin.payments.index')" 

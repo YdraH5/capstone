@@ -32,6 +32,11 @@ Route::group(['middleware' => ['auth','verified']], function () {
         Route::get('/admin/users', function () {
             return view('/admin/users');
         })->name('admin.users.index');
+        
+        // ROUTE TO MONTHLY REPORT
+        Route::get('/admin/monthly-report', function () {
+            return view('/admin/monthly-report');
+        })->name('admin.generate-report.index');
 
         // ROUTE TO REPORTS INDEX PAGE FOR ADMIN
         Route::get('/admin/reports', function () {
@@ -57,6 +62,11 @@ Route::group(['middleware' => ['auth','verified']], function () {
         Route::get('/admin/occupants', function () {
             return view('/admin/occupants');
         })->name('admin.occupants.index');
+
+        // ROUTE TO ANNOUNCEMENT
+        Route::get('/admin/announcement', function () {
+            return view('/admin/announcement');
+        })->name('admin.announcement.index');
     });
     
     //route group for owner pages
@@ -115,6 +125,8 @@ Route::group(['middleware' => ['auth','verified']], function () {
     Route::group(['middleware' => ['isReserve','verified']], function () {
         Route::get('/reserve/edit',[ReservationController::class,'edit'])->name('reserve.edit');
         Route::get('/reserve/{id}/{apartment}/{reservation}/update',[ReservationController::class,'update'])->name('reserve.update');
+        
+
     });
     Route::group(['middleware' => ['isRenter','verified']], function () {
         Route::controller(SubmitReportController::class)->group(function() {
@@ -138,6 +150,9 @@ Route::group(['middleware' => ['auth','verified']], function () {
         Route::get('/renters/report', function () {
             return view('/renters/report');
         })->name('renters.report');
+        Route::get('/renters/announcement', function () {
+            return view('/renters/announcement');
+        })->name('renters.announcement');
     });
 Route::get('/notify', [NotifyMeController::class, 'notify'])->name('emails.notify')->middleware(['auth', 'verified']);
 Route::get('/contract', [ReservationController::class, 'contract'])->name('emails.contract')->middleware(['auth', 'verified','isRenter']);

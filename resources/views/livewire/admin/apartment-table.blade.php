@@ -53,6 +53,12 @@
                             <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="status" />
                         </div>
                     </th>
+                    <th wire:click="doSort('status')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                            Occupants
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="status" />
+                        </div>
+                    </th>
                     <th class="py-3 px-4 text-center border-b border-indigo-600">Actions</th>
                 </tr>
             </thead>
@@ -70,6 +76,16 @@
                     @endif
                         </td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->status}}</td>
+                        <td class="py-3 px-4 text-center border-b border-gray-300">
+                        @php
+                        $occupants = App\Models\Reservation::where('user_id', $apartments->renter_id)
+                            ->select('occupants')
+                            ->get();
+                        @endphp
+                        @foreach ($occupants as $reservation)
+                            {{ $reservation->occupants }}
+                        @endforeach
+                        </td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">
                             <div class="flex justify-center gap-1"> 
 

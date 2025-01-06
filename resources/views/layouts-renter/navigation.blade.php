@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-yellow-800 text-white sticky top-0 z-50">
+<nav x-data="{ open: false }" class="bg-[#355F2E] text-white sticky top-0 z-50">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -25,6 +25,11 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex hover:text-black">
                     <x-nav-link wire:navigate :href="route('renters.report')" :active="request()->routeIs('renters.report')">
                        {{ __('Complain') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex hover:text-black">
+                    <x-nav-link wire:navigate :href="route('renters.announcement')" :active="request()->routeIs('renters.announcement')">
+                       {{ __('Announcement') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -98,6 +103,9 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link wire:navigate :href="route('renters.report')" :active="request()->routeIs('renters.report')">
                     {{ __('Complain') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link wire:navigate :href="route('renters.announcement')" :active="request()->routeIs('renters.announcement')">
+                    {{ __('Announcement') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->

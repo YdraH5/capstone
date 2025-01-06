@@ -48,6 +48,7 @@ class ReservationController extends Controller
             'apartment_id' => 'required|numeric',
             'user_id' => 'required|numeric',
             'check_in' => 'required|date_format:Y-m-d',
+            'occupants'=>'required|numeric',
             'rental_period' => 'required|numeric',
             'total_price' => 'required|numeric',
             'payment_method' => 'required|string',
@@ -86,6 +87,7 @@ class ReservationController extends Controller
             'apartment_id' => $data['apartment_id'],
             'user_id' => $data['user_id'],
             'check_in' => $data['check_in'],
+            'occupants'=> $data['occupants'],
             'rental_period' => $data['rental_period'],
             'total_price' => $data['total_price'],
             'status' => 'Pending',
@@ -135,6 +137,7 @@ class ReservationController extends Controller
                 'user_id' => $data['user_id'],
                 'apartment_id' => $data['apartment_id'],
                 'check_in' => $data['check_in'],
+                'occupants'=> $data['occupants'],
                 'rental_period' => $data['rental_period'],
                 'total_price' => $data['total_price'],
             ],
@@ -142,50 +145,6 @@ class ReservationController extends Controller
     
         return redirect($session->url);
     }
-//     public function cancel(Request $request, $reservationId) {
-//     // Find the reservation
-//     $reservation = Reservation::find($reservationId);
-
-//     if (!$reservation) {
-//         return back()->withErrors('Reservation not found.');
-//     }
-
-//     // Retrieve payment details
-//     $payment = Payment::where('reservation_id', $reservationId)->first();
-//     if ($payment->payment_method === 'stripe') {
-//         // Initialize Stripe client
-//         $stripe = new \Stripe\StripeClient('sk_test_51PSmA3DXXNLXbAhja04flayIKgxlLKafmgY0BG8j3asXy3rZKDHladG5yY8204bV1JcnBxNic09F7IpMtTrivJAw00lD4MswJX');
-
-//         try {
-//             // Refund the payment
-//             $refund = $stripe->refunds->create([
-//                 'charge' => $payment->transaction_id,
-//                     'amount' => '5',
-
-//             ]);
-//             // Update the payment status
-//             $payment->update(['status' => 'refunded']);
-//         } catch (\Exception $e) {
-//             return back()->withErrors('Failed to process Stripe refund.');
-//         }
-//     }
-
-//     // Update the reservation status to 'Cancelled'
-//     $reservation->update(['status' => 'Cancelled']);
-
-//     // Update apartment status to 'Available'
-//     DB::table('apartment')
-//         ->where('id', $reservation->apartment_id)
-//         ->update(['status' => 'Available', 'renter_id' => null]);
-
-//     // Optionally update user role if needed
-//     DB::table('users')
-//         ->where('id', $reservation->user_id)
-//         ->update(['role' => 'user']);  // Or whatever role they should return to
-
-//     return redirect()->route('reserve.index', ['apartment' => $reservation->apartment_id])->with('success', 'Reservation has been successfully canceled and refunded.');
-// }
-
     public function paymentSuccess(Request $request) {
         $stripe = new \Stripe\StripeClient('sk_test_51PSmA3DXXNLXbAhja04flayIKgxlLKafmgY0BG8j3asXy3rZKDHladG5yY8204bV1JcnBxNic09F7IpMtTrivJAw00lD4MswJX');
         $session_id = $request->get('session_id');
@@ -203,8 +162,9 @@ class ReservationController extends Controller
                 'check_in' => $session->metadata->check_in,
                 'rental_period' => $session->metadata->rental_period,
                 'total_price' => $session->metadata->total_price,
+                'occupants'=> $session->metadata->occupants,
                 'payment_method' => 'stripe',
-                'status' => 'Approved'
+                'status' => 'approved'
             ];
 
             $reservation = Reservation::create($data);
@@ -243,48 +203,12 @@ class ReservationController extends Controller
 
         return back()->withErrors('Reservation could not be created.');
     }    
-    public function cancel($reservationId)
-    {
-        $reservation = DB::table('reservations')->where('id', $reservationId)->first();
-        if ($reservation) {
-            // Get the creation time and current time
-            $createdDate = strtotime($reservation->created_at);
-            $currentDate = strtotime(now());
-            $threeDaysInSeconds = 3 * 24 * 60 * 60;
-            
-            // Check if less than 3 days have passed since the reservation was created
-            if ($currentDate - $createdDate <= $threeDaysInSeconds) {
-                // Allow cancellation
-            $reserve = Reservation::find($reservationId);
-            Reservation::where('id', $reservationId)
-                ->where('user_id', $reserve->user_id) 
-                ->update(['status' => 'canceled']);
-            // update apartment status tp available
-            Appartment::where('id', $reserve->apartment_id)
-                ->where('status', '!=', 'Available')
-                ->update(['status' => 'Available']);
-            // update the user role back to default NULL
-            User::where('id', $reserve->user_id)
-                ->update(['role' => null]);
-            // update payment status to refund
-            Payment::where('reservation_id', $reserve->id)
-                ->where('user_id', $reserve->user_id) 
-                ->update(['status' => 'Refund']);
-
-                return redirect()->route('welcome')->with('success', 'Cancelation of reservation is under review by our admins, please wait for approval.');
-            } else {
-                // Too late to cancel
-                return redirect()->route('reserve.wait')->with('error', 'Cancellation period has expired. Reservations can only be canceled within 3 days of creation.');
-            }
-        }
-    
-        return redirect()->route('reserve.wait')->with('error', 'Reservation not found.');
-    }
     
     public function waiting(Request $request)
     {
         $user = auth()->user();
     
+        
         // Fetch the reservation and payment information
         $reserve_date = DB::table('reservations')
             ->join('payments', 'payments.reservation_id', '=', 'reservations.id')
@@ -300,10 +224,18 @@ class ReservationController extends Controller
             ->whereNot('reservations.status','canceled')
             ->limit(1)
             ->get();
-    
+        $category = Appartment::where('id',$reserve_date->pluck('apartment_id'))
+                    ->select('category_id')
+                    ->get();
+                    foreach($category as $categ){
+                        $categoryImages = DB::table('category_images')
+                            ->where('category_id', $categ->category_id)
+                            ->get();
+                    }
         // Pass both the reservation data and the success message
         return view('reserve.wait', [
             'reservations' => $reserve_date,
+            'images' =>$categoryImages,
             'success' => 'Payment has been successful'
         ]);
     }

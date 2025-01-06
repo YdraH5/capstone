@@ -156,7 +156,7 @@ class RenterController extends Controller
                 'price_data' => [
                     'currency' => 'php',
                     'product_data' => [
-                        'name' => 'Rental Fee',
+                        'name' => 'Rent Fee',
                     ],
                     'unit_amount' => $data['amount_due'] * 100,
                 ],
@@ -279,64 +279,84 @@ class RenterController extends Controller
     //         ->with('success', 'Contract was sent to the email registered.');
     // }
     
-    public function extend(Request $request){
-        // Validate request data
-        $data = $request->validate([
-            'extend' => 'required|numeric',
-            'reservation_id' => 'required|numeric',
-            'apartment_id' => 'required|numeric',
-            'user_id' => 'required|numeric',
+    public function extend(Request $request)
+{
+    // Validate request data
+    $data = $request->validate([
+        'extend' => 'required|numeric',
+        'apartment_id' => 'required|numeric',
+        'user_id' => 'required|numeric',
+    ]);
+
+    // Increment rental_period for the reservation
+    $reservation = Reservation::where('user_id', $data['user_id'])->where('apartment_id', $data['apartment_id'])->first();
+
+    if (!$reservation) {
+        return redirect()->back()->with('error', 'Reservation not found.');
+    }
+
+    $reservation->rental_period += $data['extend'];
+    $reservation->save();
+
+    // Fetch the apartment and price category
+    $apartment = Appartment::find($data['apartment_id']);
+    $price = Category::find($apartment->category_id);
+
+    // Determine the last due date for this user
+    $last_due_date = DueDate::where('user_id', $data['user_id'])
+        ->orderBy('payment_due_date', 'desc')
+        ->first();
+
+    // Start from the next due date after the last recorded one
+    $next_due_date = $last_due_date
+        ? Carbon::parse($last_due_date->payment_due_date)->addMonth()
+        : Carbon::parse($reservation->check_in);
+
+    // Add new due dates for the extended period
+    for ($i = 0; $i < $data['extend']; $i++) {
+        DueDate::create([
+            'user_id' => $data['user_id'],
+            'amount_due' => $price->price,
+            'payment_due_date' => $next_due_date->format('Y-m-d'),
+            'status' => 'not paid',
         ]);
-    
-        // Increment rental_period for the reservation
-        $updated = Reservation::where('id', $data['reservation_id'])->increment('rental_period', $data['extend']);
-        
-        if (!$updated) {
-            return redirect()->back()->with('error', 'Failed to extend the rental period.');
-        }
-    
-        // Fetch updated reservation data
-        $user = Auth::user();
-        $reservation_info = Reservation::find($data['reservation_id']);
-        if (!$reservation_info) {
-            return redirect()->back()->with('error', 'Reservation not found.');
-        }
-        
-        $apartment = Appartment::find($data['apartment_id']);
-        $price = Category::find($apartment->category_id);
-    
-        // Calculate new end date
-        $start_date = Carbon::parse($reservation_info->check_in);
-        $end_date = $start_date->copy()->addMonths($reservation_info->rental_period);
-    
-        // Prepare data for the contract
-        $data = [
-            'tenant_name' => $user->name,
-            'landlord_name' => 'Rose Denolo Nillos',
-            'address' => 'Mission Hills, Barangay Milibili, Roxas City, Capiz',
-            'start_date' => $start_date->format('Y-m-d'),
-            'rental_period' => $end_date->format('Y-m-d'), // Display actual end date
-            'rent_amount' => $price->price,
-        ];
-    
-        // Render the HTML content from the Blade view to generate the PDF
-        $html = view('emails.contract', compact('data'))->render();
-    
-        // Initialize DomPDF
-        $pdfOptions = new Options();
-        $pdfOptions->set('isRemoteEnabled', true);
-        $dompdf = new Dompdf($pdfOptions);
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-    
-        // Output the PDF as a string
-        $pdfOutput = $dompdf->output();
-    
-        // Send the email with the PDF attached
-        Mail::to($user->email)->send(new Contract($data, $pdfOutput));
-    
-        return redirect()->route('renters.home')->with('success', "Extending your stay success. New contract was sent to your email.");
-    }    
+
+        $next_due_date->addMonth();
+    }
+
+    // Prepare contract data
+    $user = Auth::user();
+    $start_date = Carbon::parse($reservation->check_in);
+    $new_end_date = $start_date->copy()->addMonths($reservation->rental_period);
+
+    $data = [
+        'tenant_name' => $user->name,
+        'landlord_name' => 'Rose Denolo Nillos',
+        'address' => 'Mission Hills, Barangay Milibili, Roxas City, Capiz',
+        'start_date' => $start_date->format('Y-m-d'),
+        'rental_period' => $new_end_date->format('Y-m-d'),
+        'rent_amount' => $price->price,
+    ];
+
+    // Render the HTML content from the Blade view to generate the PDF
+    $html = view('emails.contract', compact('data'))->render();
+
+    // Initialize DomPDF
+    $pdfOptions = new Options();
+    $pdfOptions->set('isRemoteEnabled', true);
+    $dompdf = new Dompdf($pdfOptions);
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->render();
+
+    // Output the PDF as a string
+    $pdfOutput = $dompdf->output();
+
+    // Send the email with the PDF attached
+    Mail::to($user->email)->send(new Contract($data, $pdfOutput));
+
+    return redirect()->route('renters.home')->with('success', "Extending your stay success. New contract was sent to your email.");
+}
+
     
 }

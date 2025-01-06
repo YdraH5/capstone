@@ -249,6 +249,7 @@ class ApartmentTable extends Component
                 'apartment.id',
                 'categories.name as categ_name',
                 'apartment.room_number',
+                'apartment.renter_id',
                 'categories.price',
                 'apartment.status',
                 'buildings.name as building',
@@ -279,7 +280,7 @@ class ApartmentTable extends Component
          // Conditionally render the correct view based on user role
         if (auth()->user()->role === 'admin') {
             return view('livewire.admin.apartment-table', [
-                'apartment' => $apartments, // Ensure this matches the variable name in your Blade view
+                'apartment' => $apartments, 
                 'categories' => $categories,
                 'buildings' => $buildings,
             ]);

@@ -3,7 +3,7 @@
     <x-modal name="add-announcement" title="Add Announcement">
         <x-slot:body>
             <!-- Form -->
-            <form id="announcementForm" class="space-y-4" wire:submit.prevent.live="save">
+            <form id="announcementForm" class="space-y-4" wire:submit.prevent="save">
                 @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -18,7 +18,7 @@
                     <div>
                         <label class="block font-medium opacity-70">Category</label>
                         <select wire:model="category" class="text-gray-600 focus:outline-none focus:border focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
-                            <option value="" disabled selected hidden>Select Category</option>
+                            <option value="all">All</option>
                             @foreach ($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
@@ -47,12 +47,6 @@
                             <option value="High">High</option>
                         </select>
                         @error('priority') <span class="error text-red-900">{{ $message }}</span> @enderror
-                    </div>
-                    <!-- Audience -->
-                    <div>
-                        <label class="block font-medium opacity-70">Audience</label>
-                        <input type="text" wire:model="audience" placeholder="Audience" class="text-gray-600 focus:outline-none focus:border focus:border-indigo-700 focus:ring-2 focus:ring-indigo-500 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
-                        @error('audience') <span class="error text-red-900">{{ $message }}</span> @enderror
                     </div>
                     <!-- Status -->
                     <div>

@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Models\Activity;
 use Carbon\Carbon;
 class OwnerDashboardController extends Controller
-{   public function index()
+{   
+    public function index()
     {
         $monthlyRevenue = DB::table('payments')
         ->select(DB::raw('SUM(amount) as total'), DB::raw('MONTH(created_at) as month'))

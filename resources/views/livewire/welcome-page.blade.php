@@ -15,14 +15,14 @@
                 </div>
 
                 <!-- Previous Button -->
-                <button id="prev-button" class="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-yellow-800 hover:bg-yellow-700 text-white rounded-full p-2 md:p-3 shadow-lg z-10">
+                <button id="prev-button" class="hidden absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-yellow-800 hover:bg-yellow-700 text-white rounded-full p-2 md:p-3 shadow-lg z-10">
                     <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                     </svg>
                 </button>
 
                 <!-- Next Button -->
-                <button id="next-button" class="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-yellow-800 hover:bg-yellow-700 text-white rounded-full p-2 md:p-3 shadow-lg z-10">
+                <button id="next-button" class="hidden absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-yellow-800 hover:bg-yellow-700 text-white rounded-full p-2 md:p-3 shadow-lg z-10">
                     <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
@@ -43,6 +43,27 @@
                 </p>
             </div>
         <hr class="w-full border-t-2 border-gray-300">
+       <!-- About NRN Experience Section -->
+        <div class="bg-gray-100 py-12 ">
+            <div class="container mx-auto flex flex-col-reverse md:flex-row items-center px-8">
+                <!-- Image Content -->
+                <div class="md:w-1/2 mt-8 md:mt-0">
+                    <img src="images/NRNBUILDING3.png" alt="NRN Living Experience" class="rounded-lg shadow-lg w-full object-cover">
+                </div>
+                <!-- Text Content -->
+                <div class="md:w-1/2 text-center md:text-left ml-2">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Experience Quality Living at NRN</h2>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        At NRN Building, we prioritize your comfort and convenience. Our mission is to offer a living experience that blends elegance, practicality, and community, ensuring that your stay feels like home. Explore our state-of-the-art amenities, spacious apartments, and proximity to key landmarks.
+                    </p>
+                    <ul class="text-gray-600 list-disc list-inside">
+                        <li>Dedicated parking spaces for renters</li>
+                        <li>30 elegantly designed rooms</li>
+                        <li>Air-conditioned rooms included</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
         <div class="text-black flex flex-col items-center justify-center p-5 text-center my-2 " id="near-establishments">
             <h3 class="font-heavy text-2xl mb-1 text-black">

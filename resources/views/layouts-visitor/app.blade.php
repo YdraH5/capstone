@@ -103,7 +103,7 @@
 }
  /* Example styles for active link */
  .nav-link.active h6 {
-        color: #1a73e8; /* Active link color */
+        color: black; /* Active link color */
     }
 
     </style>
