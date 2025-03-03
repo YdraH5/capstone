@@ -3,7 +3,8 @@
 namespace App\Livewire;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
-
+use App\Models\User;
+use App\Models\Nearby;
 class WelcomePage extends Component
 {
     public $priceFilter;
@@ -43,9 +44,12 @@ class WelcomePage extends Component
                 ->get();
             $this->images[$category->category_id] = $categoryImages;
         }
-    
+        $owner = User::where('role', 'owner')->first();
+        $nearby= Nearby::all();
         return view('livewire.welcome-page', [
             'categories' => $this->apartments,
+            'owner' => $owner,
+            'nearby' => $nearby,
             'images' => $this->images,
         ]);
     }

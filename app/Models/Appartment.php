@@ -22,7 +22,10 @@ class Appartment extends Model
         'room_number',
         'status'
     ];    
- 
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
     public function payments()
     {
         return $this->belongsTo(DueDate::class);

@@ -117,7 +117,7 @@
 
         @if ($available > 0)
             <!-- Reserve Button -->
-            <button type="submit" class="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded-lg w-full mt-4">
+            <button type="submit" class="bg-blue-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded-lg w-full mt-4">
                 Reserve
             </button>
         @else

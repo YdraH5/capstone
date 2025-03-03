@@ -1,6 +1,6 @@
 
   
-<nav x-data="{ open: false }" class="bg-[#355F2E] text-white sticky top-0 z-50 text-white">
+<nav x-data="{ open: false }" class="bg-gray-100 sticky text-black top-0 z-50">
   <!-- Primary Navigation Menu -->
   <div class="min-w-full mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
@@ -12,7 +12,7 @@
                   </a>
               </div>
 
-              <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex text-white py-4" id="navLinks">
+              <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex text-black py-4" id="navLinks">
                 <x-nav-link href="{{ route('welcome') }}#overview" class="nav-link">
                     <h6 class="font-light text-lg">Overview</h6>
                 </x-nav-link>
@@ -36,10 +36,10 @@
 
               {{--container for login and register  --}}
               @if(Auth::check())
-              <div class="inline-flex text-white absolute top-4 right-2 space-x-reverse space-y-0 hidden sm:flex sm:items-center sm:ms-6">                    
+              <div class="inline-flex text-black absolute top-4 right-2 space-x-reverse space-y-0 hidden sm:flex sm:items-center sm:ms-6">                    
                 <x-dropdown >
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white-500 bg-gray-300 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">                                
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-black hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">                                
                             @include('components.user-icon')
                             <div class="flex ">                
                                 {{ Auth::user()->name }}
@@ -79,7 +79,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                     </svg>                    
-                    <h6 class="font-light text-lg text-white">Log in</h6>
+                    <h6 class="font-light text-lg text-black">Log in</h6>
                   </x-nav-link>
                 </div>
             </div>

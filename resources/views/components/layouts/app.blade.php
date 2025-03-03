@@ -14,7 +14,42 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
         <!-- Scrollbar Custom CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+        <style>
+            /* Hide in the web view */
+            .print-only {
+                display: none;
+            }
 
+            /* Show in the print view */
+            @media print {
+                .print-only {
+                    display: block;
+                }
+
+                /* Hide elements you don't want to print, like search bar and pagination */
+                .no-print {
+                    display: none;
+                }
+
+                /* Adjust table for print */
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+
+                th, td {
+                    padding: 8px;
+                    text-align: left;
+                    border: 1px solid #ddd;
+                }
+
+                body {
+                    font-size: 12px;
+                    margin: 0;
+                    padding: 20px;
+                }
+            }
+        </style>
     </head>
     <body class="bg-smokewhite">
        
@@ -23,8 +58,8 @@
         <!-- Page Heading -->
  
         @if (isset($header))
-            <header class="bg-white shadow w-full">
-                <div class="max-w-full mx-8 py-2 px-12 ">
+            <header class="no-print bg-white shadow w-full">
+                <div class="no-print max-w-full mx-8 py-2 px-12 ">
                     {{ $header }}
                 </div>
             </header>

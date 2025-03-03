@@ -198,7 +198,7 @@ class RenterController extends Controller
                     'apartment_id' => $data['apartment_id'],
                     'user_id' => $data['user_id'],
                     'amount' => $data['amount_due'],
-                    'category' => 'Rental fee',
+                    'category' => 'Rent fee',
                     'transaction_id' => $session->id,
                     'status' => 'paid',
                     'payment_method' => 'stripe',

@@ -69,6 +69,7 @@ class ReportTable extends Component
                 'reports.report_category',
                 'buildings.name as building_name',
                 'reports.description',
+                'reports.is_anonymous',
                 'reports.status',
                 'apartment.room_number',
                 'reports.created_at as date'

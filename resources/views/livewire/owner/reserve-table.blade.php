@@ -71,7 +71,7 @@
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->check_in_date}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->rental_period}} Months</td>
                         @if($reservation->status === 'pending')
-                        <td class="text-center border border-black-900 bg-yellow-100">Need approval</td>
+                        <td class="text-center border border-black-900 text-yellow-800">Need approval</td>
                         @else
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$reservation->status}}</td>
                         @endif

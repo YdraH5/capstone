@@ -1,21 +1,22 @@
 
-<div class="fixed w-full z-30 flex bg-[#343a40] p-2 items-center justify-center h-20 px-10">
+<div class="no-print fixed w-full z-30 flex bg-[#343a40] p-2 items-center justify-center h-20 px-10">
   
-  <div class="flex">
-    <button type="button" id="sidebarCollapse" class="text-white p-2 rounded focus:outline-none">
+  <div class="no-print flex">
+    <button type="button" id="sidebarCollapse" class="no-print text-white p-2 rounded focus:outline-none">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
       </svg>
     </button>
     <!-- Sidebar -->
-    <nav id="sidebar" class="text-white w-64 min-h-screen fixed bg-[#212529] overflow-y-auto">
-      <div class="p-2 bg-[#343a40] px-4 sticky top-0">
-        <img src="{{ asset('images/NRN LOGO.png') }}" style="height: 64px; width:128px" class="sm:mx-4 lg:mx-6 lg:h-20 lg:w-60">
+    <nav id="sidebar" class="no-print text-white w-64 min-h-screen fixed bg-[#212529] overflow-y-auto">
+      <div class="no-print p-2 bg-[#343a40] px-4 sticky top-0">
+        <img src="{{ asset('images/NRN LOGO.png') }}" style="height: 64px; width:128px" class="no-print sm:mx-4 lg:mx-6 lg:h-20 lg:w-60">
       </div>
-      <div id="mobileLogo" class="hidden fixed top-0 left-0 my-2 bg-[#212529]">
+      <div id="mobileLogo" class="no-print hidden fixed top-0 left-0 my-2 bg-[#212529]">
         <img src="{{ asset('images/NRN LOGO.png') }}" style="height: 40px; width:70px;" alt="Logo">
       </div>
-      <ul class="px-2 py-4">
+      
+      <ul class="no-print px-2 py-4">
         <li class="mb-4">
             <div class="hidden sm:-my-px sm:ms-10 sm:flex hover:text-black"> 
                @include('components.dashboard-icon')
@@ -87,7 +88,54 @@
             </x-nav-link>
           </div>
         </li>
+        <!-- Settings Dropdown -->
+        <li class="mb-4">
+          <div x-data="{ open: false }" class="relative">
+            <!-- Dropdown Trigger -->
+            <button 
+              @click="open = !open" 
+              class="flex items-center justify-between w-full px-4 py-2 text-white rounded-md hover:bg-gray-700 focus:outline-none transition duration-300">
+              <span class="flex items-center">
+                @include('components.settings-icon') <!-- Include your settings icon component -->
+                <span class="ms-2 font-semibold">Settings</span>
+              </span>
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                class="w-5 h-5 transform transition-transform duration-300" 
+                :class="{'rotate-180': open}" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor" 
+                stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <!-- Dropdown Menu -->
+            <div 
+              x-show="open" 
+              x-collapse 
+              x-cloak
+              class="mt-2 bg-[#212529] text-white shadow-lg rounded-md overflow-hidden">
+              <x-nav-link 
+                wire:navigate 
+                :href="route('admin.nearby-establishment.index')" 
+                :active="request()->routeIs('admin.nearby-establishment.index')" 
+                class="block px-4 py-2">
+                {{ __('Nearby Establishments') }}
+              </x-nav-link>
+              <x-nav-link 
+                wire:navigate 
+                :href="route('admin.logs.index')" 
+                :active="request()->routeIs('admin.logs.index')" 
+                class="block px-4 py-2 ">
+                {{ __('Activity Logs') }}
+              </x-nav-link>
+            </div>
+          </div>
+        </li>
+
       </ul>
+      
         <!-- Footer -->
       <footer class="p-1 bg-[#212529] text-gray-400 border-t border-gray-600">
         <p class="text-sm">&copy; NRN BUILDING</p>
@@ -96,7 +144,7 @@
     </nav> 
   </div>
    <!-- SPACER -->
-   <div class="grow h-full flex items-center justify-center"></div>
+   <div class="no-print grow h-full flex items-center justify-center"></div>
    <!-- Settings Dropdown -->
    <div class="hidden md:flex sm:items-center sm:ms-6">                    
     <x-dropdown align="right" width="48">
@@ -135,7 +183,7 @@
   <div class="-me-2 flex items-center md:hidden">
     <nav x-data="{ open: false }">
       
-      <button class="w-14 h-14 relative focus:outline-none rounded text-gray-400 " @click="open = !open">
+      <button class="no-print w-14 h-14 relative focus:outline-none rounded text-gray-400 " @click="open = !open">
         <div class="block w-5 absolute left-6 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
             <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />

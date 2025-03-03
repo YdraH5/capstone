@@ -1,17 +1,46 @@
 <div> 
      <!-- Search Bar -->
      <div class="flex items-center gap-4 mb-4 p-2 bg-gray-50 rounded-lg shadow-sm">
-        <div class="flex gap-2 text-gray-700">
-            <h1 class="text-2xl font-semibold text-black">Occupants</h1>
+        <div class="no-print flex gap-2 text-gray-700">
+            <h1 class="no-print text-2xl font-semibold text-black">Occupants</h1>
         </div>
         <div class="relative w-1/2 ml-auto">
             <input id="search-input" wire:model.debounce.300ms.live="search" type="search" placeholder="Search..."
-                class="w-full h-12 pl-4 pr-12 py-2 text-gray-700 placeholder-gray-500 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-            <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" width="1.25rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                class="no-print w-full h-12 pl-4 pr-12 py-2 text-gray-700 placeholder-gray-500 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+            <svg class="no-print absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" width="1.25rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
             </svg>
         </div>
+        <button onclick="window.print()" class="no-print bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Print Report
+        </button>
     </div>
+    <div class=" print-only p-4 mb-4 bg-gray-50 rounded-lg shadow-sm">
+    <h2 class="text-lg font-semibold text-gray-700">Occupants Report Summary</h2>
+    <div class="print-only grid grid-cols-2 gap-4 md:grid-cols-4 mt-3 text-sm">
+        <div class="bg-indigo-100 p-4 rounded-lg text-center">
+            <span class="font-medium text-gray-800">Total Occupants</span>
+            <div class="text-lg font-bold text-indigo-600">{{ $summary['totalOccupants'] }}</div>
+        </div>
+        <div class="bg-red-100 p-4 rounded-lg text-center">
+            <span class="font-medium text-gray-800">Overdue Renters Count</span>
+            <div class="text-lg font-bold text-red-600">{{ $summary['overdueRenters'] }}</div>
+        </div>
+        <div class="bg-green-100 p-4 rounded-lg text-center">
+            <span class="font-medium text-gray-800">Up to Date Renters</span>
+            <div class="text-lg font-bold text-green-600">{{ $summary['updatedPayments'] }}</div>
+        </div>
+        <div class="bg-yellow-100 p-4 rounded-lg text-center">
+            <span class="font-medium text-gray-800">Total Unpaid Amount</span>
+            <div class="text-lg font-bold text-yellow-600">₱{{ number_format($summary['totalUnpaidAmount'], 2) }}</div>
+        </div>
+        <div class="bg-blue-100 p-4 rounded-lg text-center">
+            <span class="font-medium text-gray-800">Avg. Overdue Days</span>
+            <div class="text-lg font-bold text-blue-600">{{ $summary['averageOverdueDays'] }} days</div>
+        </div>
+    </div>
+</div>
+
     <!-- Table -->
        <!-- Success Message -->
     @if (session('success'))
@@ -61,7 +90,7 @@
                         <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="status" />
                     </div>
                 </th>    
-                <th class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                <th class="no-print py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
                     Action
                 </th>                   
             </tr>
@@ -78,7 +107,7 @@
                 <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->email}}</td>
                 <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->categ_name}}</td>
                 <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->building_name}}-{{$apartments->room_number}}</td>
-                <td class="py-3 px-4 text-center border-b border-gray-300">
+                <td class="no-print py-3 px-4 text-center border-b border-gray-300">
                     @php
                         $unpaidDues = DueDate::where('user_id', $apartments->user_id)
                             ->where('status', 'not paid')
@@ -95,12 +124,38 @@
                         </a>
                     @else
                         <a href="#" x-data x-on:click="$dispatch('open-modal',{name:'paid-modal-{{ $apartments->user_id }}'})" class="text-green-600 hover:underline hover:text-green-800">
-                            Payment Updated
+                            Payment Up to date
                         </a>
                     @endif
                 </td>
+                <td class="print-only py-3 px-4 text-center border-b border-gray-300">
+                    @php
+                        $unpaidDues = DueDate::where('user_id', $apartments->user_id)
+                            ->where('status', 'not paid')
+                            ->where(function ($query) {
+                                $query->where('payment_due_date', '<', now())
+                                    ->orWhere('payment_due_date', '=', now()->format('Y-m-d'));
+                            })->get();
 
-                <td class="py-3 px-4 text-center border-b border-gray-300">
+                        $unpaidMonthsCount = $unpaidDues->count();
+                    @endphp
+
+                    @if($unpaidMonthsCount > 0)
+                        @foreach($unpaidDues as $due)
+                            @php
+                                $dueDate = Carbon::parse($due->getAttribute('payment_due_date'));
+                                $daysOverdue = $dueDate->diffInDays(now());
+                                $amountDue = number_format($due->getAttribute('amount_due'), 2);
+                            @endphp
+                            {{ $daysOverdue }} days overdue of ₱{{ $amountDue }}
+                        @endforeach
+                    @else
+                        Payments up to date
+                    @endif
+                </td>
+
+
+                <td class="no-print py-3 px-4 text-center border-b border-gray-300">
                     <div class="flex justify-center gap-1">
                         <button x-data x-on:click="$dispatch('open-modal',{name:'out-modal'})">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -161,13 +216,6 @@
                         <!-- Default Button Text -->
                         <span wire:loading.remove wire:target="sendReminderEmail">Send Reminder</span>
 
-                        <!-- Loading State (shown when clicked) -->
-                        <span wire:loading wire:target="sendReminderEmail">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 flex inline-flex animate-spin">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v3m6 3a6 6 0 1 1-12 0 6 6 0 0 1 12 0z" />
-                            </svg>
-                            Sending...
-                        </span>
                     </button>
 
 
@@ -198,8 +246,8 @@
 
     <div class="py-4">
         <div class="flex items-center mb-3">
-            <label for="perPage" class="mr-2 mt-2 text-sm font-medium text-gray-700">Per Page:</label>
-            <select id="perPage" wire:model.live="perPage" class="border border-gray-300 rounded px-2 py-1 h-8 w-20 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+            <label for="perPage" class="no-print mr-2 mt-2 text-sm font-medium text-gray-700">Per Page:</label>
+            <select id="perPage" wire:model.live="perPage" class="no-print border border-gray-300 rounded px-2 py-1 h-8 w-20 text-sm focus:ring-indigo-500 focus:border-indigo-500">
                 <option value="" disabled selected>Select</option>
                 <option value="10">10</option>
                 <option value="15">15</option>

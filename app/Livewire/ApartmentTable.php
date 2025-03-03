@@ -277,18 +277,32 @@ class ApartmentTable extends Component
         $categories = Category::all();
         $buildings = Building::all();
     
+        // Get the report data
+        $availableCount = Appartment::where('status', 'Available')->count();
+        $occupiedCount = Appartment::where('status', 'Rented')->count();
+        $reservedCount = Appartment::where('status', 'Reserved')->count();
+        $unavailableCount = Appartment::where('status', 'Unavailable')->count();
+        
          // Conditionally render the correct view based on user role
         if (auth()->user()->role === 'admin') {
             return view('livewire.admin.apartment-table', [
                 'apartment' => $apartments, 
                 'categories' => $categories,
                 'buildings' => $buildings,
+                'availableCount' => $availableCount,
+                'occupiedCount' => $occupiedCount,
+                'unavailableCount' => $unavailableCount,
+                'reservedCount' => $reservedCount,
             ]);
         } elseif (auth()->user()->role === 'owner') {
             return view('livewire.owner.apartment-table', [
                 'apartment' => $apartments, 
                 'categories' => $categories,
                 'buildings' => $buildings,
+                'availableCount' => $availableCount,
+                'occupiedCount' => $occupiedCount,
+                'unavailableCount' => $unavailableCount,
+                'reservedCount' => $reservedCount,
             ]);
         } else {
             // Handle if user doesn't have the right role

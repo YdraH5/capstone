@@ -16,6 +16,7 @@ class Report extends Model
     protected $fillable = [
         'report_category',
         'description',
+        'is_anonymous',
         'user_id',
     ];
     public function getActivitylogOptions(): LogOptions

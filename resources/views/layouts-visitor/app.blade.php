@@ -8,7 +8,28 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
     <style>
-        
+        /* Fade-In Animation */
+.fade-in {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}
+
+.fade-in-visible {
+    opacity: 1;
+}
+
+/* Slide-In Animation */
+.slide-in {
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 1s ease-out, opacity 1s ease-out;
+}
+
+.slide-in-visible {
+    transform: translateX(0);
+    opacity: 1;
+}
+
     /* For Chrome, Edge, and Safari */
 ::-webkit-scrollbar {
     width: 4px; /* Width of the scrollbar */
@@ -173,69 +194,25 @@
             }
         });
     });
-    document.addEventListener('DOMContentLoaded', function () {
-    const images = [
-        "images/NRNBUILDING3.png",
-        "images/NRNBUILDING1.png",
-        "images/NRNBUILDING2.png",
-        "images/NRNBUILDING.png",
-        "images/NRNPARKING.png"
-    ];
+   // Target all elements with the class 'animate-on-scroll'
+const elements = document.querySelectorAll('.animate-on-scroll');
 
-    let currentIndex = 0;
-    const carouselImage = document.getElementById('carousel-image');
-    const prevButton = document.getElementById('prev-button');
-    const nextButton = document.getElementById('next-button');
-    let autoSlideInterval;
-    const autoSlideDelay = 3000; // 3 seconds
-
-    // Function to update the carousel image with sliding effect
-    function updateImage(index, direction = 'next') {
-        const slideDirection = (direction === 'next') ? 'slide-left' : 'slide-right';
-        const exitDirection = (direction === 'next') ? 'exit-left' : 'exit-right';
-
-        carouselImage.classList.add(exitDirection); // Slide current image out
-        setTimeout(() => {
-            carouselImage.src = images[index];
-            carouselImage.classList.remove(exitDirection);
-            carouselImage.classList.add(slideDirection); // Slide new image in
-        }, 300); // Time for slide-out transition
-
-        setTimeout(() => {
-            carouselImage.classList.remove(slideDirection); // Remove class after sliding in
-        }, 600); // Time for slide-in transition
-    }
-
-    // Previous button click event
-    prevButton.addEventListener('click', function () {
-        currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
-        updateImage(currentIndex, 'prev');
-        resetAutoSlide();
+// Create an intersection observer
+const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Add visible class when the element is in view
+            entry.target.classList.add('fade-in-visible'); // or 'slide-in-visible'
+            observer.unobserve(entry.target); // Stop observing after the element is in view
+        }
     });
+}, {
+    threshold: 0.1, // Trigger when 10% of the element is in view
+});
 
-    // Next button click event
-    nextButton.addEventListener('click', function () {
-        currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
-        updateImage(currentIndex, 'next');
-        resetAutoSlide();
-    });
-
-    // Automatic slide functionality
-    function startAutoSlide() {
-        autoSlideInterval = setInterval(() => {
-            currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
-            updateImage(currentIndex, 'next');
-        }, autoSlideDelay);
-    }
-
-    // Reset auto slide after manual interaction
-    function resetAutoSlide() {
-        clearInterval(autoSlideInterval);
-        startAutoSlide();
-    }
-
-    // Start the auto slide when the page loads
-    startAutoSlide();
+// Observe all elements with the 'animate-on-scroll' class
+elements.forEach(element => {
+    observer.observe(element);
 });
 
 

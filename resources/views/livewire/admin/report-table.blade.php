@@ -58,14 +58,20 @@
             <tbody>
                 @foreach($reports as $report)
                 <tr class="hover:bg-indigo-100 ">
-                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->name}}</td>
-                    <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->building_name}}-{{$report->room_number}}</td>
+                    @if($report->is_anonymous === "false")
+                        <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->name}}</td>
+                        <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->building_name}}-{{$report->room_number}}</td>
+                    @else
+                        <td class="py-3 px-4 text-center border-b border-gray-300">Anonymous</td>
+                        <td class="py-3 px-4 text-center border-b border-gray-300">Anonymous</td>
+                    @endif
+                   
                     <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->report_category}}</td>
                     <td class="py-3 px-4 text-center border-b border-gray-300">{{$report->description}}</td>
                     @if($report->status === 'Fixed')
-                    <td class="py-3 px-4 text-center border-b border-gray-300 bg-green-100">{{$report->status}}</td>
+                    <td class="py-3 px-4 text-center border-b border-gray-300 text-green-500">{{$report->status}}</td>
                         @else
-                        <td class="py-3 px-4 text-center border-b border-gray-300 bg-yellow-100">{{$report->status}}</td>
+                        <td class="py-3 px-4 text-center border-b border-gray-300 text-yellow-500">{{$report->status}}</td>
                         @endif
                     <td class="py-3 px-4 text-center border-b border-gray-300">{{ \Carbon\Carbon::parse($report->date)->diffForHumans() }}</td>
                     <td class="py-3 px-4 text-center border-b border-gray-300">

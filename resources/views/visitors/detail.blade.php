@@ -5,42 +5,63 @@
 <div class="flex flex-col sm:flex-row items-center justify-center bg-white shadow-lg px-4 sm:px-32">
     <!-- Image section -->
     <div class="w-full h-auto p-2 bg-white">
-        <h3 class="text-2xl sm:text-3xl font-heavy text-gray-800 mb-3">
+    <h3 class="text-2xl sm:text-3xl font-heavy text-gray-800 mb-3">
         {{$apartment->categ_name}}
-        </h3>
-        <div class="h-auto">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 items-start">
-                @if (isset($images[$apartment->id]) && $images[$apartment->id]->isNotEmpty())
-                    <!-- First image larger -->
-                    <div class="relative group col-span-1 h-60 sm:h-80 sm:h-[404px]">
+    </h3>
+    <div class="h-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start w-full">
+            @if (isset($images[$apartment->id]) && $images[$apartment->id]->isNotEmpty())
+                <!-- Display images for the specific apartment -->
+                <div class="col-span-1 sm:col-span-1 w-full">
+                    <!-- First image larger on the left -->
+                    <div class="relative group w-full h-[415px]">
                         <img src="{{ asset($images[$apartment->id][0]->image) }}" 
                             class="block w-full h-full object-cover clickable-image transition-transform duration-300" 
                             alt="Featured Apartment Image">
                         <div class="absolute top-0 left-0 w-full h-full bg-black opacity-0 transition-opacity duration-300 group-hover:opacity-20"></div>
-                        <div class="absolute top-0 left-0 mx-2 my-2 bg-black bg-opacity-50 opacity-80 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10">
-                            <span class="text-white text-sm">{{ $images[$apartment->id][0]->description ?? 'No Description Available' }}</span>
+                    </div>
+                </div>
+
+                <!-- Remaining 4 images on the right in 2 columns and 2 rows -->
+                <div class="grid grid-cols-2 gap-4 col-span-2 sm:col-span-2">
+                    @foreach ($images[$apartment->id]->take(5)->slice(1) as $image)
+                        <div class="relative group w-full h-[200px]">
+                            <img src="{{ asset($image->image) }}" 
+                                class="block w-full h-full object-cover clickable-image transition-transform duration-300" 
+                                alt="Apartment Image">
+                            <div class="absolute top-0 left-0 w-full h-full bg-black opacity-0 transition-opacity duration-300 group-hover:opacity-20"></div>
                         </div>
+                    @endforeach
+                </div>
+            @elseif (isset($images['fallback']) && $images['fallback']->isNotEmpty())
+                <!-- Display fallback images -->
+                <div class="col-span-1 sm:col-span-1 w-full">
+                    <!-- First fallback image larger on the left -->
+                    <div class="relative group w-full h-[415px]">
+                        <img src="{{ asset($images['fallback'][0]->image) }}" 
+                            class="block w-full h-full object-cover clickable-image transition-transform duration-300" 
+                            alt="Fallback Featured Image">
+                        <div class="absolute top-0 left-0 w-full h-full bg-black opacity-0 transition-opacity duration-300 group-hover:opacity-20"></div>
                     </div>
-                    <!-- Remaining images smaller -->
-                    <div class="grid grid-cols-2 gap-1 col-span-1">
-                        @foreach ($images[$apartment->id]->take(5) as $key => $image)
-                            @if ($key > 0) <!-- Skip the first image since it's already displayed -->
-                                <div class="relative group w-full h-40 sm:h-52 sm:h-[200px]">
-                                    <img src="{{ asset($image->image) }}" 
-                                         class="block w-full h-full object-cover clickable-image transition-transform duration-300 " 
-                                         alt="Apartment Image">
-                                    <div class="absolute top-0 left-0 w-full h-full bg-black opacity-0 transition-opacity duration-300 group-hover:opacity-20"></div>
-                                    <div class="absolute top-0 left-0 mx-2 my-2 bg-black bg-opacity-50 opacity-80 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10">
-                                        <span class="text-white text-sm">{{ $image->description ?? 'No Description Available' }}</span>
-                                    </div>
-                                </div>
-                            @endif
-                        @endforeach
-                    </div>
-                @endif
-            </div>
+                </div>
+
+                <!-- Remaining 4 fallback images on the right in 2 columns and 2 rows -->
+                <div class="grid grid-cols-2 gap-4 col-span-2 sm:col-span-2">
+                    @foreach ($images['fallback']->take(5)->slice(1) as $image)
+                        <div class="relative group w-full h-[200px]">
+                            <img src="{{ asset($image->image) }}" 
+                                class="block w-full h-full object-cover clickable-image transition-transform duration-300" 
+                                alt="Fallback Apartment Image">
+                            <div class="absolute top-0 left-0 w-full h-full bg-black opacity-0 transition-opacity duration-300 group-hover:opacity-20"></div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </div>
+</div>
+
+
 </div>
 
 <!-- Main container -->

@@ -195,57 +195,167 @@ class PaymentTable extends Component
     
     
     public function render()
-    {
-        // Start the query with the Payment model and join the necessary relationships
-        $query = Payment::with(['user', 'apartment'])
-            ->select(
-                'users.name as user_name',
-                'payments.id',
-                'payments.category',
-                'payments.amount',
-                'payments.receipt',
-                'payments.created_at',
-                'payments.transaction_id',
-                'payments.payment_method',
-                'payments.status',
-                'buildings.name as building_name',
-                'apartment.room_number',
-            )
-            ->leftJoin('users', 'users.id', '=', 'payments.user_id')
-            ->leftJoin('apartment', 'apartment.id', '=', 'payments.apartment_id')
-            ->leftjoin('buildings','buildings.id', '=', 'apartment.building_id')
-            ->orderBy($this->sortColumn, $this->sortDirection);
-    
-        // Filter based on the search
-        if (!empty($this->search)) {
-            $query->where(function($query) {
-                $query->where('users.name', 'like', '%' . $this->search . '%')
-                    ->orWhere('payments.category', 'like', '%' . $this->search . '%')
-                    ->orWhere('payments.transaction_id', 'like', '%' . $this->search . '%')
-                    ->orWhere('payments.payment_method', 'like', '%' . $this->search . '%')
-                    ->orWhere('payments.status', 'like', '%' . $this->search . '%')
-                    ->orWhere('buildings.name', 'like', '%' . $this->search . '%')
-                    ->orWhere('payments.created_at', 'like', '%' . $this->search . '%')
-                    ->orWhere('apartment.room_number', 'like', '%' . $this->search . '%');
-            });
-        }
-    
-        // Execute the query and return the results
-        $payments = $query->paginate($this->perPage);
-    
+{
+    // Start the query with the Payment model and join the necessary relationships
+    $query = Payment::with(['user', 'apartment'])
+        ->select(
+            'users.name as user_name',
+            'payments.id',
+            'payments.category',
+            'payments.amount',
+            'payments.receipt',
+            'payments.created_at',
+            'payments.transaction_id',
+            'payments.payment_method',
+            'payments.status',
+            'buildings.name as building_name',
+            'apartment.room_number',
+        )
+        ->leftJoin('users', 'users.id', '=', 'payments.user_id')
+        ->leftJoin('apartment', 'apartment.id', '=', 'payments.apartment_id')
+        ->leftJoin('buildings', 'buildings.id', '=', 'apartment.building_id')
+        ->orderBy($this->sortColumn, $this->sortDirection);
 
-          // Conditionally render the correct view based on user role
-          if (auth()->user()->role === 'admin') {
-            return view('livewire.admin.payment-table', compact('payments'));
+    // Filter based on the search
+    if (!empty($this->search)) {
+        $query->where(function($query) {
+            $query->where('users.name', 'like', '%' . $this->search . '%')
+                ->orWhere('payments.category', 'like', '%' . $this->search . '%')
+                ->orWhere('payments.transaction_id', 'like', '%' . $this->search . '%')
+                ->orWhere('payments.payment_method', 'like', '%' . $this->search . '%')
+                ->orWhere('payments.status', 'like', '%' . $this->search . '%')
+                ->orWhere('buildings.name', 'like', '%' . $this->search . '%')
+                ->orWhere('payments.created_at', 'like', '%' . $this->search . '%')
+                ->orWhere('apartment.room_number', 'like', '%' . $this->search . '%');
+        });
+    }
+
+    // Execute the query and return the results
+    $payments = $query->paginate($this->perPage);
+
+    // Calculate earnings for this month and last month
+    $currentMonthRentalEarnings = Payment::where('category', 'rent fee')
+        ->whereMonth('created_at', now()->month)
+        ->whereYear('created_at', now()->year)
+        ->sum('amount');
+
+    $lastMonthRentalEarnings = Payment::where('category', 'rent fee')
+        ->whereMonth('created_at', now()->subMonth()->month)
+        ->whereYear('created_at', now()->subMonth()->year)
+        ->sum('amount');
+
+    $currentMonthReservationEarnings = Payment::where('category', 'reservation fee')
+        ->whereMonth('created_at', now()->month)
+        ->whereYear('created_at', now()->year)
+        ->sum('amount');
+
+    $lastMonthReservationEarnings = Payment::where('category', 'reservation fee')
+        ->whereMonth('created_at', now()->subMonth()->month)
+        ->whereYear('created_at', now()->subMonth()->year)
+        ->sum('amount');
+
+    // Determine the maximum value across all datasets
+    $maxValue = max(
+        $currentMonthRentalEarnings,
+        $lastMonthRentalEarnings,
+        $currentMonthReservationEarnings,
+        $lastMonthReservationEarnings
+    );
+
+    // Add a larger margin (e.g., 40% instead of 20%) to ensure more space above the bars
+$adjustedMaxValue = ceil($maxValue * 1.4); // Increase the margin to 40%
+
+// Generate QuickChart URLs
+$rentalChartUrl = 'https://quickchart.io/chart?c=' . urlencode(json_encode([
+    'type' => 'bar',
+    'data' => [
+        'labels' => ['Last Month', 'This Month'],
+        'datasets' => [
+            [
+                'label' => 'Rental Fee Earnings (₱)',
+                'data' => [$lastMonthRentalEarnings, $currentMonthRentalEarnings],
+                'backgroundColor' => ['rgba(54, 162, 235, 0.6)', 'rgba(75, 192, 192, 0.6)'],
+                'borderColor' => ['rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)'],
+                'borderWidth' => 1,
+            ],
+        ],
+    ],
+    'options' => [
+        'scales' => [
+            'y' => [
+                'beginAtZero' => true,
+                'max' => $adjustedMaxValue, // Set adjusted max value with extra margin
+            ],
+        ],
+        'plugins' => [
+            'datalabels' => [
+                'display' => true,
+                'anchor' => 'end',
+                'align' => 'end',
+                'color' => '#333333',
+                'font' => [
+                    'size' => 14,
+                    'weight' => 'bold',
+                ],
+                'formatter' => function($value, $context) {
+                    return '₱' . number_format($value, 2);
+                },
+            ],
+        ],
+    ],
+])) . '&w=400&h=300';
+
+// Apply similar changes to the reservation chart URL
+$reservationChartUrl = 'https://quickchart.io/chart?c=' . urlencode(json_encode([
+    'type' => 'bar',
+    'data' => [
+        'labels' => ['Last Month', 'This Month'],
+        'datasets' => [
+            [
+                'label' => 'Reservation Fee Earnings (₱)',
+                'data' => [$lastMonthReservationEarnings, $currentMonthReservationEarnings],
+                'backgroundColor' => ['rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)'],
+                'borderColor' => ['rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+                'borderWidth' => 1,
+            ],
+        ],
+    ],
+    'options' => [
+        'scales' => [
+            'y' => [
+                'beginAtZero' => true,
+                'max' => $adjustedMaxValue, // Set adjusted max value with extra margin
+            ],
+        ],
+        'plugins' => [
+            'datalabels' => [
+                'display' => true,
+                'anchor' => 'end',
+                'align' => 'end',
+                'color' => '#333333',
+                'font' => [
+                    'size' => 14,
+                    'weight' => 'bold',
+                ],
+                'formatter' => function($value, $context) {
+                    return '₱' . number_format($value, 2);
+                },
+            ],
+        ],
+    ],
+])) . '&w=400&h=300';
+        // Conditionally render the correct view based on user role
+        if (auth()->user()->role === 'admin') {
+            return view('livewire.admin.payment-table', compact('payments', 'rentalChartUrl', 'reservationChartUrl'));
 
         } elseif (auth()->user()->role === 'owner') {
-            return view('livewire.owner.payment-table', compact('payments'));
+            return view('livewire.owner.payment-table', compact('payments', 'rentalChartUrl', 'reservationChartUrl'));
 
         } else {
             // Handle if user doesn't have the right role
             abort(403, 'Unauthorized action.');
         }
-    }
-    
-    
+
+}
+ 
 }

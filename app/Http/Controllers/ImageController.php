@@ -39,7 +39,7 @@ class ImageController extends Controller
             $imageData[] = [
                 'category_id' => $category->id,
                 'image'=>$path.$filename,
-            ];
+            ];  
 
         }
       }

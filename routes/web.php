@@ -67,6 +67,16 @@ Route::group(['middleware' => ['auth','verified']], function () {
         Route::get('/admin/announcement', function () {
             return view('/admin/announcement');
         })->name('admin.announcement.index');
+
+        // ROUTE TO NEARBY ESTABLISHMENTS
+        Route::get('/admin/nearby-establishment', function () {
+            return view('/admin/nearby-establishment');
+        })->name('admin.nearby-establishment.index');
+
+        // ROUTE TO ACTIVITY LOGS
+        Route::get('/admin/logs', function () {
+            return view('/admin/logs');
+        })->name('admin.logs.index');
     });
     
     //route group for owner pages
@@ -79,6 +89,9 @@ Route::group(['middleware' => ['auth','verified']], function () {
             Route::post('/owner/categories/{categoryId}/upload', 'store');
             Route::get('/owner/category-image/{categoryImageId}/delete', 'delete');
         });
+
+      
+        
         // ROUTE TO USERS DATA TABLE
         Route::get('/owner/users', function () {
             return view('/owner/users');
@@ -88,6 +101,11 @@ Route::group(['middleware' => ['auth','verified']], function () {
         Route::get('/owner/categories', function () {
             return view('/owner/categories');
         })->name('owner.categories.index');
+
+        // ROUTE TO ACTIVITY LOGS
+        Route::get('/owner/logs', function () {
+            return view('/owner/logs');
+        })->name('owner.logs.index');
 
         // ROUTE TO REPORTS INDEX PAGE FOR owner
         Route::get('/owner/reports', function () {

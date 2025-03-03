@@ -214,20 +214,47 @@ class OccupantsTable extends Component
     
         // Execute the query and return the results
         $apartments = $query->paginate($this->perPage);
-        $due_dates = DueDate::whereIn('user_id', $apartments->pluck('user_id'))->get()->keyBy('user_id');
+        $due_dates = DueDate::whereIn('user_id', $apartments->pluck('user_id'))->get();
+        foreach($apartments->pluck('user_id') as $due){
+            $overdueRenters = $due_dates->filter(function ($due) {
+                return $due->status === 'not paid' && $due->payment_due_date < now();
+            });
+           
+            $updatedPayments = $due_dates->filter(function ($due) {
+                return $due->status === 'paid' && $due->payment_due_date >now();
+            });
+            $totalUnpaidAmount = $overdueRenters->sum('amount_due'); // Make sure `amount_due` exists and is numeric
+            $averageOverdueDays = $overdueRenters->count()
+                ? $overdueRenters->map(function ($due) {
+                    return now()->diffInDays($due->payment_due_date);
+                })->average()
+                : 0;
+        }
+       
         
+    
+       
+        $summary = [
+            'totalOccupants' => $apartments->total(),
+            'overdueRenters' => $overdueRenters->count(),
+            'updatedPayments' => $updatedPayments->count(),
+            'totalUnpaidAmount' => $totalUnpaidAmount,
+            'averageOverdueDays' => round($averageOverdueDays, 2),
+        ];
         if (auth()->user()->role === 'admin') {
             return view('livewire.admin.occupants-table', [
                 'apartment' => $apartments, // Make sure this matches in the view
                 'categories' => Category::all(),
                 'due_dates' => $due_dates, // Ensure this is fetched correctly
-                'buildings' => Building::all()
+                'buildings' => Building::all(),
+                'summary' => $summary // Pass metrics to the view
             ]);
         } elseif (auth()->user()->role === 'owner') {
             return view('livewire.owner.occupants-table', [
                 'apartment' => $apartments, // Make sure this matches in the view
                 'categories' => Category::all(),
                 'due_dates' => $due_dates, // Ensure this is fetched correctly
+                'summary' => $summary, // Pass metrics to the view
                 'buildings' => Building::all()
             ]);
         } else {

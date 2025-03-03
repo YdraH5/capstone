@@ -142,7 +142,7 @@
 
                                     <div x-data="{ showWarning: false }" class="relative flex flex-col items-start">
                                         @if($isPaid)
-                                            <span class="bg-green-700 text-white py-2 px-3 rounded-lg text-sm">Paid</span>
+                                            <span class="text-green-600 py-2 px-3 rounded-lg text-md">Paid</span>
                                         @elseif($isPending)
                                             <span class="bg-yellow-300 text-white py-2 px-3 rounded-lg text-sm">Pending</span>
                                         @elseif($canPay)

@@ -29,6 +29,7 @@ class OwnerDashboardController extends Controller
         $userCount = User::count();
         $reportCount = Report::count();
         $vacantRooms = DB::table('apartment')->whereNull('renter_id')->count();
+        $occupiedRooms = DB::table('apartment')->wherenotNull('renter_id')->count();
         $reservations = DB::table('reservations')
             ->whereNotNull('user_id')
             ->whereDate('check_in', '>', Carbon::now())
@@ -36,6 +37,6 @@ class OwnerDashboardController extends Controller
         $recentActivities = Activity::with(['subject'])->latest()->take(10)->get();
 
         // Pass data to the view
-        return view('owner.dashboard', compact('userCount', 'reportCount', 'vacantRooms', 'reservations', 'recentActivities','months'));
+        return view('owner.dashboard', compact('userCount', 'reportCount', 'vacantRooms', 'reservations', 'recentActivities','months','occupiedRooms'));
     }
 }

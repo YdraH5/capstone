@@ -25,7 +25,10 @@ class Reservation extends Model
         {
             return $this->belongsTo(User::class);
         }
-        public function getActivitylogOptions(): LogOptions
+        public function apartment()
+        {
+            return $this->belongsTo(Appartment::class);
+        }        public function getActivitylogOptions(): LogOptions
         {
             return LogOptions::defaults()
                 ->logAll() // Log all attributes, not just the specified ones

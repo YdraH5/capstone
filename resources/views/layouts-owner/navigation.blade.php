@@ -1,15 +1,14 @@
 
 <div class="fixed w-full z-30 flex bg-[#343a40] p-2 items-center justify-center h-20 px-10">
-  
   <div class="flex">
-    <button type="button" id="sidebarCollapse" class="text-white p-2 rounded focus:outline-none">
+    <button type="button" id="sidebarCollapse" class="no-print text-white p-2 rounded focus:outline-none">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
       </svg>
     </button>
     <!-- Sidebar -->
-    <nav id="sidebar" class="text-white w-64 min-h-screen fixed bg-[#212529] overflow-y-auto">
-      <div class="p-2 bg-[#343a40] px-4 sticky top-0">
+    <nav id="sidebar" class="no-print text-white w-64 min-h-screen fixed bg-[#212529] overflow-y-auto">
+      <div class="no-print p-2 bg-[#343a40] px-4 sticky top-0">
         <img src="{{ asset('images/NRN LOGO.png') }}" style="height: 64px; width:128px" class="sm:mx-4 lg:mx-6 lg:h-20 lg:w-60">
       </div>
       <div id="mobileLogo" class="hidden fixed top-0 left-0 my-2 bg-[#212529]">
@@ -23,7 +22,7 @@
                     {{ __('Dashboard') }}
                 </x-nav-link>
             </div>
-        </li>
+        </li> 
         <li class="mb-4">
           <div class="hidden sm:-my-px sm:ms-10 sm:flex hover:text-black"> 
               <!-- Users Icon -->
@@ -146,7 +145,7 @@
   <div class="-me-2 flex items-center md:hidden">
     <nav x-data="{ open: false }">
       
-      <button class="w-14 h-14 relative focus:outline-none rounded text-gray-400 " @click="open = !open">
+      <button class="no-print w-14 h-14 relative focus:outline-none rounded text-gray-400 " @click="open = !open">
         <div class="block w-5 absolute left-6 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
             <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />

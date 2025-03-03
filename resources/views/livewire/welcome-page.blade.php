@@ -1,146 +1,182 @@
 <div>
-<div class="bg-white-200 text-white min-h-screen">
-    <div class="bg-white-200 text-white min-h-screen">
-        {{-- overview of apartment v2--}}
-        <div id="overview"class="bg-white-200">
-            <!-- Carousel Section -->
-            <div id="carousel" class="relative w-full flex items-center justify-center overflow-hidden bg-slate-300">
-                
-                <!-- Main Image with Dark Side Overlay -->
-                <div class="relative w-full">
-                    <img id="carousel-image" src="images/NRNBUILDING3.png" alt="Location Image" class="object-contain w-full h-full max-h-[90vh] clickable-image" />
-                    
-                    <!-- Dark Overlay for the sides (vignette effect) -->
-                    <div class="absolute inset-0 pointer-events-none bg-gradient-to-r from-black/70 via-transparent to-black/20"></div>
-                </div>
-
-                <!-- Previous Button -->
-                <button id="prev-button" class="hidden absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-yellow-800 hover:bg-yellow-700 text-white rounded-full p-2 md:p-3 shadow-lg z-10">
-                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                </button>
-
-                <!-- Next Button -->
-                <button id="next-button" class="hidden absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-yellow-800 hover:bg-yellow-700 text-white rounded-full p-2 md:p-3 shadow-lg z-10">
-                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </button>
-            </div>
-        
-        </div>
-        <hr class="w-full border-t-2 border-gray-300 mt-2 ">
-
-            <!-- Description Section -->
-            <div id="about_us"class="text-black flex flex-col items-center justify-center p-5 text-center my-2 ">
-                <h3 class="font-heavy text-2xl mb-1">
-                About NRN Building
-                </h3>
-                <hr class="w-1/3 border-t-2 border-gray-300 my-1">
-                <p class="font-light leading-7 text-lg mb-5 mx-16">
-                Experience the epitome of comfort at our exclusive apartment building in Mission Hills, Roxas City. With 30 elegantly designed rooms, NRN have 2 apartment buildings each of the building have its own parking space reserved for renters. All room have a free aircon that renters could use anytime.
+<div class="bg-gray-100 text-white min-h-screen">
+    <div class="bg-gray-100 text-white min-h-screen">
+    <div class="bg-gray-100 text-white px-16 pt-16 relative animate-on-scroll">
+    <div class="min-w-full relative">
+        <!-- Shared Background -->
+        <div class="bg-gradient-to-t from-[#557F8F] to-[#E4FBFF] text-black rounded-[24px] shadow-lg flex items-center relative z-10">
+            <!-- Text Section -->
+            <div class="flex-1 pr-0 pl-8">
+                <p class="text-sm mb-4 opacity-75">Brought to you by NRN Building,</p>
+                <p style="font-family:Poppins, sans-serif; font-weight:400;font-size:2rem;" class=" mb-4 leading-tight">Find 
+                <span style="font-family:'Playfair Display', serif; font-style:italic; font-weight:700;" class="">
+                   Comfort  
+                </span><br>
+                in every
+                <span style="font-family:'Playfair Display', serif; font-style:italic; font-weight:700;" class="">
+                   Corner  
+                </span><br>
+                <p style="font-family:Poppins, sans-serif; font-weight:100;font-size:1rem;">
+                Your next home is here. Explore apartments built for living, loving and thriving
+                </p>
                 </p>
             </div>
-        <hr class="w-full border-t-2 border-gray-300">
-       <!-- About NRN Experience Section -->
-        <div class="bg-gray-100 py-12 ">
-            <div class="container mx-auto flex flex-col-reverse md:flex-row items-center px-8">
-                <!-- Image Content -->
-                <div class="md:w-1/2 mt-8 md:mt-0">
-                    <img src="images/NRNBUILDING3.png" alt="NRN Living Experience" class="rounded-lg shadow-lg w-full object-cover">
-                </div>
-                <!-- Text Content -->
-                <div class="md:w-1/2 text-center md:text-left ml-2">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Experience Quality Living at NRN</h2>
-                    <p class="text-gray-600 mb-6 leading-relaxed">
-                        At NRN Building, we prioritize your comfort and convenience. Our mission is to offer a living experience that blends elegance, practicality, and community, ensuring that your stay feels like home. Explore our state-of-the-art amenities, spacious apartments, and proximity to key landmarks.
-                    </p>
-                    <ul class="text-gray-600 list-disc list-inside">
-                        <li>Dedicated parking spaces for renters</li>
-                        <li>30 elegantly designed rooms</li>
-                        <li>Air-conditioned rooms included</li>
-                    </ul>
-                </div>
+
+            <!-- Image Section -->
+            <div class=" max-w-md relative z-20 -ml-8 w-1/3">
+                <img  src="images/OVERVIEW.png" 
+                    alt="Apartment Image" 
+                    class="object-cover rounded-[25px] -mt-12 pr-0 w-full h-full" />
             </div>
         </div>
-
-        <div class="text-black flex flex-col items-center justify-center p-5 text-center my-2 " id="near-establishments">
-            <h3 class="font-heavy text-2xl mb-1 text-black">
-            Nearby Establishments
-            </h3>
-            <hr class="w-1/3 border-t-2 border-gray-300 mb-4">
-    
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-8 mx-auto">
-                <!-- First 3 Locations (Visible) -->
-                <div class="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:bg-slate-200">
-                    <img src="images/airport.jpg" alt="Roxas Airport" class="w-full h-52 object-cover mb-4 clickable-image">
-                    <div class="p-4">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Roxas Airport</h3>
-                        <p class="text-gray-600">Located just 5.1 kilometers from the NRN Building, Roxas Airport offers a quick and scenic route to your destination.</p>
-                    </div>
-                </div>
-
-                <div class="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:bg-slate-200">
-                    <img src="images/panubbli.jpg" alt="Panubli-on Museum" class="w-full h-52 object-cover mb-4 clickable-image">
-                    <div class="p-4">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Panubli-on Museum</h3>
-                        <p class="text-gray-600">Only 3 kilometers away, this museum offers a cultural journey through the region’s rich history and heritage.</p>
-                    </div>
-                </div>
-
-                <div class="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:bg-slate-200">
-                    <img src="images/palina.jpg" alt="Palina Greenbelt Ecopark" class="w-full h-52 object-cover mb-4 clickable-image">
-                    <div class="p-4">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Palina Greenbelt Ecopark</h3>
-                        <p class="text-gray-600">Just 7.5 kilometers away, this ecopark provides easy access to serene natural beauty and outdoor activities.</p>
-                    </div>
-                </div>
-
-                <!-- Hidden Locations (Initially hidden) -->
-                <div class="hidden hidden-establishments bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:bg-slate-200">
-                    <img src="images/SM.png" alt="SM City Roxas" class="w-full h-52 object-cover mb-4 clickable-image">
-                    <div class="p-4">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">SM City Roxas</h3>
-                        <p class="text-gray-600">Located 4.9 kilometers away, SM City Roxas offers a variety of shopping, dining, and entertainment options.</p>
-                    </div>
-                </div>
-
-                <div class="hidden hidden-establishments bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:bg-slate-200">
-                    <img src="images/GIGANTES.png" alt="Isla Gigantes" class="w-full h-52 object-cover mb-4 clickable-image">
-                    <div class="p-4">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Isla Gigantes</h3>
-                        <p class="text-gray-600">Located 71.1 kilometers from the NRN Building, this island offers a perfect getaway with pristine beaches and natural beauty.</p>
-                    </div>
-                </div>
-            </div>
-            <!-- See More / See Less Buttons -->
-            <div class="text-center mt-8">
-                <button id="see-more-button-establishments" class=" transition-transform transform hover:scale-105">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="blue" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5" />
-                </svg>
-
-                </button>
-                <button id="see-less-button-establishments" class="transition-transform transform hover:scale-105 hidden">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="blue" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 18.75 7.5-7.5 7.5 7.5" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 7.5-7.5 7.5 7.5" />
-                </svg>
-
-                </button>
-            </div>
+    </div>
+</div>
+<!-- Designed for Comfort Section -->
+<div class="bg-gray-100 text-black px-16 py-16 animate-on-scroll">
+    <div class="min-w-full grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+        <!-- Left Image (Slightly Higher) -->
+        <div class="md:col-span-1 flex justify-start -mt-16"> <!-- Adjusted margin -->
+            <img src="images/NRNBUILDING.png" alt="Building" class="rounded-lg w-3/4 w-128 h-64 object-cover">
         </div>
+
+        <!-- Center Text -->
+        <div class="md:col-span-1 text-center">
+            <h2 class="text-3xl font-bold mb-4">Designed for <span class="text-[#89CFF0]">Comfort</span>, built for <span class="text-[#89CFF0]">You</span>.</h2>
+            <p class="text-lg leading-relaxed">
+                NRN Building in Mission Hills, Roxas City features 30 elegant rooms, dedicated parking, and free air conditioning for your comfort.
+            </p>
+        </div>
+
+        <!-- Right Image (Slightly Lower) -->
+        <div class="md:col-span-1 flex justify-end mt-16"> <!-- Adjusted margin -->
+            <img src="images/LIVING.jpg" alt="Living Room Area" class="rounded-lg w-3/4 w-128 h-64 object-cover">
+        </div>
+    </div>
+</div>
+
+<div class="text-black flex flex-col items-center justify-center p-5 text-center my-2 animate-on-scroll" id="near-establishments">
+    <h3 class="font-heavy text-2xl mb-1 text-black">
+        Nearby Establishments
+    </h3>
+    <hr class="w-1/3 border-t-2 border-gray-300 mb-4">
+
+    <div class="carousel-container overflow-hidden relative px-16">
+        <div class="carousel-wrapper flex transition-transform duration-500">
+            <!-- Loop through the nearby establishments -->
+            @foreach($nearby as $establishment)
+                <div class="carousel-item w-full md:w-1/3 px-4">
+                    <div class="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:bg-slate-200 flex flex-col h-full">
+                        <!-- Image Section -->
+                        <div class="flex-shrink-0">
+                            <img src="{{ asset('storage/' . $establishment->image_url) }}" alt="{{ $establishment->name }}" class="w-full h-52 object-cover mb-4 clickable-image">
+                        </div>
+                        <!-- Text Section -->
+                        <div class="p-4 flex-grow flex flex-col justify-between">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ $establishment->name }}</h3>
+                            <p class="text-gray-600 flex-grow">Located just {{$establishment->distance}} kilometers from the NRN Building, {{ $establishment->description }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <!-- Carousel Navigation Buttons -->
+        <button class="carousel-prev absolute top-1/2 left-0 transform -translate-y-1/2 px-16 bg-gray-800 text-white rounded-full shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m15 19-7-7 7-7" />
+            </svg>
+        </button>
+        <button class="carousel-next absolute top-1/2 right-0 transform -translate-y-1/2 p-4 bg-gray-800 text-white rounded-full shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7" />
+            </svg>
+        </button>
+    </div>
+</div>
+
+
+<script>
+    // Carousel logic
+    const carouselWrapper = document.querySelector('.carousel-wrapper');
+    const carouselItems = document.querySelectorAll('.carousel-item');
+    const prevButton = document.querySelector('.carousel-prev');
+    const nextButton = document.querySelector('.carousel-next');
+    let currentIndex = 0;
+
+    // Set initial width for carousel to display 3 items by default
+    const itemsToShow = 3;
+    const itemWidth = carouselItems[0].clientWidth;
+
+    // Show the first 3 items
+    const showItems = () => {
+        carouselWrapper.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+    };
+
+    // Next button
+    nextButton.addEventListener('click', () => {
+        if (currentIndex < carouselItems.length - itemsToShow) {
+            currentIndex++;
+            showItems();
+        }
+    });
+
+    // Previous button
+    prevButton.addEventListener('click', () => {
+        if (currentIndex > 0) {
+            currentIndex--;
+            showItems();
+        }
+    });
+
+    // Show items initially
+    showItems();
+</script>
+
+<style>
+    .carousel-container {
+        position: relative;
+        width: 100%;
+    }
+
+    .carousel-wrapper {
+        display: flex;
+        transition: transform 0.5s ease;
+    }
+
+    .carousel-item {
+        flex: 0 0 auto;
+    }
+
+    .carousel-prev, .carousel-next {
+        top: 50%;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border-radius: 50%;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    .carousel-prev {
+        left: 10px;
+    }
+
+    .carousel-next {
+        right: 10px;
+    }
+</style>
+
             <hr class="w-full border-t-2 border-gray-300 mt-1">
 
         <!-- Apartments Section -->
-    <div class="bg-white-200 py-8">
+    <div class="bg-gray-100 py-8">
         <div id="rooms" class="text-black flex flex-col items-center justify-center p-5 text-center my-2 ">
         <h3 class="font-heavy text-2xl mb-1 text-black"id="reserve">
         Apartments We Recommend for You
         </h3>
         <hr class="w-1/2 border-t-2 border-gray-300 mb-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-w-full px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-w-full px-16">
     @foreach ($categories as $category)
     <div class="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:bg-slate-200">
         <div id="default-carousel-{{$category->category_id}}" class="relative group" data-carousel="static">
@@ -208,15 +244,21 @@
     <hr class="w-full border-t-2 border-gray-300">
     <div class="bg-white py-8">
         <div class="text-center">
-            <img src="images/OWNER.jpg" alt="Owner Image" class="w-32 h-32 rounded-full mx-auto mb-4 text-black">
-            <h3 class="text-2xl font-bold text-black">Rose Denolo Nillos</h3>
+            @if($owner)
+                <div class="bg-white py-8 text-center text-black">
+                    <h2 class="text-3xl font-semibold mb-4 text-black">CONTACT US</h2>
+
+                    <p>Owner:{{ $owner->name }} </p>
+                    <p>Email:{{ $owner->email }} </p>
+                    <p>Mobile Number:{{ $owner->phone_number }} </p>
+                </div>
+            @else
+                <p class="text-gray-500">No owner information available.</p>
+            @endif
+
         </div>
     </div>
-    <div class="bg-white py-8 text-center text-black">
-        <h2 class="text-3xl font-semibold mb-4 text-black">CONTACT US</h2>
-        <p>Email: nrn.abode@gmail.com</p>
-        <p>Phone: 099999999999</p>
-    </div>
+
     
 </div>
     <!-- Full-screen Modal -->

@@ -5,6 +5,10 @@ use App\Models\Category;
 use Livewire\Component;
 use Livewire\Attributes\Validate; 
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
+use App\Mail\NotifyRentPriceChange; // Ensure this mailable is created
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryTable extends Component
 {   
@@ -56,27 +60,71 @@ class CategoryTable extends Component
     }
     public function update()
     {
-        $this->validate([
-            'name' => 'required|max:50|unique:categories,name,' . $this->id,
-            'price' => 'required|numeric',
+    $this->validate([
+        'name' => 'required|max:50|unique:categories,name,' . $this->id,
+        'price' => 'required|numeric',
+    ]);
+
+    $descriptionJson = json_encode($this->features);
+
+    $category = Category::find($this->id);
+    if ($category) {
+        // Check if the price has changed
+        $oldPrice = $category->price;
+        $newPrice = $this->price;
+
+        // Update the category
+        $category->update([
+            'name' => $this->name,
+            'price' => $newPrice,
+            'description' => $descriptionJson,
         ]);
-    
-        // Encode features back to JSON
-        $descriptionJson = json_encode($this->features);
-    
-        $category = Category::find($this->id);
-        if ($category) {
-            $category->update([
-                'name' => $this->name,
-                'price' => $this->price,
-                'description' => $descriptionJson, // Store JSON-encoded features
-            ]);
+
+        // Update due dates for all future months
+        $nextMonthStart = now()->addMonth()->startOfMonth();
+
+        DB::table('due_dates')
+            ->join('apartment', 'due_dates.user_id', '=', 'apartment.renter_id')
+            ->where('apartment.category_id', $this->id)
+            ->where('due_dates.payment_due_date', '>=', $nextMonthStart)
+            ->update(['due_dates.amount_due' => $newPrice]);
+
+        // Notify users if the price has changed
+        if ($oldPrice != $newPrice) {
+            $this->notifyUsersOfPriceChange($this->id, $newPrice);
         }
-        
-        $this->reset();
-            // Reset the component state
-            session()->flash('success', 'Category updated successfully.');
     }
+
+    $this->reset();
+    session()->flash('success', 'Category updated successfully.');
+}
+
+public function notifyUsersOfPriceChange($categoryId, $newPrice)
+{
+    // Retrieve all users associated with the updated category
+    $users = DB::table('users')
+        ->join('apartment', 'users.id', '=', 'apartment.renter_id')
+        ->where('apartment.category_id', $categoryId)
+        ->select('users.id', 'users.name', 'users.email')
+        ->get();
+
+        $currentUser = Auth::user();
+
+    // Notify each user
+    foreach ($users as $user) {
+        // Prepare email data
+        $emailData = [
+            'name' => $user->name,
+            'newPrice' => number_format($newPrice, 2),
+            'updatedBy' => $currentUser ? $currentUser->name : 'System', // Include updater's name
+
+        ];
+
+        // Send the email
+            Mail::to($user->email)->send(new NotifyRentPriceChange($emailData));
+    }
+       
+}
     public function delete($id){
         $this->isDeleting = true;
         $this->deleteId = $id;

@@ -21,6 +21,7 @@ public function create(Request $request) {
     $data = $request->validate([
         'report_category' => ['required', 'string', 'max:50'], 
         'description' => ['required'],
+        'is_anonymous'=>['required'],
         'user_id' => ['required', 'numeric'],
     ]);
 
@@ -31,7 +32,7 @@ public function create(Request $request) {
 
     if ($count < 3) {
         $newReport = Report::create($data);
-        return redirect()->route('renters.report')->with('success', 'Reports added successfully');
+        return redirect()->route('renters.report')->with('success', 'Reports submitted successfully');
     } else {
         return redirect()->route('renters.report.index')->with('failed', 'Sorry, you have reached the maximum number of reports. Please wait for other reports to be solved.');
     }

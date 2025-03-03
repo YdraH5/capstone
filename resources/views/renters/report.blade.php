@@ -25,18 +25,26 @@
                         <option value="">Report Category</option>
                         <option value="maintenance">Maintenance</option>
                         <option value="Room service">Room service</option>
+                        <option value="Room service">Others</option>
                        </select>
                   </div>
                   <div>
                     <label for="email" class="block font-medium opacity-70">Description</label>
-                      <textarea id="description" rows="4" class="w-full rounded-lg " name="description" placeholder="Write product description here"></textarea>   
+                      <textarea id="description" rows="4" class="w-full rounded-lg " name="description" placeholder="Complain description"></textarea>   
                     </div>
-                    
+                    <div>
+                      <!-- Hidden input for default value -->
+                      <input type="hidden" name="is_anonymous" value="false">
+                      <label class="inline-flex items-center">
+                          <input type="checkbox" name="is_anonymous" value="true" class="rounded">
+                          <span class="ml-2 text-gray-700">Submit anonymously</span>
+                      </label>
+                  </div>
                   <div class="flex justify-end">
                       <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
                       <button  x-on:click="$dispatch('close-modal',{name:'add-apartment'})" type="button" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Close</button>
                   </div>
-            </form>
+          </form>
           </x-slot:body>
         </x-modal>
             <div class="py-12">

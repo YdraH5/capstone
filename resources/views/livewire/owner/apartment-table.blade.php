@@ -1,22 +1,46 @@
 <div> 
      <!-- Search Bar -->
-     <div class="flex items-center gap-4 mb-4 p-2 bg-gray-50 rounded-lg shadow-sm">
+     <div class="flex items-center gap-4 mb-4 p-2 bg-gray-50 rounded-lg shadow-sm no-print">
         <div class="flex gap-2 text-gray-700">
             <h1 class="text-2xl font-semibold text-black">Apartments</h1>
         </div>
         <div class="relative w-1/2 ml-auto">
             <input id="search-input" wire:model.debounce.300ms.live="search" type="search" placeholder="Search..."
-                class="w-full h-12 pl-4 pr-12 py-2 text-gray-700 placeholder-gray-500 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-            <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" width="1.25rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                class="no-print w-full h-12 pl-4 pr-12 py-2 text-gray-700 placeholder-gray-500 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+            <svg class="no-print absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" width="1.25rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
             </svg>
         </div>
-        
-        <button class="" x-data x-on:click="$dispatch('open-modal',{name:'add-apartment'})"title ="Add appartment">
+        <button onclick="window.print()" class="no-print bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Print Report
+        </button>
+        <button class="no-print" x-data x-on:click="$dispatch('open-modal',{name:'add-apartment'})"title ="Add appartment">
             @include('buttons.add')
         </button> 
     </div>
     <!-- Table -->
+     <!-- Hidden in Web, Visible in Print -->
+     <div class="print-only bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-xl font-semibold mb-6 text-indigo-600">Apartment Report</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="bg-blue-100 p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-medium text-blue-600">Available</h3>
+                <p class="text-4xl font-bold">{{ $availableCount }}</p>
+            </div>
+            <div class="bg-green-100 p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-medium text-green-600">Occupied</h3>
+                <p class="text-4xl font-bold">{{ $occupiedCount }}</p>
+            </div>
+            <div class="bg-yellow-100 p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-medium text-yellow-600">Reserved</h3>
+                <p class="text-4xl font-bold">{{ $reservedCount }}</p>
+            </div>
+            <div class="bg-red-100 p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-medium text-red-600">Unavailable</h3>
+                <p class="text-4xl font-bold">{{ $unavailableCount }}</p>
+            </div>
+        </div>
+    </div>
     <div class="overflow-x-auto bg-white shadow-lg">
         <table class="min-w-full mx-2 border-collapse">
             <thead> 
@@ -57,7 +81,13 @@
                             <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="status" />
                         </div>
                     </th>
-                    <th class="py-3 px-4 text-center border-b border-indigo-600">Actions</th>
+                    <th wire:click="doSort('status')" class="py-3 px-4 text-center border-b border-indigo-600 cursor-pointer">
+                        <div class="inline-flex items-center justify-center">
+                            Occupants
+                            <x-datatable-item :sortColumn="$sortColumn" :sortDirection="$sortDirection" columnName="status" />
+                        </div>
+                    </th>
+                    <th class="no-print py-3 px-4 text-center border-b border-indigo-600">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -75,6 +105,16 @@
                         </td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">{{$apartments->status}}</td>
                         <td class="py-3 px-4 text-center border-b border-gray-300">
+                        @php
+                        $occupants = App\Models\Reservation::where('user_id', $apartments->renter_id)
+                            ->select('occupants')
+                            ->get();
+                        @endphp
+                        @foreach ($occupants as $reservation)
+                            {{ $reservation->occupants }}
+                        @endforeach
+                        </td>
+                        <td class="no-print py-3 px-4 text-center border-b border-gray-300">
                             <div class="flex justify-center gap-1"> 
                             <button
                                 x-data="{ id: {{$apartments->id}} }"
@@ -179,8 +219,8 @@
     <!-- Pagination -->
     <div class="py-4">
         <div class="flex items-center mb-3">
-            <label for="perPage" class="mr-2 mt-2 text-sm font-medium text-gray-700">Per Page:</label>
-            <select id="perPage" wire:model.live="perPage" class="border border-gray-300 rounded px-2 py-1 h-8 w-20 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+            <label for="perPage" class="mr-2 mt-2 text-sm font-medium text-gray-700 no-print">Per Page:</label>
+            <select id="perPage" wire:model.live="perPage" class="no-print border border-gray-300 rounded px-2 py-1 h-8 w-20 text-sm focus:ring-indigo-500 focus:border-indigo-500">
                 <option value="" disabled selected>Select</option>
                 <option value="10">10</option>
                 <option value="15">15</option>
